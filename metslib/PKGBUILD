@@ -1,0 +1,28 @@
+# Maintainer: Nick Cummins <nickmcummins@linuxmail.org>
+
+pkgname=metslib
+_pkgname=metslib
+pkgver=0.5.3
+pkgrel=1
+pkgdesc="METSlib is a metaheuristic modeling framework and optimization toolkit in modern C++."
+url="https://projects.coin-or.org/metslib"
+license=("GPL3")
+arch=('i686' 'x86_64')
+depends=()
+optdepends=()
+source=("http://www.coin-or.org/download/source/metslib/metslib-${pkgver}.tgz")
+md5sums=('SKIP')
+
+build() {
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+
+  ./autogen.sh 
+  ./configure --prefix=/usr \
+  make
+}
+
+package () {
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+
+  make DESTDIR="${pkgdir}" install
+}
