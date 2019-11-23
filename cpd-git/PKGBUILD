@@ -1,0 +1,42 @@
+# Maintainer: Nick M Cummins <nickmcummins dot linuxmail.org>
+
+pkgname=cpd-git
+pkgver=r430.1f3637e
+pkgrel=1
+_pkgname="cpd"
+pkgdesc="C++ implementation of the Coherent Point Drift point set registration algorithm."
+arch=('any')
+url="http://www.gadom.ski/cpd"
+license=('GPL2')
+depends=('fgt')
+provides=("cpd=$pkgver")
+source=("git+https://github.com/gadomski/cpd")
+sha1sums=('SKIP')
+
+pkgver() {
+	cd ${srcdir}/${_pkgname}
+	# Use the tag of the last commit
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+	cd ${srcdir}/${_pkgname}
+	
+	mkdir -p build && cd build
+	
+	cmake .. \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_INSTALL_LIBDIR=lib \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DBUILD_SHARED_LIBS=ON
+	make -j10
+}
+
+
+
+package() {
+	cd ${srcdir}/${_pkgname}/build
+	
+	make DESTDIR="${pkgdir}/" install
+	install -Dm644 "$srcdir/${_pkgname}/LICENSE.txt" "${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE"
+}
