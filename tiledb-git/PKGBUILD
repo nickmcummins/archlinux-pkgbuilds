@@ -1,0 +1,43 @@
+# Maintainer: Nick M Cummins <nickmcummins dot linuxmail.org>
+# Contributor: SaultDon <sault.don gmail>
+
+pkgname=tiledb-git
+pkgver=r2374.6f7f997d
+pkgrel=1
+_pkgname="TileDB"
+pkgdesc="TileDB allows you to manage the massive dense and sparse multi-dimensional array data that frequently arise in many important scientific applications."
+arch=('any')
+url="https://tiledb.io/"
+license=('MIT')
+depends=()
+provides=("tiledb=$pkgver")
+source=("git+https://github.com/TileDB-Inc/TileDB.git")
+sha1sums=('SKIP')
+
+pkgver() {
+	cd ${srcdir}/${_pkgname}
+	# Use the tag of the last commit
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+	cd ${srcdir}/${_pkgname}
+	
+	mkdir -p build && cd build
+	
+	cmake .. \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_INSTALL_LIBDIR=lib \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DTILEDB_INSTALL_LIBDIR=lib
+	make -j10
+}
+
+
+
+package() {
+	cd ${srcdir}/${_pkgname}/build
+	
+	make DESTDIR="${pkgdir}/" install-tiledb
+	install -Dm644 "$srcdir/${_pkgname}/LICENSE" "${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE"
+}
