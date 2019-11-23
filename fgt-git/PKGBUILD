@@ -6,7 +6,7 @@ pkgrel=1
 _pkgname="fgt"
 pkgdesc="C++ library for fast Gauss transforms."
 arch=('any')
-url="C++ library for fast Gauss transforms."
+url="http://gadomski.github.io/fgt"
 license=('GPL2')
 depends=()
 provides=("fgt=$pkgver")
