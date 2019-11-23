@@ -1,0 +1,43 @@
+# Maintainer: Nick M Cummins <nickmcummins dot linuxmail.org>
+
+pkgname=fgt-git
+pkgver=r256.d0559fd
+pkgrel=1
+_pkgname="fgt"
+pkgdesc="C++ library for fast Gauss transforms."
+arch=('any')
+url="C++ library for fast Gauss transforms."
+license=('GPL2')
+depends=()
+provides=("fgt=$pkgver")
+source=("git+https://github.com/gadomski/fgt")
+sha1sums=('SKIP')
+
+pkgver() {
+	cd ${srcdir}/${_pkgname}
+	# Use the tag of the last commit
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+	cd ${srcdir}/${_pkgname}
+	
+	mkdir -p build && cd build
+	
+	cmake .. \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_INSTALL_LIBDIR=lib \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DBUILD_SHARED_LIBS=ON \
+		-DWITH_OPENMP=ON
+	make -j10
+}
+
+
+
+package() {
+	cd ${srcdir}/${_pkgname}/build
+	
+	make DESTDIR="${pkgdir}/" install
+	install -Dm644 "$srcdir/${_pkgname}/LICENSE.txt" "${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE"
+}
