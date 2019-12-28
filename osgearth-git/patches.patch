@@ -1,0 +1,79 @@
+Index: src/osgEarthSymbology/GEOS.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/osgEarthSymbology/GEOS.cpp	(revision c145e17fa8800d161be3de8a8f9cea7a68f26ada)
++++ src/osgEarthSymbology/GEOS.cpp	(date 1577507220705)
+@@ -49,7 +49,7 @@
+ 
+ namespace
+ {
+-    geom::CoordinateSequence*
++    std::unique_ptr<geom::CoordinateSequence>
+     vec3dArray2CoordSeq( const Symbology::Geometry* input, bool close, const geom::CoordinateSequenceFactory* factory )
+     {   
+         bool needToClose = close && input->size() > 2 && input->front() != input->back();
+@@ -64,7 +64,8 @@
+         {
+             coords->push_back( coords->front() );
+         }
+-        geom::CoordinateSequence* seq = factory->create( coords );
++
++        std::unique_ptr<geom::CoordinateSequence> seq = factory->create( coords );
+ 
+         return seq;
+     }
+@@ -108,7 +109,7 @@
+         else
+         {
+             // any other type will at least contain points:
+-            geom::CoordinateSequence* seq = 0L;
++            std::unique_ptr<geom::CoordinateSequence> seq;
+             try
+             {
+                 switch( input->getType() )
+@@ -119,29 +120,29 @@
+ 
+                 case Symbology::Geometry::TYPE_POINTSET:
+                     seq = vec3dArray2CoordSeq( input, false, f->getCoordinateSequenceFactory() );
+-                    if ( seq ) output = f->createPoint( seq );
++                    if ( seq ) output = f->createPoint( seq.get() );
+                     break;
+ 
+                 case Symbology::Geometry::TYPE_LINESTRING:
+                     seq = vec3dArray2CoordSeq( input, false, f->getCoordinateSequenceFactory() );
+-                    if ( seq ) output = f->createLineString( seq );
++                    if ( seq ) output = f->createLineString( seq.get() );
+                     break;
+ 
+                 case Symbology::Geometry::TYPE_RING:
+                     seq = vec3dArray2CoordSeq( input, true, f->getCoordinateSequenceFactory() );
+-                    if ( seq ) output = f->createLinearRing( seq );
++                    if ( seq ) output = f->createLinearRing( seq.get() );
+                     break;
+ 
+                 case Symbology::Geometry::TYPE_POLYGON:
+                     seq = vec3dArray2CoordSeq( input, true, f->getCoordinateSequenceFactory() );
+                     geom::LinearRing* shell = 0L;
+                     if ( seq )
+-                        shell = f->createLinearRing( seq );
++                        shell = f->createLinearRing( seq.get() );
+ 
+                     if ( shell )
+                     {
+                         const Symbology::Polygon* poly = static_cast<const Symbology::Polygon*>(input);
+-                        std::vector<geom::Geometry*>* holes = poly->getHoles().size() > 0 ? new std::vector<geom::Geometry*>() : 0L;
++                        std::vector<geom::LinearRing*>* holes = poly->getHoles().size() > 0 ? new std::vector<geom::LinearRing*>() : 0L;
+                         if (holes)
+                         {
+                             for( Symbology::RingCollection::const_iterator r = poly->getHoles().begin(); r != poly->getHoles().end(); ++r )
+@@ -151,7 +152,7 @@
+                                 {
+                                     if (hole->getGeometryTypeId() == geos::geom::GEOS_LINEARRING)
+                                     {
+-                                        holes->push_back(hole);
++                                        holes->push_back(dynamic_cast<geom::LinearRing*>(hole));
+                                     }
+                                     else
+                                     {
