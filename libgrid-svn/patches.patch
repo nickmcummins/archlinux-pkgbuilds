@@ -1,0 +1,35 @@
+Index: CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- CMakeLists.txt	(revision 1658)
++++ CMakeLists.txt	(date 1577498846838)
+@@ -25,10 +25,7 @@
+ OPTION(BUILD_GRID_TESTS "Build command line tests." ON)
+ OPTION(BUILD_GRID_TOOLS "Build command line tools." ON)
+ 
+-SET(BUILD_MINI_STUB ON)
+-ADD_SUBDIRECTORY(mini)
+-
+-ADD_SUBDIRECTORY(squish)
++SET(BUILD_MINI_STUB OFF)
+ 
+ # include libGrid config file
+ INCLUDE(libGrid-config.cmake)
+Index: libGrid-config.cmake
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- libGrid-config.cmake	(revision 1658)
++++ libGrid-config.cmake	(date 1577499061563)
+@@ -12,7 +12,7 @@
+    SET(MINI_NAME "libMini-stub")
+    SET(GRID_NAME "libGrid")
+ ELSE (WIN32)
+-   SET(MINI_NAME "Mini-stub")
++   SET(MINI_NAME "Mini")
+    SET(GRID_NAME "Grid")
+ ENDIF (WIN32)
+ 

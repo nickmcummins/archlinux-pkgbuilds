@@ -1,0 +1,74 @@
+# Maintainer: Nick M Cummins
+
+pkgname='libgrid-svn'
+_pkgname=libgrid
+pkgver=1658
+pkgrel=1
+pkgdesc="3D Resampling Core. The Grid Library (libGrid) is the resampling backend for the libMini terrain rendering engine."
+arch=('i686' 'x86_64')
+url='https://code.google.com/p/libgrid/'
+license=('GPL')
+provides=("$pkgname")
+
+depends=('libmini' 'libiconv')
+makedepends=('cmake' 'subversion')
+optdepends=()
+options=('staticlibs')
+source=("${_pkgname}::svn+http://svn.code.sf.net/p/gridlib/code/libgrid/grid" "patches.patch")
+md5sums=('SKIP' 'SKIP')
+
+pkgver() {
+  svnversion "${SRCDEST}/${_pkgname}" | tr -d [A-z]
+}
+
+prepare () {
+  cd "${_pkgname}"
+
+  mkdir ./grid
+  cp -rfv *.h ./grid
+}
+
+build() {
+  cd "${_pkgname}"  
+
+  patch -Np0 -i "${srcdir}"/patches.patch
+
+  if [ -d build ]; then
+    rm -rf builded249b5643110288df772d026828cb69356310ad
+  fi
+
+  mkdir build
+  cd build
+
+  cmake ../ \
+  -DCMAKE_INSTALL_PREFIX=/usr \
+  -DBUILD_SHARED_LIBS=ON \
+  -DBUILD_SQUISH_WITH_SSE2=OFF \
+  -DBUILD_GRID_APPS=ON \
+  -DBUILD_GRID_TOOLS=ON \
+  -DBUILD_GRID_WITH_SQUISH=ON \
+  -DSQUISH_INCLUDE_DIR=/usr/include \
+  -DSQUISH_LIBRARY=/usr/lib/libsquish.so \
+  -DBUILD_MINI_STUB=OFF \
+  -DMINI_NAME=Mini \
+  -DMINI_LIBRARY=/usr/lib/libMini.so \
+  -DMINI_INCLUDE_DIR=/usr/include \
+  -DGRID_INCLUDE_DIR=${srcdir}/${_pkgname}
+
+  make -j10
+}
+
+package() {
+  cd "${_pkgname}"
+  cd build
+
+  make DESTDIR="$pkgdir/" install
+
+  rm -rfv "${pkgdir}/usr/include/mini/"  
+  rm -rfv "${pkgdir}/usr/include/squish.h"  
+  rm -rfv "${pkgdir}/usr/lib/libsquish.so"  
+  rm -rfv "${pkgdir}/usr/lib/libsquish.so.0.0"  
+  
+  install -Dm 644 ../CMakeModules/FindGRID.cmake "$pkgdir/usr/share/cmake/Modules/FindGRID.cmake"
+  install -Dm 644 ../LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
