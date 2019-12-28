@@ -1,0 +1,1059 @@
+Index: example.cmake/module.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- example.cmake/module.cpp	(revision 5860)
++++ example.cmake/module.cpp	(date 1577492722416)
+@@ -1,7 +1,7 @@
+ // (c) by Stefan Roettger, licensed under LGPL 2.1
+ 
+-#include <mini/minibase.h>
+-#include <mini/mini.h>
++#include "minibase.h"
++#include "mini.h"
+ 
+ #ifndef __APPLE__
+ #include <GL/glut.h>
+Index: test/testmini.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- test/testmini.cpp	(revision 5860)
++++ test/testmini.cpp	(date 1577492722410)
+@@ -16,23 +16,23 @@
+ #define MINIWLS3D_TEST // enable this to perform a test of the miniWLS3D module
+ #define MINICRYPT_TEST // enable this to perform a test of the minicrypt module
+ 
+-#include <mini/minibase.h>
+-#include <mini/miniOGL.h>
+-#include <mini/minicrs.h>
+-#include <mini/minicoord.h>
+-#include <mini/ministring.h>
+-#include <mini/ministrip.h>
+-#include <mini/minitime.h>
+-#include <mini/minipath.h>
+-#include <mini/minixml.h>
+-#include <mini/glslmath.h>
+-#include <mini/lunafunctor.h>
+-#include <mini/minisort.h>
+-#include <mini/mini3D.h>
+-#include <mini/miniclod.h>
+-#include <mini/miniwls.h>
+-#include <mini/minicrypt.h>
+-#include <mini/miniio.h>
++#include "minibase.h"
++#include "miniOGL.h"
++#include "minicrs.h"
++#include "minicoord.h"
++#include "ministring.h"
++#include "ministrip.h"
++#include "minitime.h"
++#include "minipath.h"
++#include "minixml.h"
++#include "glslmath.h"
++#include "lunafunctor.h"
++#include "minisort.h"
++#include "mini3D.h"
++#include "miniclod.h"
++#include "miniwls.h"
++#include "minicrypt.h"
++#include "miniio.h"
+ 
+ #ifndef __APPLE__
+ #include <GL/glut.h>
+Index: test/testmpfp.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- test/testmpfp.cpp	(revision 5860)
++++ test/testmpfp.cpp	(date 1577492756016)
+@@ -1,9 +1,9 @@
+ // (c) by Stefan Roettger, licensed under LGPL 2.1
+ 
+-#include <mini/minibase.h>
++#include "minibase.h"
+ 
+-#include <mini/minimpfp.h>
+-#include <mini/minitime.h>
++#include "minimpfp.h"
++#include "minitime.h"
+ 
+ int main(int argc,char *argv[])
+    {
+Index: tools/coord.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- tools/coord.cpp	(revision 5860)
++++ tools/coord.cpp	(date 1577492777060)
+@@ -1,8 +1,8 @@
+ // (c) by Stefan Roettger, licensed under LGPL 2.1
+ 
+-#include <mini/minibase.h>
++#include "../minibase.h"
+ 
+-#include <mini/minicoord.h>
++#include "../minicoord.h"
+ 
+ int main(int argc,char *argv[])
+    {
+Index: tools/db2db.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- tools/db2db.cpp	(revision 5860)
++++ tools/db2db.cpp	(date 1577492896163)
+@@ -1,9 +1,9 @@
+ // (c) by Stefan Roettger, licensed under LGPL 2.1
+ 
+-#include <mini/minibase.h>
++#include "../minibase.h"
+ 
+-#include <mini/database.h>
+-#include <mini/miniimg.h>
++#include "../database.h"
++#include "../miniimg.h"
+ 
+ static const int fillin_radius=5;
+ 
+Index: tools/dbdump.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- tools/dbdump.cpp	(revision 5860)
++++ tools/dbdump.cpp	(date 1577492896129)
+@@ -1,11 +1,11 @@
+ // (c) by Stefan Roettger, licensed under LGPL 2.1
+ 
+-#include <mini/minibase.h>
+-#include <mini/minitime.h>
+-#include <mini/miniOGL.h>
++#include "../minibase.h"
++#include "../minitime.h"
++#include "../miniOGL.h"
+ 
+-#include <mini/database.h>
+-#include <mini/miniimg.h>
++#include "../database.h"
++#include "../miniimg.h"
+ 
+ #ifndef __APPLE__
+ #include <GL/glut.h>
+Index: tools/dbgzip.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- tools/dbgzip.cpp	(revision 5860)
++++ tools/dbgzip.cpp	(date 1577492896133)
+@@ -1,9 +1,9 @@
+ // (c) by Stefan Roettger, licensed under LGPL 2.1
+ 
+-#include <mini/minibase.h>
++#include "../minibase.h"
+ 
+-#include <mini/database.h>
+-#include <mini/dataconv.h>
++#include "../database.h"
++#include "../dataconv.h"
+ 
+ int main(int argc,char *argv[])
+    {
+Index: tools/dds.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- tools/dds.cpp	(revision 5860)
++++ tools/dds.cpp	(date 1577492896136)
+@@ -1,9 +1,9 @@
+ // (c) by Stefan Roettger, licensed under LGPL 2.1
+ 
+-#include <mini/minibase.h>
++#include "../minibase.h"
+ 
+-#include <mini/minidds.h>
+-#include <mini/miniio.h>
++#include "../minidds.h"
++#include "../miniio.h"
+ 
+ int main(int argc,char *argv[])
+    {
+Index: tools/eval.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- tools/eval.cpp	(revision 5860)
++++ tools/eval.cpp	(date 1577492896123)
+@@ -1,9 +1,9 @@
+ // (c) by Stefan Roettger, licensed under LGPL 2.1
+ 
+-#include <mini/minibase.h>
++#include "../minibase.h"
+ 
+-#include <mini/miniio.h>
+-#include <mini/lunaparse.h>
++#include "../miniio.h"
++#include "../lunaparse.h"
+ 
+ int main(int argc,char *argv[])
+    {
+Index: tools/expr.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- tools/expr.cpp	(revision 5860)
++++ tools/expr.cpp	(date 1577492896156)
+@@ -1,8 +1,8 @@
+ // (c) by Stefan Roettger, licensed under LGPL 2.1
+ 
+-#include <mini/minibase.h>
++#include "../minibase.h"
+ 
+-#include <mini/lunaparse.h>
++#include "../lunaparse.h"
+ 
+ int main(int argc,char *argv[])
+    {
+Index: tools/geo2ply.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- tools/geo2ply.cpp	(revision 5860)
++++ tools/geo2ply.cpp	(date 1577492896153)
+@@ -1,8 +1,8 @@
+ // (c) by Stefan Roettger, licensed under LGPL 2.1
+ 
+-#include <mini/minibase.h>
++#include "../minibase.h"
+ 
+-#include <mini/ministrip.h>
++#include "../ministrip.h"
+ 
+ int main(int argc,char *argv[])
+    {
+Index: tools/raw2db.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- tools/raw2db.cpp	(revision 5860)
++++ tools/raw2db.cpp	(date 1577492896149)
+@@ -1,9 +1,9 @@
+ // (c) by Stefan Roettger, licensed under LGPL 2.1
+ 
+-#include <mini/minibase.h>
++#include "../minibase.h"
+ 
+-#include <mini/miniio.h>
+-#include <mini/database.h>
++#include "../miniio.h"
++#include "../database.h"
+ 
+ int main(int argc,char *argv[])
+    {
+Index: tools/raw2iso.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- tools/raw2iso.cpp	(revision 5860)
++++ tools/raw2iso.cpp	(date 1577492896143)
+@@ -1,9 +1,9 @@
+ // (c) by Stefan Roettger, licensed under LGPL 2.1
+ 
+-#include <mini/minibase.h>
++#include "../minibase.h"
+ 
+-#include <mini/rawbase.h>
+-#include <mini/rekbase.h>
++#include "../rawbase.h"
++#include "../rekbase.h"
+ 
+ void feedback(const char *info,float percent,void *obj)
+    {
+Index: tools/rawquant.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- tools/rawquant.cpp	(revision 5860)
++++ tools/rawquant.cpp	(date 1577492896146)
+@@ -1,9 +1,9 @@
+ // (c) by Stefan Roettger, licensed under LGPL 2.1
+ 
+-#include <mini/minibase.h>
++#include "../minibase.h"
+ 
+-#include <mini/rawbase.h>
+-#include <mini/rekbase.h>
++#include "../rawbase.h"
++#include "../rekbase.h"
+ 
+ static float ratio=0.5f;
+ static unsigned long long maxsize=512;
+Index: tools/rek2raw.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- tools/rek2raw.cpp	(revision 5860)
++++ tools/rek2raw.cpp	(date 1577492896169)
+@@ -1,8 +1,8 @@
+ // (c) by Stefan Roettger, licensed under LGPL 2.1
+ 
+-#include <mini/minibase.h>
++#include "../minibase.h"
+ 
+-#include <mini/rekbase.h>
++#include "../rekbase.h"
+ 
+ int main(int argc,char *argv[])
+    {
+Index: curlbase.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- curlbase.h	(revision 5860)
++++ curlbase.h	(date 1577493062482)
+@@ -6,7 +6,7 @@
+ #include <curl/curl.h>
+ #include <curl/easy.h>
+ 
+-#include <mini/minibase.h>
++#include "minibase.h"
+ 
+ class curlbase
+    {
+Index: dataconv.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- dataconv.cpp	(revision 5860)
++++ dataconv.cpp	(date 1577493531461)
+@@ -1,11 +1,11 @@
+ // (c) by Stefan Roettger, licensed under LGPL 2.1
+ 
+-#include <mini/jpegbase.h>
+-#include <mini/pngbase.h>
+-#include <mini/zlibbase.h>
++#include "jpegbase.h"
++#include "pngbase.h"
++#include "zlibbase.h"
+ 
+ #ifdef USEGREYC
+-#include <mini/greycbase.h>
++#include "greycbase.h"
+ #endif
+ 
+ #include "dataconv.h"
+Index: dataconv.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- dataconv.h	(revision 5860)
++++ dataconv.h	(date 1577493531491)
+@@ -3,9 +3,9 @@
+ #ifndef DATACONV_H
+ #define DATACONV_H
+ 
+-#include <mini/minibase.h>
++#include "minibase.h"
+ 
+-#include <mini/database.h>
++#include "database.h"
+ 
+ namespace dataconv {
+ 
+Index: example.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- example.cpp	(revision 5860)
++++ example.cpp	(date 1577493531454)
+@@ -1,7 +1,7 @@
+ // (c) by Stefan Roettger, licensed under LGPL 2.1
+ 
+-#include <mini/minibase.h>
+-#include <mini/mini.h>
++#include "minibase.h"
++#include "mini.h"
+ 
+ #ifndef __APPLE__
+ #include <GL/glut.h>
+Index: greycbase.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- greycbase.cpp	(revision 5860)
++++ greycbase.cpp	(date 1577493062459)
+@@ -8,7 +8,7 @@
+ 
+ #endif
+ 
+-#include <mini/minibase.h>
++#include "minibase.h"
+ 
+ #include "greycbase.h"
+ 
+Index: jpegbase.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- jpegbase.cpp	(revision 5860)
++++ jpegbase.cpp	(date 1577493062462)
+@@ -7,7 +7,7 @@
+    #include <jpeglib.h>
+    }
+ 
+-#include <mini/minibase.h>
++#include "minibase.h"
+ 
+ #include "jpegbase.h"
+ 
+Index: libMini.cmake
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- libMini.cmake	(revision 5860)
++++ libMini.cmake	(date 1577491213334)
+@@ -28,6 +28,8 @@
+    minicache.h minishader.h
+    miniray.h ministrip.h
+    minipoint.h minitext.h
++   jpegbase.h pngbase.h zlibbase.h squishbase.h greycbase.h
++   dataconv.h miniimg.h
+    minisky.h miniglobe.h
+    geoid.h wmm.h
+    minitree.h minipano.h
+@@ -65,6 +67,8 @@
+    miniray.cpp ministrip.cpp
+    minipoint.cpp minitext.cpp
+    minisky.cpp miniglobe.cpp
++   jpegbase.cpp pngbase.cpp zlibbase.cpp squishbase.cpp greycbase.cpp 
++   dataconv.cpp miniimg.cpp
+    geoid.cpp wmm.cpp
+    minitree.cpp minipano.cpp
+    minibrick.cpp minilod.cpp
+Index: libMini-app.cmake
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- libMini-app.cmake	(revision 5860)
++++ libMini-app.cmake	(date 1577491432937)
+@@ -17,5 +17,6 @@
+ 
+ SET(BUILD_MINI_WITH_GLUT ON)
+ ADD_SUBDIRECTORY(${LIBMINI_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/mini)
++TARGET_LINK_LIBRARIES(${APPNAME} ${MINI_LIBRARIES} ${OPENGL_LIBRARIES} ${THREAD_LIBRARY} ${CURL_LIBRARY} ${JPEG_LIBRARY} ${PNG_LIBRARY} ${ZLIB_LIBRARY} ${SQUISH_LIBRARY})
+ INCLUDE(${LIBMINI_PATH}/libMini-config.cmake)
+ MAKE_MINI_EXECUTABLE(${APPNAME})
+Index: libMini-config.cmake
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- libMini-config.cmake	(revision 5860)
++++ libMini-config.cmake	(date 1577491533490)
+@@ -326,6 +326,13 @@
+             ${MINI_NAME}
+             ${OPENGL_LIBRARIES}
+             ${GLUT_LIBRARY}
++            ${THREAD_LIBRARY}
++            ${CURL_LIBRARY}
++            ${JPEG_LIBRARY}
++            ${PNG_LIBRARY}
++            ${ZLIB_LIBRARY}
++            ${SQUISH_LIBRARY}
++            ${GLUT_LIBRARY}
+             )
+       ENDIF (BUILD_MINI_WITH_GLUT)
+    ENDIF (NOT BUILD_MINI_STUB)
+Index: mini_core.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mini_core.h	(revision 5860)
++++ mini_core.h	(date 1577493632773)
+@@ -3,14 +3,14 @@
+ #ifndef MINI_CORE_H
+ #define MINI_CORE_H
+ 
+-#include <mini/mini.h>
+-#include <mini/minibase.h>
+-#include <mini/miniOGL.h>
+-#include <mini/ministub.h>
++#include "mini.h"
++#include "minibase.h"
++#include "miniOGL.h"
++#include "ministub.h"
+ 
+-#include <mini/glslmath.h>
++#include "glslmath.h"
+ 
+-#include <mini/mini3D.h>
+-#include <mini/miniclod.h>
++#include "mini3D.h"
++#include "miniclod.h"
+ 
+ #endif
+Index: mini_extra.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mini_extra.h	(revision 5860)
++++ mini_extra.h	(date 1577493531437)
+@@ -3,8 +3,8 @@
+ #ifndef MINI_EXTRA_H
+ #define MINI_EXTRA_H
+ 
+-#include <mini/minipoint.h>
+-#include <mini/minitree.h>
+-#include <mini/minipano.h>
++#include "minipoint.h"
++#include "minitree.h"
++#include "minipano.h"
+ 
+ #endif
+Index: mini_format.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mini_format.h	(revision 5860)
++++ mini_format.h	(date 1577493531421)
+@@ -3,14 +3,14 @@
+ #ifndef MINI_FORMAT_H
+ #define MINI_FORMAT_H
+ 
+-#include <mini/pnmbase.h>
+-#include <mini/pnmsample.h>
+-#include <mini/database.h>
+-#include <mini/datafill.h>
+-#include <mini/datacloud.h>
+-#include <mini/datacache.h>
+-#include <mini/datacalc.h>
+-#include <mini/dataparse.h>
+-#include <mini/datagrid.h>
++#include "pnmbase.h"
++#include "pnmsample.h"
++#include "database.h"
++#include "datafill.h"
++#include "datacloud.h"
++#include "datacache.h"
++#include "datacalc.h"
++#include "dataparse.h"
++#include "datagrid.h"
+ 
+ #endif
+Index: mini_generic.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mini_generic.h	(revision 5860)
++++ mini_generic.h	(date 1577493531404)
+@@ -3,13 +3,13 @@
+ #ifndef MINI_GENERIC_H
+ #define MINI_GENERIC_H
+ 
+-#include <mini/minidyna.h>
+-#include <mini/minisort.h>
+-#include <mini/minikeyval.h>
+-#include <mini/minikdtree.h>
+-#include <mini/ministring.h>
+-#include <mini/minixml.h>
+-#include <mini/minilog.h>
+-#include <mini/miniref.h>
++#include "minidyna.h"
++#include "minisort.h"
++#include "minikeyval.h"
++#include "minikdtree.h"
++#include "ministring.h"
++#include "minixml.h"
++#include "minilog.h"
++#include "miniref.h"
+ 
+ #endif
+Index: mini_gfx.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mini_gfx.h	(revision 5860)
++++ mini_gfx.h	(date 1577493531471)
+@@ -3,9 +3,9 @@
+ #ifndef MINI_GFX_H
+ #define MINI_GFX_H
+ 
+-#include <mini/ministrip.h>
+-#include <mini/minitext.h>
+-#include <mini/miniglobe.h>
+-#include <mini/minisky.h>
++#include "ministrip.h"
++#include "minitext.h"
++#include "miniglobe.h"
++#include "minisky.h"
+ 
+ #endif
+Index: mini_luna.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mini_luna.h	(revision 5860)
++++ mini_luna.h	(date 1577493531444)
+@@ -3,10 +3,10 @@
+ #ifndef MINI_LUNA_H
+ #define MINI_LUNA_H
+ 
+-#include <mini/lunascan.h>
+-#include <mini/lunaparse.h>
+-#include <mini/lunacode.h>
++#include "lunascan.h"
++#include "lunaparse.h"
++#include "lunacode.h"
+ 
+-#include <mini/lunafunctor.h>
++#include "lunafunctor.h"
+ 
+ #endif
+Index: mini_math.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mini_math.h	(revision 5860)
++++ mini_math.h	(date 1577493632780)
+@@ -3,24 +3,24 @@
+ #ifndef MINI_MATH_H
+ #define MINI_MATH_H
+ 
+-#include <mini/minimath.h>
+-#include <mini/minicomplex.h>
+-#include <mini/minicrypt.h>
+-#include <mini/miniwls.h>
+-#include <mini/miniv3f.h>
+-#include <mini/miniv3d.h>
+-#include <mini/miniv4f.h>
+-#include <mini/miniv4d.h>
+-#include <mini/minicrs.h>
+-#include <mini/minicoord.h>
+-#include <mini/minimeas.h>
+-#include <mini/minicurve.h>
+-#include <mini/minipath.h>
+-#include <mini/minivec.h>
+-#include <mini/minimtx.h>
+-#include <mini/minimpfp.h>
++#include "minimath.h"
++#include "minicomplex.h"
++#include "minicrypt.h"
++#include "miniwls.h"
++#include "miniv3f.h"
++#include "miniv3d.h"
++#include "miniv4f.h"
++#include "miniv4d.h"
++#include "minicrs.h"
++#include "minicoord.h"
++#include "minimeas.h"
++#include "minicurve.h"
++#include "minipath.h"
++#include "minivec.h"
++#include "minimtx.h"
++#include "minimpfp.h"
+ 
+-#include <mini/glslmath.h>
+-#include <mini/geoid.h>
++#include "glslmath.h"
++#include "geoid.h"
+ 
+ #endif
+Index: mini_object.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mini_object.h	(revision 5860)
++++ mini_object.h	(date 1577493531394)
+@@ -3,13 +3,13 @@
+ #ifndef MINI_OBJECT_H
+ #define MINI_OBJECT_H
+ 
+-#include <mini/minilayer.h>
+-#include <mini/miniterrain.h>
+-#include <mini/miniearth.h>
++#include "minilayer.h"
++#include "miniterrain.h"
++#include "miniearth.h"
+ 
+-#include <mini/minicam.h>
+-#include <mini/mininode.h>
+-#include <mini/mininodes.h>
++#include "minicam.h"
++#include "mininode.h"
++#include "mininodes.h"
+ #include <mini/mininode_geom.h>
+ #include <mini/mininode_teapot.h>
+ #include <mini/mininode_path.h>
+Index: mini_sfx.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mini_sfx.h	(revision 5860)
++++ mini_sfx.h	(date 1577493531407)
+@@ -3,18 +3,18 @@
+ #ifndef MINI_SFX_H
+ #define MINI_SFX_H
+ 
+-#include <mini/miniscene.h>
+-#include <mini/miniview.h>
++#include "miniscene.h"
++#include "miniview.h"
+ 
+-#include <mini/threadbase.h>
+-#include <mini/curlbase.h>
+-#include <mini/jpegbase.h>
+-#include <mini/pngbase.h>
+-#include <mini/zlibbase.h>
+-#include <mini/squishbase.h>
+-#include <mini/greycbase.h>
++#include "threadbase.h"
++#include "curlbase.h"
++#include "jpegbase.h"
++#include "pngbase.h"
++#include "zlibbase.h"
++#include "squishbase.h"
++#include "greycbase.h"
+ 
+-#include <mini/dataconv.h>
+-#include <mini/miniimg.h>
++#include "dataconv.h"
++#include "miniimg.h"
+ 
+ #endif
+Index: mini_tileset.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mini_tileset.h	(revision 5860)
++++ mini_tileset.h	(date 1577493531431)
+@@ -3,12 +3,12 @@
+ #ifndef MINI_TILESET_H
+ #define MINI_TILESET_H
+ 
+-#include <mini/minitile.h>
+-#include <mini/miniload.h>
++#include "minitile.h"
++#include "miniload.h"
+ 
+-#include <mini/minicache.h>
+-#include <mini/minishader.h>
+-#include <mini/miniray.h>
+-#include <mini/miniwarp.h>
++#include "minicache.h"
++#include "minishader.h"
++#include "miniray.h"
++#include "miniwarp.h"
+ 
+ #endif
+Index: mini_util.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mini_util.h	(revision 5860)
++++ mini_util.h	(date 1577493531457)
+@@ -3,11 +3,11 @@
+ #ifndef MINI_UTIL_H
+ #define MINI_UTIL_H
+ 
+-#include <mini/minitime.h>
+-#include <mini/miniio.h>
+-#include <mini/minidds.h>
+-#include <mini/minidir.h>
+-#include <mini/minirgb.h>
+-#include <mini/mininoise.h>
++#include "minitime.h"
++#include "miniio.h"
++#include "minidds.h"
++#include "minidir.h"
++#include "minirgb.h"
++#include "mininoise.h"
+ 
+ #endif
+Index: mini_volume.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mini_volume.h	(revision 5860)
++++ mini_volume.h	(date 1577493531451)
+@@ -3,13 +3,13 @@
+ #ifndef MINI_VOLUME_H
+ #define MINI_VOLUME_H
+ 
+-#include <mini/minibrick.h>
+-#include <mini/minilod.h>
+-#include <mini/minislicer.h>
++#include "minibrick.h"
++#include "minilod.h"
++#include "minislicer.h"
+ 
+-#include <mini/minigeom.h>
+-#include <mini/minimesh.h>
+-#include <mini/minibspt.h>
+-#include <mini/miniproj.h>
++#include "minigeom.h"
++#include "minimesh.h"
++#include "minibspt.h"
++#include "miniproj.h"
+ 
+ #endif
+Index: miniimg.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- miniimg.cpp	(revision 5860)
++++ miniimg.cpp	(date 1577493531477)
+@@ -1,18 +1,18 @@
+ // (c) by Stefan Roettger, licensed under LGPL 2.1
+ 
+-#include <mini/minibase.h>
++#include "minibase.h"
+ 
+-#include <mini/miniio.h>
++#include "miniio.h"
+ 
+-#include <mini/database.h>
+-#include <mini/datacalc.h>
++#include "database.h"
++#include "datacalc.h"
+ 
+-#include <mini/squishbase.h>
++#include "squishbase.h"
+ 
+-#include <mini/jpegbase.h>
+-#include <mini/pngbase.h>
++#include "jpegbase.h"
++#include "pngbase.h"
+ 
+-#include <mini/dataconv.h>
++#include "dataconv.h"
+ 
+ #include "miniimg.h"
+ 
+Index: miniimg.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- miniimg.h	(revision 5860)
++++ miniimg.h	(date 1577493531437)
+@@ -3,8 +3,8 @@
+ #ifndef MINIIMG_H
+ #define MINIIMG_H
+ 
+-#include <mini/database.h>
+-#include <mini/datacalc.h>
++#include "database.h"
++#include "datacalc.h"
+ 
+ class miniimg
+    {
+Index: miniscene.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- miniscene.cpp	(revision 5860)
++++ miniscene.cpp	(date 1577493531411)
+@@ -1,12 +1,12 @@
+ // (c) by Stefan Roettger, licensed under LGPL 2.1
+ 
+-#include <mini/minitime.h>
++#include "minitime.h"
+ 
+-#include <mini/database.h>
++#include "database.h"
+ 
+-#include <mini/squishbase.h>
++#include "squishbase.h"
+ 
+-#include <mini/miniOGL.h>
++#include "miniOGL.h"
+ 
+ #include "miniscene.h"
+ 
+Index: miniscene.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- miniscene.h	(revision 5860)
++++ miniscene.h	(date 1577493632783)
+@@ -3,20 +3,20 @@
+ #ifndef MINISCENE_H
+ #define MINISCENE_H
+ 
+-#include <mini/minibase.h>
++#include "minibase.h"
+ 
+-#include <mini/dataconv.h>
++#include "dataconv.h"
+ 
+-#include <mini/miniv3d.h>
+-#include <mini/miniv4d.h>
++#include "miniv3d.h"
++#include "miniv4d.h"
+ 
+-#include <mini/minidyna.h>
++#include "minidyna.h"
+ 
+-#include <mini/miniearth.h>
+-#include <mini/miniterrain.h>
++#include "miniearth.h"
++#include "miniterrain.h"
+ 
+-#include <mini/threadbase.h>
+-#include <mini/curlbase.h>
++#include "threadbase.h"
++#include "curlbase.h"
+ 
+ //! base class for viewing tilesets
+ class miniscene
+Index: pngbase.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- pngbase.cpp	(revision 5860)
++++ pngbase.cpp	(date 1577493062489)
+@@ -16,7 +16,7 @@
+ #define png_set_gray_1_2_4_to_8 png_set_expand_gray_1_2_4_to_8
+ #endif
+ 
+-#include <mini/minibase.h>
++#include "minibase.h"
+ 
+ #include "pngbase.h"
+ 
+Index: squishbase.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- squishbase.cpp	(revision 5860)
++++ squishbase.cpp	(date 1577493062472)
+@@ -4,7 +4,7 @@
+ #include <squish.h> // HINT: do not install the header in /usr/include on MacOS X with gcc 3.x
+ #endif
+ 
+-#include <mini/minibase.h>
++#include "minibase.h"
+ 
+ #include "squishbase.h"
+ 
+Index: threadbase.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- threadbase.h	(revision 5860)
++++ threadbase.h	(date 1577493531417)
+@@ -10,9 +10,9 @@
+ #   include <OpenThreads/Mutex>
+ #endif
+ 
+-#include <mini/minibase.h>
++#include "minibase.h"
+ 
+-#include <mini/datacloud.h>
++#include "datacloud.h"
+ 
+ #ifdef USEOPENTH
+ 
+Index: viewer.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- viewer.cpp	(revision 5860)
++++ viewer.cpp	(date 1577493632770)
+@@ -16,26 +16,26 @@
+ 
+ // main section:
+ 
+-#include <mini/minibase.h>
++#include "minibase.h"
+ 
+-#include <mini/miniv3f.h>
+-#include <mini/miniv3d.h>
++#include "miniv3f.h"
++#include "miniv3d.h"
+ 
+-#include <mini/miniOGL.h>
++#include "miniOGL.h"
+ 
+-#include <mini/minilayer.h>
+-#include <mini/miniterrain.h>
+-#include <mini/minishader.h>
++#include "minilayer.h"
++#include "miniterrain.h"
++#include "minishader.h"
+ 
+-#include <mini/minitile.h>
+-#include <mini/minitext.h>
++#include "minitile.h"
++#include "minitext.h"
+ 
+-#include <mini/pnmbase.h>
++#include "pnmbase.h"
+ 
+-#include <mini/miniview.h>
+-#include <mini/minicam.h>
++#include "miniview.h"
++#include "minicam.h"
+ 
+-#include <mini/minipano.h>
++#include "minipano.h"
+ 
+ #ifndef __APPLE__
+ #include <GL/glut.h>
+Index: zlibbase.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- zlibbase.cpp	(revision 5860)
++++ zlibbase.cpp	(date 1577493062449)
+@@ -7,7 +7,7 @@
+    #include <zlib.h>
+    }
+ 
+-#include <mini/minibase.h>
++#include "minibase.h"
+ 
+ #include "zlibbase.h"
+ 

@@ -1,0 +1,60 @@
+# Maintainer: Samuel Mesa <samuelmesa@linuxmail.org>
+
+pkgname='libmini-svn'
+_pkgname=libmini
+pkgver=5860
+pkgrel=1
+pkgdesc="Real-Time Terrain Rendering. Display high-resolution geospatial terrain data at real-time."
+arch=('i686' 'x86_64')
+url='https://code.google.com/p/libmini/'
+license=('GPL')
+provides=("libmini")
+
+depends=('libsquish-svn' 'openscenegraph' 'glu')
+makedepends=('cmake' 'subversion' 'tcsh')
+optdepends=()
+options=()
+source=("${pkgname}::svn+http://svn.code.sf.net/p/libmini/code/libmini/mini" 
+    "fix-libMini-cmake.patch")
+md5sums=('SKIP'
+    'SKIP')
+
+pkgver() {
+  svnversion "${SRCDEST}/${pkgname}" | tr -d [A-z]
+}
+
+build() {
+  cd "${pkgname}"  
+  patch -Np0 -i "${srcdir}"/fix-libMini-cmake.patch
+
+  #Build
+  if [[ -d "build" ]]; then
+    (rm -rf build)
+  fi
+
+  mkdir build
+  cd build
+
+  cmake ../ -DCMAKE_INSTALL_PREFIX=/usr \
+  -DCMAKE_EXE_LINKER_FLAGS="" \
+  -DCMAKE_MODULE_LINKER_FLAGS="" \
+  -DCMAKE_SHARED_LINKER_FLAGS="" \
+  -DCMAKE_INSTALL_LIBDIR=lib \
+  -DBUILD_SHARED_LIBS=ON \
+  -DMINI_LIBRARY= \
+  -DBUILD_MINI_SFX=ON \
+  -DBUILD_MINI_EXAMPLE=ON \
+  -DBUILD_MINI_TOOLS=ON \
+  -DBUILD_MINI_VIEWER=ON \
+  -DBUILD_MINI_WITH_OPENTHREADS=ON \
+  -DOpenGL_GL_PREFERENCE=GLVND \
+  -DBUILD_MINI_WITH_GLUT=ON \
+  -DBUILD_MINI_WITH_GREYC=ON
+  make -j10
+}
+
+package() {
+  cd ${pkgname}/build
+
+  make DESTDIR=${pkgdir} install || return 1  
+}
