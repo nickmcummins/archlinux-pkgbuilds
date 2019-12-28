@@ -1,0 +1,51 @@
+# Maintainer: Samuel Mesa <samuelmesa@linuxmail.org>
+# Contributor: F0ruD<fzerorubigd{AT}gmail{DOT}com>
+
+pkgname=libsquish-svn
+pkgver=110
+pkgrel=1
+pkgdesc="DXT compression library - svn build"
+arch=('i686' 'x86_64')
+url="http://libsquish.sourceforge.net"
+makedepends=('subversion' 'cmake')
+license=('MIT')
+provides=('libsquish')
+conflicts=('libsquish')
+
+source=("${pkgname}::svn+http://svn.code.sf.net/p/libsquish/code/trunk")
+md5sums=('SKIP')
+
+pkgver() {
+  svnversion "${SRCDEST}/${pkgname}" | tr -d [A-z]
+}
+
+build() {
+  cd "${pkgname}"  
+
+  #Build
+  if [[ -d "build" ]]; then
+    (rm -rf build)
+  fi
+
+  mkdir build
+  cd build
+
+  cmake ../ -DCMAKE_INSTALL_PREFIX=/usr \
+  -DCMAKE_INSTALL_LIBDIR=lib \
+  -DBUILD_SHARED_LIBS=ON \
+  -DBUILD_SQUISH_EXTRA=ON \
+  -DBUILD_SQUISH_WITH_OPENMP=ON \
+  -DBUILD_SQUISH_WITH_SSE2=ON
+  make -j8
+}
+
+package() {
+  cd ${pkgname}/build
+
+  #make DESTDIR=${pkgdir} install || return 1  
+  
+  cmake -D CMAKE_INSTALL_PREFIX="$pkgdir/usr" -P cmake_install.cmake
+
+  install -Dm 644 ../CMakeModules/FindlibSquish.cmake "$pkgdir/usr/share/cmake/Modules/FindlibSquish.cmake"
+  install -Dm 644 ../LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
