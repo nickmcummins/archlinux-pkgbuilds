@@ -56,5 +56,8 @@ build() {
 package() {
   cd ${pkgname}/build
 
-  make DESTDIR=${pkgdir} install || return 1  
+  cmake -D CMAKE_INSTALL_PREFIX="$pkgdir/usr" -P cmake_install.cmake
+  
+  install -Dm 644 ../CMakeModules/FindMINI.cmake "$pkgdir/usr/share/cmake/Modules/FindMINI.cmake"
+  install -Dm 644 ../LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
