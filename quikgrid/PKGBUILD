@@ -1,0 +1,33 @@
+# Maintainer: Nick Cummins <nickmcummins@linuxmail.org>
+
+pkgname=quikgrid
+pkgver=2.4
+pkgrel=1
+pkgdesc="QUIKGRID is a program which will read in a set of scattered data points (x, y, z) which represents a surface. The program will generate a grid from this data and then display the surface as a contour map, or as a 3d representation."
+arch=('i686' 'x86_64')
+url='https://www.galiander.ca/quikgrid/index.html'
+license=('GNU-GPL')
+provides=('quikgrid')
+depends=()
+makedepends=('cmake')
+optdepends=()
+options=()
+source=("https://storage.googleapis.com/google-code-archive-source/v2/code.google.com/quikgrid/source-archive.zip")
+md5sums=('SKIP')
+
+build() {
+  cd "${srcdir}"/quikgrid/trunk/core
+
+  mkdir -p build && cd build
+
+  cmake ../ \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_SHARED_LIBS=ON
+  make 
+}
+
+package() {
+  cd "${srcdir}"/quikgrid/trunk/core/build
+
+  make DESTDIR=${pkgdir} install || return 1  
+}
