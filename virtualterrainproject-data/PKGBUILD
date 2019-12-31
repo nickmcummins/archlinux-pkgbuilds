@@ -1,0 +1,22 @@
+# Maintainer: Nick Cummins <nickmcummins@linuxmail.org>
+
+pkgname='virtualterrainproject-data'
+vtpdir='VirtualTerrainProject'
+pkgver=130201
+pkgrel=1
+pkgdesc="Optional Data for the VirtualTerrainProject software suite."
+arch=('any')
+url='http://vterrain.org/'
+license=('MIT')
+provides=('virtualterrainproject-data')
+depends=('virtualterrainproject')
+optdepends=()
+options=()
+source=("http://vterrain.org/dist/vtp-apps-data-130201.zip")
+md5sums=('SKIP')
+
+package() {
+  cd "${srcdir}"
+  mkdir -p "${pkgdir}/opt/${vtpdir}"
+  cp -a Data "${pkgdir}/opt/${vtpdir}"
+}

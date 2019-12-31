@@ -1,0 +1,60 @@
+# Maintainer: Nick Cummins <nickmcummins@linuxmail.org>
+
+pkgname='virtualterrainproject-hg'
+_pkgname='VirtualTerrainProject'
+pkgver=1.5r130211
+pkgrel=1
+pkgdesc="The VTP has a suite of cross-platform applications and libraries for geospatial processing and 3D visualization of terrain."
+arch=('i686' 'x86_64')
+url='http://vterrain.org/'
+license=('MIT')
+provides=('virtualterrainproject')
+depends=('libmini' 'libgrid-svn' 'openscenegraph' 'glu')
+makedepends=('gdal' 'openscenegraph' 'libmini' 'cmake' 'mercurial')
+optdepends=('virtualterrainproject-data')
+options=()
+source=("$pkgname::hg+https://bitbucket.org/bdiscoe/vtp"
+    "vtp-src-fixes.patch")
+md5sums=('SKIP'
+    'SKIP')
+
+build() {
+  cd "${pkgname}"  
+  patch -Np0 -i "${srcdir}"/vtp-src-fixes.patch
+  #cp "${srcdir}"/FindMiniZip.cmake "${srcdir}/${pkgname}/CMakeModules"
+  # cp "${srcdir}"/FindQuaZip5.cmake "${srcdir}/${pkgname}/CMakeModules"
+
+  #Build
+  #if [[ -d "${srcdir}/build" ]]; then
+  #  (rm -rf ${srcdir}/build)
+  #fi
+
+
+  mkdir -p build
+  cd build
+
+  cmake ../ \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_SHARED_LIBS=ON \
+    -DOpenGL_GL_PREFERENCE=LEGACY \
+    -DMINI_INCLUDE_DIR=/usr/include \
+    -DMINI_LIBRARY=/usr/lib/libMini.so \
+    -DVTP_USE_CPACK=OFF \
+    -DQUIKGRID_INCLUDE_DIR=/usr/include \
+    -DQUIKGRID_LIBRARY=/usr/lib/libquikgrid.so
+  make -j1
+}
+
+package() {
+  cd ${pkgname}/build
+
+  make DESTDIR=${pkgdir} install || return 1  
+  install -D -m644 "${srcdir}/${pkgname}/license.txt" "${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE"
+  
+  mkdir -p "${pkgdir}/opt/${_pkgname}"
+  mkdir -p "${pkgdir}/opt/${_pkgname}/Apps"
+  cd "${srcdir}"/"${pkgname}"
+  cp -a Docs "${pkgdir}/opt/${_pkgname}"
+  cp -a Installers/*.xml "${pkgdir}/opt/${_pkgname}/Apps"
+}
