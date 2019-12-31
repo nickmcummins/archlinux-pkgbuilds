@@ -1,1 +1,4 @@
 .idea/
+*/pkg/
+*/src/
+*/*.pkg.tar.xz
