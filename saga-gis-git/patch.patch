@@ -1,0 +1,72 @@
+diff --git a/saga-gis/src/saga_core/saga_gui/CMakeLists.txt b/saga-gis/src/saga_core/saga_gui/CMakeLists.txt
+index 9f581126e..baffcdd88 100644
+--- src/saga_core/saga_gui/CMakeLists.txt
++++ src/saga_core/saga_gui/CMakeLists.txt
+@@ -6,6 +6,7 @@ set(SAGA_GUI_SOURCES
+ 	active.cpp
+ 	active_attributes.cpp
+ 	active_attributes_control.cpp
++	active_info.cpp
+ 	active_description.cpp
+ 	active_history.cpp
+ 	active_legend.cpp
+@@ -102,6 +103,7 @@ set(SAGA_GUI_SOURCES
+ 	active.h
+ 	active_attributes.h
+ 	active_attributes_control.h
++	active_info.h
+ 	active_description.h
+ 	active_history.h
+ 	active_legend.h
+diff --git a/saga-gis/src/saga_core/saga_gui/saga.cpp b/saga-gis/src/saga_core/saga_gui/saga.cpp
+index 5e937b6cd..d34cc167b 100644
+--- src/saga_core/saga_gui/saga.cpp
++++ src/saga_core/saga_gui/saga.cpp
+@@ -133,7 +133,7 @@ bool CSAGA::OnInit(void)
+ 	 * floating point values. wxXLocale is currently not fully
+ 	 * implemented (wxPrintf_l and similar still missing). */
+ 	//setlocale(LC_NUMERIC, "C");
+-	m_wxLocale.Init(wxLANGUAGE_ENGLISH);
++	m_wxLocale.Init(wxLANGUAGE_ENGLISH_US);
+ 
+ 	_Init_Config();
+ 
+diff --git a/saga-gis/src/tools/grid/grid_gridding/nn/delaunay.c b/saga-gis/src/tools/grid/grid_gridding/nn/delaunay.c
+index d47be0bb2..7a1d9fa67 100644
+--- src/tools/grid/grid_gridding/nn/delaunay.c
++++ src/tools/grid/grid_gridding/nn/delaunay.c
+@@ -323,7 +323,7 @@ delaunay* delaunay_build(int np, point points[], int ns, int segments[], int nh,
+ //---------------------------------------------------------
+ #else /* USE_QHULL */
+ 
+-#include <qhull/qhull_a.h>
++#include <libqhull/qhull_a.h>
+ 
+ /* returns 1 if a,b,c are clockwise ordered */
+ static int cw(delaunay *d, triangle *t)
+diff --git a/saga-gis/src/tools/projection/pj_proj4/crs_base.cpp b/saga-gis/src/tools/projection/pj_proj4/crs_base.cpp
+index 4506f86b1..2849ed8d1 100644
+--- src/tools/projection/pj_proj4/crs_base.cpp
++++ src/tools/projection/pj_proj4/crs_base.cpp
+@@ -58,7 +58,7 @@
+ //---------------------------------------------------------
+ #ifndef PROJ6
+ 	extern "C" {
+-		#include <projects.h>
++		#include <vtk-8.90/vtklibproj/src/projects.h>
+ 	}
+ 
+ 	#define PJ_GET_PROJS	pj_get_list_ref()
+diff --git a/saga-gis/src/tools/projection/pj_proj4/crs_transform.cpp b/saga-gis/src/tools/projection/pj_proj4/crs_transform.cpp
+index 08bd8cb14..35129a8cb 100644
+--- src/tools/projection/pj_proj4/crs_transform.cpp
++++ src/tools/projection/pj_proj4/crs_transform.cpp
+@@ -58,7 +58,7 @@
+ //---------------------------------------------------------
+ #ifndef PROJ6
+ extern "C" {
+-	#include <projects.h>
++	#include <vtk-8.90/vtklibproj/src/projects.h>
+ }
+ 
+ #define PROJ4_FREE(p)	if( p )	{	pj_free((PJ *)p);	p	= NULL;	}
