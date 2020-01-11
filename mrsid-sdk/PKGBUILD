@@ -1,0 +1,47 @@
+pkgname=mrsid-sdk
+_pkgname=MrSID_DSDK
+pkgver=9.5.4.4709
+pkgrel=1
+pkgdesc="FLANN is a library for performing fast approximate nearest neighbor searches in high dimensional spaces"
+arch=('i686' 'x86_64')
+url='https://www.extensis.com/support/developers'
+license=('BSD')
+depends=('lz4' 'hdf5')
+makedepends=('cmake' 'python' 'texlive-core')
+optdepends=('python: python bindings'
+            'cuda: cuda support')
+source=("https://bin.extensis.com/download/developer/MrSID_DSDK-${pkgver}-rhel6.x86-64.gcc531.tar.gz")
+md5sums=('SKIP')
+
+prepare() {
+  cd "$srcdir/MrSID_DSDK-${pkgver}-rhel6.x86-64.gcc531"
+}
+
+build() {
+  cd "$srcdir/MrSID_DSDK-${pkgver}-rhel6.x86-64.gcc531"
+
+}
+
+package() {
+  cd "$srcdir/MrSID_DSDK-${pkgver}-rhel6.x86-64.gcc531/Lidar_DSDK"
+  
+  install -d -m755 ${pkgdir}/usr/bin
+  install -d -m755 ${pkgdir}/usr/lib
+  install -d ${pkgdir}/usr/include/lidar
+  
+  install -t ${pkgdir}/usr/bin bin/lidar*
+  install -t ${pkgdir}/usr/lib lib/liblti_lidar_dsdk.so*
+  install -t ${pkgdir}/usr/include/lidar include/lidar/*
+
+  #install license file
+  install -D -m644 LICENSE.pdf "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  
+  mkdir -p ${pkgdir}/opt/${_pkgname}/Lidar_DSDK
+  mkdir -p ${pkgdir}/opt/${_pkgname}/Lidar_DSDK/lib
+  cp -a bin/lib* ${pkgdir}/opt/${_pkgname}/Lidar_DSDK/lib
+  cp -a contributions ${pkgdir}/opt/${_pkgname}/Lidar_DSDK
+  cp -a doc ${pkgdir}/opt/${_pkgname}/Lidar_DSDK
+  cp -a examples ${pkgdir}/opt/${_pkgname}/Lidar_DSDK
+ 
+}
+

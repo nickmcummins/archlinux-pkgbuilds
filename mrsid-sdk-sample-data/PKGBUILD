@@ -1,0 +1,27 @@
+pkgname=mrsid-sdk-sample-data
+_pkgname=MrSID_DSDK
+PKGEXT='.pkg.tar.lzo'
+pkgver=1
+pkgrel=1
+pkgdesc="FLANN is a library for performing fast approximate nearest neighbor searches in high dimensional spaces"
+arch=('any')
+url='https://www.extensis.com/support/developers'
+license=('BSD')
+depends=('mrsid-sdk')
+source=("http://bin.us.extensis.com/lidar/LT_LiDAR_Sample_Data.zip")
+md5sums=('SKIP')
+
+build() {
+  cd "$srcdir"
+
+}
+
+package() {
+  cd "$srcdir"
+  mkdir -p ${pkgdir}/opt/${_pkgname}/Lidar_DSDK
+  mkdir -p ${pkgdir}/opt/${_pkgname}/Lidar_DSDK/Sample_Data
+  
+  cd $srcdir
+  cp -a *.sid *.las *.xyz ${pkgdir}/opt/${_pkgname}/Lidar_DSDK/Sample_Data
+}
+
