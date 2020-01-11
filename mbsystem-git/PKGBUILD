@@ -1,0 +1,34 @@
+_name=MB-System
+pkgname=mbsystem-git
+pkgver=5.7.6beta21.r97.g0a60c3eee
+pkgrel=1
+pkgdesc="A software package for the processing and display of bathymetry and backscatter imagery data derived from multibeam, interferometry, and sidescan sonars."
+arch=('x86_64')
+url="https://www.mbari.org/products/research-software/mb-system/"
+license=('BSD')
+depends=('gdal' 'gmt' 'libtirpc-compat' 'openmotif')
+makedepends=('cmake')
+optdepends=('pcl-git: For PCL support')
+provides=('mbsystem')
+source=("git+https://github.com/dwcaress/MB-System" "linker-patches.patch")
+sha512sums=('SKIP' 'SKIP')
+
+pkgver() {
+    cd ${srcdir}/${_name}
+    git describe --long --tags | sed -r 's/^v//;s/([^-]*-g)/r\1/;s/-/./g'
+}
+
+build() {
+    cd ${srcdir}/${_name}
+    export CPATH=/usr/include/pcl-1.9:/usr/include/eigen3
+    patch -p0 -i $srcdir/linker-patches.patch
+    ./configure --prefix=/usr --enable-pcltools 
+    make -j10
+}
+
+package() {
+    cd ${srcdir}/${_name}
+
+    make DESTDIR="$pkgdir" install
+
+}

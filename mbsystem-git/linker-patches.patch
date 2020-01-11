@@ -1,0 +1,152 @@
+diff --git a/autom4te.cache/output.4 b/autom4te.cache/output.4
+index ebaa72ba..b98e4d1e 100644
+--- autom4te.cache/output.4
++++ autom4te.cache/output.4
+@@ -19100,7 +19100,7 @@ $as_echo "$GDAL_LIB" >&6; }
+     GDAL_LIB_PATH=`echo $GDAL_LIB | sed 's/^-L//;s/\ .*//'`
+ 
+     libgdal_CPPFLAGS="$GDAL_INC"
+-    libgdal_LIBS="-L$GDAL_LIB_PATH -R $GDAL_LIB_PATH -lgdal"
++    libgdal_LIBS="-L$GDAL_LIB_PATH -R $GDAL_LIB_PATH -lgdal -lpcl_common -lpcl_search -lpcl_filters -lpcl_io -lpcl_features -lpcl_sample_consensus -lpcl_kdtree -lpcl_octree -lpcl_segmentation -lpcl_registration"
+     libgdal_LDFLAGS="-L$GDAL_LIB_PATH"
+ else
+     $as_echo "Did not find gdal-config program, use --with-gdal-config to set the location"
+@@ -19931,7 +19931,7 @@ fi
+         if test "$OPENGL_SETTING" = "no"; then
+             as_fn_error $? "Did not find libGLU libGL according to --with-opengl-lib - check the installation!" "$LINENO" 5
+         fi
+-        libopengl_LIBS="-L$opengl_libdir -R $opengl_libdir -lGL -lGLU"
++        libopengl_LIBS="-L$opengl_libdir -R $opengl_libdir -lGL -lGLU -lpthread"
+         libopengl_LDFLAGS="-L$opengl_libdir"
+     else
+                 $as_echo "Look for pkg-config OpenGL package..."
+@@ -20006,7 +20006,7 @@ else
+ $as_echo "yes" >&6; }
+ 	GOT_OPENGL=yes
+ fi
+-        libopengl_LIBS="-lGL -lGLU"
++        libopengl_LIBS="-lGL -lGLU -lpthread"
+         libopengl_LDFLAGS=""
+     fi
+     if test "$GOT_OPENGL" = "no" ; then
+@@ -20088,7 +20088,7 @@ fi
+         if test "$OPENGL_SETTING" = "yes" ; then
+             GOT_OPENGL=yes
+             $as_echo "Using pre-installed libGLU libGL..."
+-            libopengl_LIBS="-lGL -lGLU"
++            libopengl_LIBS="-lGL -lGLU -lpthread"
+             libopengl_LDFLAGS=""
+         else
+             $as_echo "Did not find OpenGL library anywhere, use --with-opengl-lib to set the location"
+@@ -20240,13 +20240,13 @@ else
+ fi
+ 
+ if test "$build_pcltools" = "yes" ; then
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for XSendEvent in -llibpcl_common" >&5
+-$as_echo_n "checking for XSendEvent in -llibpcl_common... " >&6; }
++    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for XSendEvent in -lpcl_common -lpcl_search -lpcl_filters -lpcl_io -lpcl_features -lpcl_sample_consensus -lpcl_kdtree -lpcl_octree -lpcl_segmentation -lpcl_registration" >&5
++$as_echo_n "checking for XSendEvent in -lpcl_common -lpcl_search -lpcl_filters -lpcl_io -lpcl_features -lpcl_sample_consensus -lpcl_kdtree -lpcl_octree -lpcl_segmentation -lpcl_registration... " >&6; }
+ if ${ac_cv_lib_libpcl_common_XSendEvent+:} false; then :
+   $as_echo_n "(cached) " >&6
+ else
+   ac_check_lib_save_LIBS=$LIBS
+-LIBS="-llibpcl_common  $LIBS"
++LIBS="-lpcl_common -lpcl_search -lpcl_filters -lpcl_io -lpcl_features -lpcl_sample_consensus -lpcl_kdtree -lpcl_octree -lpcl_segmentation -lpcl_registration  $LIBS"
+ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+ 
+diff --git a/configure b/configure
+index a6d9dee5..1b76a163 100755
+--- configure
++++ configure
+@@ -19468,7 +19468,7 @@ $as_echo "$GDAL_LIB" >&6; }
+     GDAL_LIB_PATH=`echo $GDAL_LIB | sed 's/^-L//;s/\ .*//'`
+ 
+     libgdal_CPPFLAGS="$GDAL_INC"
+-    libgdal_LIBS="-L$GDAL_LIB_PATH -R $GDAL_LIB_PATH -lgdal"
++    libgdal_LIBS="-L$GDAL_LIB_PATH -R $GDAL_LIB_PATH -lgdal -lpcl_common -lpcl_search -lpcl_filters -lpcl_io -lpcl_features -lpcl_sample_consensus -lpcl_kdtree -lpcl_octree -lpcl_segmentation -lpcl_registration"
+     libgdal_LDFLAGS="-L$GDAL_LIB_PATH"
+ else
+     $as_echo "Did not find gdal-config program, use --with-gdal-config to set the location"
+@@ -20299,7 +20299,7 @@ fi
+         if test "$OPENGL_SETTING" = "no"; then
+             as_fn_error $? "Did not find libGLU libGL according to --with-opengl-lib - check the installation!" "$LINENO" 5
+         fi
+-        libopengl_LIBS="-L$opengl_libdir -R $opengl_libdir -lGL -lGLU"
++        libopengl_LIBS="-L$opengl_libdir -R $opengl_libdir -lGL -lGLU -lpthread"
+         libopengl_LDFLAGS="-L$opengl_libdir"
+     else
+                 $as_echo "Look for pkg-config OpenGL package..."
+@@ -20374,7 +20374,7 @@ else
+ $as_echo "yes" >&6; }
+ 	GOT_OPENGL=yes
+ fi
+-        libopengl_LIBS="-lGL -lGLU"
++        libopengl_LIBS="-lGL -lGLU -lpthread"
+         libopengl_LDFLAGS=""
+     fi
+     if test "$GOT_OPENGL" = "no" ; then
+@@ -20456,7 +20456,7 @@ fi
+         if test "$OPENGL_SETTING" = "yes" ; then
+             GOT_OPENGL=yes
+             $as_echo "Using pre-installed libGLU libGL..."
+-            libopengl_LIBS="-lGL -lGLU"
++            libopengl_LIBS="-lGL -lGLU -lpthread"
+             libopengl_LDFLAGS=""
+         else
+             $as_echo "Did not find OpenGL library anywhere, use --with-opengl-lib to set the location"
+@@ -20660,13 +20660,13 @@ else
+ fi
+ 
+ if test "$build_pcltools" = "yes" ; then
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for XSendEvent in -llibpcl_common" >&5
+-$as_echo_n "checking for XSendEvent in -llibpcl_common... " >&6; }
++    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for XSendEvent in -lpcl_common -lpcl_search -lpcl_filters -lpcl_io -lpcl_features -lpcl_sample_consensus -lpcl_kdtree -lpcl_octree -lpcl_segmentation -lpcl_registration" >&5
++$as_echo_n "checking for XSendEvent in -lpcl_common -lpcl_search -lpcl_filters -lpcl_io -lpcl_features -lpcl_sample_consensus -lpcl_kdtree -lpcl_octree -lpcl_segmentation -lpcl_registration... " >&6; }
+ if ${ac_cv_lib_libpcl_common_XSendEvent+:} false; then :
+   $as_echo_n "(cached) " >&6
+ else
+   ac_check_lib_save_LIBS=$LIBS
+-LIBS="-llibpcl_common  $LIBS"
++LIBS="-lpcl_common -lpcl_search -lpcl_filters -lpcl_io -lpcl_features -lpcl_sample_consensus -lpcl_kdtree -lpcl_octree -lpcl_segmentation -lpcl_registration  $LIBS"
+ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+ 
+diff --git a/configure.ac b/configure.ac
+index 992c859f..899d23af 100644
+--- configure.ac
++++ configure.ac
+@@ -529,7 +529,7 @@ if test -x "$GDAL_CONF" ; then
+     GDAL_LIB_PATH=`echo $GDAL_LIB | sed 's/^-L//;s/\ .*//'`
+ 
+     libgdal_CPPFLAGS="$GDAL_INC"
+-    libgdal_LIBS="-L$GDAL_LIB_PATH -R $GDAL_LIB_PATH -lgdal"
++    libgdal_LIBS="-L$GDAL_LIB_PATH -R $GDAL_LIB_PATH -lgdal -lpcl_common -lpcl_search -lpcl_filters -lpcl_io -lpcl_features -lpcl_sample_consensus -lpcl_kdtree -lpcl_octree -lpcl_segmentation -lpcl_registration"
+     libgdal_LDFLAGS="-L$GDAL_LIB_PATH"
+ else
+     AS_ECHO(["Did not find gdal-config program, use --with-gdal-config to set the location"])
+@@ -808,13 +808,13 @@ if test "$GOT_MOTIF" = "yes" ; then
+         if test "$OPENGL_SETTING" = "no"; then
+             AC_MSG_ERROR([Did not find libGLU libGL according to --with-opengl-lib - check the installation!])
+         fi
+-        libopengl_LIBS="-L$opengl_libdir -R $opengl_libdir -lGL -lGLU"
++        libopengl_LIBS="-L$opengl_libdir -R $opengl_libdir -lGL -lGLU -lpthread"
+         libopengl_LDFLAGS="-L$opengl_libdir"
+     else
+         dnl Look for pkg-config X11 package...
+         AS_ECHO(["Look for pkg-config OpenGL package..."])
+         PKG_CHECK_MODULES([libGLU], [opengl], [GOT_OPENGL=yes], [GOT_OPENGL=no])
+-        libopengl_LIBS="-lGL -lGLU"
++        libopengl_LIBS="-lGL -lGLU -lpthread"
+         libopengl_LDFLAGS=""
+     fi
+     if test "$GOT_OPENGL" = "no" ; then
+@@ -827,7 +827,7 @@ if test "$GOT_MOTIF" = "yes" ; then
+         if test "$OPENGL_SETTING" = "yes" ; then
+             GOT_OPENGL=yes
+             AS_ECHO(["Using pre-installed libGLU libGL..."])
+-            libopengl_LIBS="-lGL -lGLU"
++            libopengl_LIBS="-lGL -lGLU -lpthread"
+             libopengl_LDFLAGS=""
+         else
+             AS_ECHO(["Did not find OpenGL library anywhere, use --with-opengl-lib to set the location"])
