@@ -17,7 +17,7 @@ optdepends=('opencv'
             'vigra'
             'liblas'
             'libharu')
-source=("git+git://git.code.sf.net/p/saga-gis/code" "patch.patch")
+source=("git+git://git.code.sf.net/p/saga-gis/code" "includes-cmakelists-wxLanguage-patches.patch")
 md5sums=('SKIP' 'SKIP')
 
 pkgver() {
@@ -32,7 +32,7 @@ pkgver() {
 build() {
   cd "${srcdir}"/code/${_pkgname}
 
-  patch -Np0 -i "${srcdir}"/patch.patch
+  patch -Np0 -i "${srcdir}"/includes-cmakelists-wxLanguage-patches.patch
 
   #Build
   #if [[ -d "${srcdir}/build" ]]; then
