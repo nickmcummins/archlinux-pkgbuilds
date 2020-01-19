@@ -1,0 +1,44 @@
+# Maintainer: Nick M Cummins <nickmcummins dot linuxmail.org>
+
+pkgname=nitro-git
+pkgver=2.7.r938.763182c
+pkgvern=2.7
+pkgrel=1
+_pkgname="nitro"
+pkgdesc="A full-fledged, extensible library solution for reading and writing National Imagery Transmission Format (NITF) files, a U.S. Department of Defense standard format. It is written in cross-platform C, with bindings available for other languages (C++, Java, Python). NITRO was originally developed by General Dynamics - Advanced Information Systems in 2004 and is continuously being improved."
+arch=('x86_64')
+url="http://nitro-nitf.sourceforge.net/wikka.php?wakka=HomePage"
+license=('GPL3')
+makedepends=('python' 'waf')
+provides=("nitro")
+source=("git+https://github.com/hobu/nitro" "lgpl-3.0.txt" 'patches.patch')
+sha1sums=('SKIP' 'SKIP' 'SKIP')
+
+pkgver() {
+  cd $srcdir/$_pkgname
+  if [[ "$pkgver" == *"r"* ]]; then
+      printf "${pkgvern}.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+  else
+      printf "${pkgver}.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+  fi
+}
+
+build() {
+	cd ${srcdir}/${_pkgname}
+    patch -Np0 -i ${srcdir}/patches.patch
+	mkdir -p build && cd build
+	
+	cmake .. \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_BUILD_TYPE=Release
+	make
+}
+
+
+
+package() {
+	cd ${srcdir}/${_pkgname}/build
+	
+	make DESTDIR="${pkgdir}/" install
+	install -Dm644 "$srcdir/lgpl-3.0.txt" "${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE"
+}

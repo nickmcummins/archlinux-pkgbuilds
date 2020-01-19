@@ -1,0 +1,281 @@
+Index: waf
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- waf	(revision 763182ce333f99d9f85fa1449e9cbe16750f72e0)
++++ waf	(date 1579387993209)
+@@ -2,7 +2,7 @@
+ 
+ import os, sys, subprocess
+ 
+-path_to_waf = os.path.join(os.path.dirname(__file__), 'build', 'waf')
++path_to_waf = os.path.join('/', 'usr', 'bin', 'waf')
+ 
+ cmd = [sys.executable, path_to_waf] + sys.argv[1:]
+ try:
+Index: c/j2k/external/openjpeg/wscript
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- c/j2k/external/openjpeg/wscript	(revision 763182ce333f99d9f85fa1449e9cbe16750f72e0)
++++ c/j2k/external/openjpeg/wscript	(date 1579396856069)
+@@ -2,7 +2,6 @@
+ from os.path import join, exists
+ from waflib import Options
+ from waflib.TaskGen import feature, before, task_gen
+-from build import untarFile
+ 
+ SOURCE         = 'openjpeg-2.0.0'
+ OPENJPEG_DEFINES = ['USE_OPENJPEG', 'HAVE_OPENJPEG_H', 'J2K_MODULE_EXPORTS']
+@@ -10,6 +9,11 @@
+ 
+ options = lambda x : None
+ 
++def untarFile(path, fname):
++    filepath = f'{path}/{fname}'
++    os.popen(f'tar -xf {filepath}').read()
++
++
+ def configure(conf):
+ 
+     j2kLayer = Options.options.j2k_layer
+@@ -17,9 +21,7 @@
+     if j2kLayer == 'openjpeg' :
+ 
+         # add defines
+-        defines = OPENJPEG_DEFINES 
+-        if not Options.options.shared_libs:
+-            defines.append(STATIC_DEFINE)
++        defines = OPENJPEG_DEFINES
+         conf.env.append_value('DEFINES_J2K', defines)
+ 
+         # check functionality
+@@ -36,7 +38,7 @@
+         conf.env['MAKE_OPENJPEG'] = True
+         conf.env['HAVE_J2K']      = True
+         conf.msg('Building local lib', j2kLayer)
+-        untarFile(path=conf.path, fname=SOURCE + '.tar')
++        untarFile(conf.path, SOURCE + '.tar')
+ 
+ def build(bld):
+ 
+Index: c/j2k/shared/wscript
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- c/j2k/shared/wscript	(revision 763182ce333f99d9f85fa1449e9cbe16750f72e0)
++++ c/j2k/shared/wscript	(date 1579396856076)
+@@ -14,23 +14,20 @@
+ 
+ def build(bld):
+     variant = bld.env['VARIANT'] or 'default'
+-    env = bld.all_envs[variant]
+-    
+-    if 'HAVE_J2K' in env:
+-        pluginList = []
+-        plugins = bld.path.ant_glob('*.c')
++
++    pluginList = []
++    plugins = bld.path.ant_glob('*.c')
+ 
+-        for p in plugins:
+-            filename = str(p)
++    for p in plugins:
++        filename = str(p)
+ 
+-            kw = globals()
+-            pluginName = splitext(filename)[0]
+-            kw['NAME'] = pluginName
+-            kw['LIBNAME'] = pluginName
+-            kw['SOURCE'] = filename
++        kw = globals()
++        pluginName = splitext(filename)[0]
++        kw['NAME'] = pluginName
++        kw['LIBNAME'] = pluginName
++        kw['SOURCE'] = filename
+ 
+-            bld.plugin(**kw)
+-            pluginList.append(pluginName)
++        pluginList.append(pluginName)
+ 
+-        bld(features='add_targets', target='j2k-plugins',
+-            targets_to_add=pluginList)
+\ No newline at end of file
++    bld(features='add_targets', target='j2k-plugins',
++        targets_to_add=pluginList)
+\ No newline at end of file
+Index: c/jpeg/wscript
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- c/jpeg/wscript	(revision 763182ce333f99d9f85fa1449e9cbe16750f72e0)
++++ c/jpeg/wscript	(date 1579396856059)
+@@ -1,6 +1,5 @@
+ import os, shutil
+ from waflib import Options
+-from build import unzipper
+ 
+ MAINTAINER         = 'adam.sylvester@gd-ais.com'
+ VERSION            = '1.0'
+@@ -18,20 +17,15 @@
+ def options(opt):
+     pass
+ 
++def unzipper(zipfile, extractdir):
++    os.popen(f'unzip {zipfile} {extractdir}').read()
++
+ def configure(conf):
+-    platform = Options.platform
+     defs = []
+-    if platform.startswith('win32'):
+-        defs.append('/DHAVE_PROTOTYPES')
+-        defs.append('/UNEED_BSD_STRINGS')
+-        defs.append('/UNEED_SYS_TYPES_H')
+-        defs.append('/UNEED_FAR_POINTERS')
+-        defs.append('/UNEED_SHORT_EXTERNAL_NAMES')
+-        defs.append('/UINCOMPLETE_TYPES_BROKEN')
+     conf.env.append_value('CFLAGS_LIBJPEG', defs)
+ 
+     bldDir = os.path.join(conf.path.abspath(), 'build')
+-    unzipper(os.path.join(bldDir, fname + '.zip'), bldDir)    
++    unzipper(os.path.join(bldDir, fname + '.zip'), bldDir)
+ 
+ def build(bld):
+     variant = bld.env['VARIANT']
+Index: wscript
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- wscript	(revision 763182ce333f99d9f85fa1449e9cbe16750f72e0)
++++ wscript	(date 1579393021521)
+@@ -8,8 +8,8 @@
+ top     = '.'
+ out     = 'target'
+ 
+-TOOLS = 'build swig javatool pythontool matlabtool'
+-DIRS = 'c c++ drivers java python mex'
++TOOLS = 'build swig javatool python'
++DIRS = 'c c++ drivers python mex'
+ 
+ def options(opt):
+     opt.load(TOOLS + ' msvs dumpenv', tooldir='build')
+Index: c/j2k/wscript
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- c/j2k/wscript	(revision 763182ce333f99d9f85fa1449e9cbe16750f72e0)
++++ c/j2k/wscript	(date 1579393692941)
+@@ -23,7 +23,7 @@
+     env = bld.get_env()
+     if 'HAVE_J2K' in env : 
+         existingDirs = filter(lambda x: exists(join(bld.path.abspath(), x)), APIS)
+-        bld.recurse(existingDirs + ['shared'])
++        bld.recurse(list(existingDirs) + ['shared'])
+ 
+         if 'MAKE_OPENJPEG' in env :
+             j2kLayer = 'openjpeg'
+Index: c/j2k/external/jasper/wscript
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- c/j2k/external/jasper/wscript	(revision 763182ce333f99d9f85fa1449e9cbe16750f72e0)
++++ c/j2k/external/jasper/wscript	(date 1579392777188)
+@@ -2,12 +2,17 @@
+ from os.path import join, exists
+ from waflib import Options
+ from waflib.TaskGen import feature, before, task_gen
+-from build import untarFile
+ 
+ JASPER_DEFINES = ['USE_JASPER', 'HAVE_JASPER_H', 'J2K_MODULE_EXPORTS']
+ 
+ options = lambda x : None
+ 
++
++def untarFile(path, fname):
++    filepath = f'{path}/{fname}'
++    os.popen(f'tar -xf {filepath}').read()
++
++
+ def configure(conf):
+ 
+     j2kLayer = Options.options.j2k_layer
+Index: c/cgm/wscript
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- c/cgm/wscript	(revision 763182ce333f99d9f85fa1449e9cbe16750f72e0)
++++ c/cgm/wscript	(date 1579396856066)
+@@ -9,15 +9,12 @@
+ options = configure = distclean = lambda p: None
+ 
+ def build(bld):
+-    env = bld.module(**globals())
+-
+     #run doxygen
+-    if 'DOXYGEN' in env and Options.is_install:
+-        bld(rule='${DOXYGEN}', cwd=bld.path.abspath(), always=True)
+-        try:
+-            htmlDocs = bld.path.find_dir('doc/html')
+-            for f in htmlDocs.find_iter():
+-                relpath = f.path_from(htmlDocs)
+-                bld.install_files('${PREFIX}/share/doc/nitf-cgm/c/%s' % relpath, f.abspath())
+-        except:{}
++    bld(rule='${DOXYGEN}', cwd=bld.path.abspath(), always=True)
++    try:
++        htmlDocs = bld.path.find_dir('doc/html')
++        for f in htmlDocs.find_iter():
++            relpath = f.path_from(htmlDocs)
++            bld.install_files('${PREFIX}/share/doc/nitf-cgm/c/%s' % relpath, f.abspath())
++    except:{}
+ 
+Index: c++/wscript
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- c++/wscript	(revision 763182ce333f99d9f85fa1449e9cbe16750f72e0)
++++ c++/wscript	(date 1579392910131)
+@@ -1,6 +1,5 @@
+ from os.path import join, exists
+ from waflib import Options, Utils
+-from build import CPPBuildContext
+ 
+ MODULES = 'cli except io logging mem mt nitf str sys xml.lite'
+ 
+Index: c++/mt/include/mt/LinuxCPUAffinityThreadInitializer.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- c++/mt/include/mt/LinuxCPUAffinityThreadInitializer.h	(revision 763182ce333f99d9f85fa1449e9cbe16750f72e0)
++++ c++/mt/include/mt/LinuxCPUAffinityThreadInitializer.h	(date 1579397352999)
+@@ -31,8 +31,6 @@
+ #include <sys/types.h>
+ #include <linux/unistd.h>
+ #include <sys/syscall.h>
+-#define gettid() syscall(SYS_gettid)
+-
+ #include <import/sys.h>
+ #include "mt/CPUAffinityThreadInitializer.h"
+ 
+Index: java/nitf/wscript
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- java/nitf/wscript	(revision 763182ce333f99d9f85fa1449e9cbe16750f72e0)
++++ java/nitf/wscript	(date 1579393021514)
+@@ -1,5 +1,4 @@
+ from waflib import Options
+-from javatool import java_module
+ 
+ NAME            = 'nitf'
+ MAINTAINER      = 'asylvest@users.sourceforge.net'
