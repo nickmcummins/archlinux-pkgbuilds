@@ -1,0 +1,12 @@
+--- core/cpp/target/linux-amd64-gcc-release/sources/CMakeLists.txt	2020-01-19 01:23:27.976056925 -0800
++++ core/cpp/target/linux-amd64-gcc-release/sources/CMakeLists.txt	2020-01-19 01:23:23.402737058 -0800
+@@ -25,10 +25,6 @@
+ SET (jace_VERSION_MINOR 3)
+ ADD_DEFINITIONS (-DJACE_EXPORTS -DBOOST_ALL_NO_LIB)
+
+-IF (CMAKE_COMPILER_IS_GNUCXX)
+-	SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+-ENDIF (CMAKE_COMPILER_IS_GNUCXX)
+-
+ find_package(JNI)
+ find_package(Boost REQUIRED COMPONENTS system thread)
