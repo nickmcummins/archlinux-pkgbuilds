@@ -1,0 +1,67 @@
+# Maintainer: Nick M Cummins <nickmcummins dot linuxmail.org>
+
+pkgname=waf-git
+_pkgname=waf
+pkgver=2.0.19.r3014.5f7924d8
+pkgvern=2.0.19
+pkgrel=1
+pkgdesc='General-purpose build system modelled after Scons'
+url="http://waf.io/"
+arch=('any')
+license=('BSD')
+depends=('python')
+conflicts=('waf')
+makedepends=('unzip')
+provides=('waf')
+source=("git+https://gitlab.com/ita1024/waf")
+sha512sums=('SKIP')
+
+pkgver() {
+  cd $srcdir/$_pkgname
+  if [[ "$pkgver" == *"r"* ]]; then
+      printf "${pkgvern}.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+  else
+      printf "${pkgver}.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+  fi
+}
+
+prepare() {
+  local _py_ver=$(python3 -c "import sys; print(str(sys.version_info.major)+'.'+str(sys.version_info.minor))")
+  cd $srcdir/$_pkgname
+  # make waf find its waflib
+  sed -e "/test(i/ s|dirname|'python${_py_ver}/site-packages/waf'|" -i waf-light
+  # license needs to be extracted:
+  # https://gitlab.com/ita1024/waf/issues/2251
+  head -n 30 waf | tail -n 28 | sed -e 's/# //g; s/"""//g' > LICENSE
+}
+
+build() {
+  cd ${srcdir}/${_pkgname}
+  ./waf-light \
+    configure --prefix=/usr \
+    build --make-waf --tools='doxygen,fc_pgfortran,pytest,cabal,distnet,stale,satellite_assembly,color_rvct,sphinx,build_logs,pyqt5,c_emscripten,msvcdeps,qt4,pch,midl,color_gcc,rst,c_nec,gob2,review,syms,fc_bgxlf,clangxx_cross,fsb,msvc_pdb,package,cpplint,dcc,make,gdbus,wix,run_do_script,parallel_debug,swig,dpapi,cppcheck,fc_open64,clang_compilation_database,fc_nec,cfg_altoptions,valadoc,run_r_script,compat15,batched_cc,pgicxx,unity,fsc,stracedeps,scala,eclipse,erlang,build_file_tracker,wafcache,buildcopy,fc_nag,boo,file_to_object,qnxnto,bjam,freeimage,protoc,fast_partial,kde4,fc_solstudio,xcode6,halide,resx,slow_qt4,cross_gnu,netcache_client,codelite,softlink_libs,cython,remote,fc_xlf,proc,why,ticgt,c_bgxlc,c_dumbpreproc,fc_nfort,local_rpath,clang_cross,sas,gccdeps,javatest,use_config,blender,pgicc,biber,objcopy,run_m_script,fc_cray,waf_xattr,boost,clang_cross_common,win32_opts,msvs,ocaml,color_msvc,pep8,run_py_script,relocation,fluid,genpybind,compat,go,cuda,gcj'
+
+  # removing compiled in vendored library from executable
+  sed -i '/^#==>$/,/^#<==$/d' waf
+}
+
+package() {
+  local _py_ver=$(python3 -c "import sys; print(str(sys.version_info.major)+'.'+str(sys.version_info.minor))")
+  cd ${srcdir}/${_pkgname}
+  install -vDm 755 waf -t "$pkgdir/usr/bin"
+  install -vDm 644 wscript -t "$pkgdir/usr/share/$pkgname"
+
+  # installing, byte-compiling waflib and stripping pkgdir from it
+  install -vDm 644 waflib/*.py \
+    -t "${pkgdir}/usr/lib/python${_py_ver}/site-packages/waf/waflib"
+  install -vDm 644 waflib/Tools/*.py \
+    -t "${pkgdir}/usr/lib/python${_py_ver}/site-packages/waf/waflib/Tools"
+  install -vDm 644 waflib/extras/*.py \
+    -t "${pkgdir}/usr/lib/python${_py_ver}/site-packages/waf/waflib/extras"
+  python -m compileall -d "/usr/lib/python${_py_ver}" \
+    "${pkgdir}/usr/lib/python${_py_ver}"
+  python -O -m compileall -d "/usr/lib/python${_py_ver}" \
+    "${pkgdir}/usr/lib/python${_py_ver}"
+  install -vDm 644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}"
+}
+# vim:set ts=2 sw=2 et:
