@@ -1,0 +1,43 @@
+# Maintainer: Nick M Cummins <nickmcummins@linuxmail.org>
+
+pkgname=libharu-git
+_pkgname=libharu
+pkgver=2.4.0
+pkgrel=1
+pkgdesc="C library for generating PDF documents"
+url="https://github.com/libharu/libharu"
+arch=('x86_64')
+license=('custom:ZLIB')
+depends=('libpng' 'gcc-libs')
+provides=('libharu')
+conflicts=('libharu')
+source=("git+https://github.com/libharu/libharu")
+sha512sums=('SKIP')
+
+build() {
+  cd $srcdir/$_pkgname
+  
+  rm -rf build
+  mkdir -p build && cd build
+  
+  cmake .. \
+   -DCMAKE_INSTALL_PREFIX=/usr \
+   -DBUILD_SHARED_LIBS=ON \
+   -DLIBHPDF_SHARED=ON \
+   -DLIBHPDF_STATIC=OFF \
+   -DLIBHPDF_EXAMPLES=OFF \
+   -DCMAKE_BUILD_TYPE=Release
+  make -j10
+}
+
+package() {
+    cd $srcdir/$_pkgname/build
+
+    make DESTDIR="$pkgdir/" install
+    install -Dm644 ../LICENCE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+
+    cd $pkgdir/usr/lib
+    mv libhpdf.so libhpdf-${pkgver}.so
+    ln -s libhpdf-$pkgver.so libhpdf.so
+}
+    
