@@ -1,0 +1,624 @@
+Index: examples/BlockProcessor/inSPDinImageoutSPD/build.sh
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- examples/BlockProcessor/inSPDinImageoutSPD/build.sh	(revision 382:aa7c0265435e21730d7fb4d6ecb0ccdaebf9f350)
++++ examples/BlockProcessor/inSPDinImageoutSPD/build.sh	(revision 382+:aa7c0265435e+)
+@@ -3,8 +3,8 @@
+ cmake -D CMAKE_INSTALL_PREFIX=/Users/pete/Temp/spdtest/ \
+ -D HDF5_INCLUDE_DIR=$HDF5_INCLUDE_PATH \
+ -D HDF5_LIB_PATH=$HDF5_LIB_PATH \
+--D LIBLAS_INCLUDE_DIR=$LIBLAS_INCLUDE_PATH \
+--D LIBLAS_LIB_PATH=$LIBLAS_LIB_PATH \
++-D LASLIB_INCLUDE_DIR=$LASLIB_INCLUDE_PATH \
++-D LASLIB_LIB_PATH=$LASLIB_LIB_PATH \
+ -D GSL_INCLUDE_DIR=$GSL_INCLUDE_PATH \
+ -D GSL_LIB_PATH=$GSL_LIB_PATH \
+ -D CGAL_INCLUDE_DIR=$CGAL_INCLUDE_PATH \
+Index: examples/BlockProcessor/inSPDinImageoutSPD/CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- examples/BlockProcessor/inSPDinImageoutSPD/CMakeLists.txt	(revision 382:aa7c0265435e21730d7fb4d6ecb0ccdaebf9f350)
++++ examples/BlockProcessor/inSPDinImageoutSPD/CMakeLists.txt	(revision 382+:aa7c0265435e+)
+@@ -4,7 +4,7 @@
+ # 
+ # Created 2010/12/14 by Peter Bunting
+ #
+-# These scripts were initial based on those used for libLAS (http://liblas.org/)
++# These scripts were initial based on those used for laslib (http://laslib.org/)
+ #
+ # History
+ # 2010/12/14 - Created by Peter Bunting
+@@ -15,35 +15,35 @@
+ # Set Project name and version
+ project (SPDLIB_Example)
+ 
+-set(BOOST_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for Boost")
+-set(BOOST_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for Boost")
++set(BOOST_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for Boost")
++set(BOOST_LIB_PATH /usr/lib CACHE PATH "Library PATH for Boost")
+ 
+-set(GDAL_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for GDAL")
+-set(GDAL_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for GDAL")
++set(GDAL_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for GDAL")
++set(GDAL_LIB_PATH /usr/lib CACHE PATH "Library PATH for GDAL")
+ 
+-set(HDF5_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for HDF5")
+-set(HDF5_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for HDF5")
++set(HDF5_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for HDF5")
++set(HDF5_LIB_PATH /usr/lib CACHE PATH "Library PATH for HDF5")
+ 
+-set(GSL_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for GSL")
+-set(GSL_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for GSL")
++set(GSL_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for GSL")
++set(GSL_LIB_PATH /usr/lib CACHE PATH "Library PATH for GSL")
+ 
+-set(LIBLAS_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for LibLAS")
+-set(LIBLAS_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for LibLAS")
++set(LASLIB_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for Laslib")
++set(LASLIB_LIB_PATH /usr/lib CACHE PATH "Library PATH for Laslib")
+ 
+-set(CGAL_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for CGAL")
+-set(CGAL_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for CGAL")
++set(CGAL_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for CGAL")
++set(CGAL_LIB_PATH /usr/lib CACHE PATH "Library PATH for CGAL")
+ 
+-set(XERCESC_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for Xerces-c")
+-set(XERCESC_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for Xerces-c")
++set(XERCESC_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for Xerces-c")
++set(XERCESC_LIB_PATH /usr/lib CACHE PATH "Library PATH for Xerces-c")
+ 
+-set(GMP_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for GMP")
+-set(GMP_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for GMP")
++set(GMP_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for GMP")
++set(GMP_LIB_PATH /usr/lib CACHE PATH "Library PATH for GMP")
+ 
+-set(MPFR_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for MPFR")
+-set(MPFR_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for MPFR")
++set(MPFR_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for MPFR")
++set(MPFR_LIB_PATH /usr/lib CACHE PATH "Library PATH for MPFR")
+ 
+-set(SPDLIB_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for SPDLIB")
+-set(SPDLIB_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for SPDLIB")
++set(SPDLIB_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for SPDLIB")
++set(SPDLIB_LIB_PATH /usr/lib CACHE PATH "Library PATH for SPDLIB")
+ 
+ ###############################################################################
+ 
+@@ -140,8 +140,8 @@
+ include_directories(${GSL_INCLUDE_DIR})
+ set(GSL_LIBRARIES -L${GSL_LIB_PATH} -lgsl -lgslcblas)
+ 
+-include_directories(${LIBLAS_INCLUDE_DIR})
+-set(LIBLAS_LIBRARIES -L${LIBLAS_LIB_PATH} -llas -llas_c)
++include_directories(${LASLIB_INCLUDE_DIR})
++set(LASLIB_LIBRARIES -L${LASLIB_LIB_PATH} -lLASlib)
+ 
+ include_directories(${CGAL_INCLUDE_DIR})
+ set(CGAL_LIBRARIES -L${CGAL_LIB_PATH} -lCGAL)
+Index: examples/BlockProcessor/inSPDnoOut/build.sh
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- examples/BlockProcessor/inSPDnoOut/build.sh	(revision 382:aa7c0265435e21730d7fb4d6ecb0ccdaebf9f350)
++++ examples/BlockProcessor/inSPDnoOut/build.sh	(revision 382+:aa7c0265435e+)
+@@ -3,8 +3,8 @@
+ cmake -D CMAKE_INSTALL_PREFIX=/Users/pete/Temp/spdtest/ \
+ -D HDF5_INCLUDE_DIR=$HDF5_INCLUDE_PATH \
+ -D HDF5_LIB_PATH=$HDF5_LIB_PATH \
+--D LIBLAS_INCLUDE_DIR=$LIBLAS_INCLUDE_PATH \
+--D LIBLAS_LIB_PATH=$LIBLAS_LIB_PATH \
++-D LASLIB_INCLUDE_DIR=$LASLIB_INCLUDE_PATH \
++-D LASLIB_LIB_PATH=$LASLIB_LIB_PATH \
+ -D GSL_INCLUDE_DIR=$GSL_INCLUDE_PATH \
+ -D GSL_LIB_PATH=$GSL_LIB_PATH \
+ -D CGAL_INCLUDE_DIR=$CGAL_INCLUDE_PATH \
+Index: examples/BlockProcessor/inSPDnoOut/CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- examples/BlockProcessor/inSPDnoOut/CMakeLists.txt	(revision 382:aa7c0265435e21730d7fb4d6ecb0ccdaebf9f350)
++++ examples/BlockProcessor/inSPDnoOut/CMakeLists.txt	(revision 382+:aa7c0265435e+)
+@@ -4,7 +4,7 @@
+ # 
+ # Created 2010/12/14 by Peter Bunting
+ #
+-# These scripts were initial based on those used for libLAS (http://liblas.org/)
++# These scripts were initial based on those used for laslib (http://laslib.org/)
+ #
+ # History
+ # 2010/12/14 - Created by Peter Bunting
+@@ -15,35 +15,35 @@
+ # Set Project name and version
+ project (SPDLIB_Example)
+ 
+-set(BOOST_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for Boost")
+-set(BOOST_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for Boost")
++set(BOOST_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for Boost")
++set(BOOST_LIB_PATH /usr/lib CACHE PATH "Library PATH for Boost")
+ 
+-set(GDAL_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for GDAL")
+-set(GDAL_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for GDAL")
++set(GDAL_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for GDAL")
++set(GDAL_LIB_PATH /usr/lib CACHE PATH "Library PATH for GDAL")
+ 
+-set(HDF5_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for HDF5")
+-set(HDF5_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for HDF5")
++set(HDF5_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for HDF5")
++set(HDF5_LIB_PATH /usr/lib CACHE PATH "Library PATH for HDF5")
+ 
+-set(GSL_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for GSL")
+-set(GSL_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for GSL")
++set(GSL_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for GSL")
++set(GSL_LIB_PATH /usr/lib CACHE PATH "Library PATH for GSL")
+ 
+-set(LIBLAS_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for LibLAS")
+-set(LIBLAS_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for LibLAS")
++set(LASLIB_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for Laslib")
++set(LASLIB_LIB_PATH /usr/lib CACHE PATH "Library PATH for Laslib")
+ 
+-set(CGAL_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for CGAL")
+-set(CGAL_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for CGAL")
++set(CGAL_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for CGAL")
++set(CGAL_LIB_PATH /usr/lib CACHE PATH "Library PATH for CGAL")
+ 
+-set(XERCESC_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for Xerces-c")
+-set(XERCESC_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for Xerces-c")
++set(XERCESC_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for Xerces-c")
++set(XERCESC_LIB_PATH /usr/lib CACHE PATH "Library PATH for Xerces-c")
+ 
+-set(GMP_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for GMP")
+-set(GMP_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for GMP")
++set(GMP_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for GMP")
++set(GMP_LIB_PATH /usr/lib CACHE PATH "Library PATH for GMP")
+ 
+-set(MPFR_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for MPFR")
+-set(MPFR_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for MPFR")
++set(MPFR_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for MPFR")
++set(MPFR_LIB_PATH /usr/lib CACHE PATH "Library PATH for MPFR")
+ 
+-set(SPDLIB_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for SPDLIB")
+-set(SPDLIB_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for SPDLIB")
++set(SPDLIB_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for SPDLIB")
++set(SPDLIB_LIB_PATH /usr/lib CACHE PATH "Library PATH for SPDLIB")
+ 
+ ###############################################################################
+ 
+@@ -140,8 +140,8 @@
+ include_directories(${GSL_INCLUDE_DIR})
+ set(GSL_LIBRARIES -L${GSL_LIB_PATH} -lgsl -lgslcblas)
+ 
+-include_directories(${LIBLAS_INCLUDE_DIR})
+-set(LIBLAS_LIBRARIES -L${LIBLAS_LIB_PATH} -llas -llas_c)
++include_directories(${LASLIB_INCLUDE_DIR})
++set(LASLIB_LIBRARIES -L${LASLIB_LIB_PATH} -lLASlib)
+ 
+ include_directories(${CGAL_INCLUDE_DIR})
+ set(CGAL_LIBRARIES -L${CGAL_LIB_PATH} -lCGAL)
+Index: examples/BlockProcessor/inSPDOutImage/build.sh
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- examples/BlockProcessor/inSPDOutImage/build.sh	(revision 382:aa7c0265435e21730d7fb4d6ecb0ccdaebf9f350)
++++ examples/BlockProcessor/inSPDOutImage/build.sh	(revision 382+:aa7c0265435e+)
+@@ -3,8 +3,8 @@
+ cmake -D CMAKE_INSTALL_PREFIX=/Users/pete/Temp/spdtest/ \
+ -D HDF5_INCLUDE_DIR=$HDF5_INCLUDE_PATH \
+ -D HDF5_LIB_PATH=$HDF5_LIB_PATH \
+--D LIBLAS_INCLUDE_DIR=$LIBLAS_INCLUDE_PATH \
+--D LIBLAS_LIB_PATH=$LIBLAS_LIB_PATH \
++-D LASLIB_INCLUDE_DIR=$LASLIB_INCLUDE_PATH \
++-D LASLIB_LIB_PATH=$LASLIB_LIB_PATH \
+ -D GSL_INCLUDE_DIR=$GSL_INCLUDE_PATH \
+ -D GSL_LIB_PATH=$GSL_LIB_PATH \
+ -D CGAL_INCLUDE_DIR=$CGAL_INCLUDE_PATH \
+Index: examples/BlockProcessor/inSPDOutImage/CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- examples/BlockProcessor/inSPDOutImage/CMakeLists.txt	(revision 382:aa7c0265435e21730d7fb4d6ecb0ccdaebf9f350)
++++ examples/BlockProcessor/inSPDOutImage/CMakeLists.txt	(revision 382+:aa7c0265435e+)
+@@ -4,7 +4,7 @@
+ # 
+ # Created 2010/12/14 by Peter Bunting
+ #
+-# These scripts were initial based on those used for libLAS (http://liblas.org/)
++# These scripts were initial based on those used for laslib (http://laslib.org/)
+ #
+ # History
+ # 2010/12/14 - Created by Peter Bunting
+@@ -15,35 +15,35 @@
+ # Set Project name and version
+ project (SPDLIB_Example)
+ 
+-set(BOOST_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for Boost")
+-set(BOOST_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for Boost")
++set(BOOST_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for Boost")
++set(BOOST_LIB_PATH /usr/lib CACHE PATH "Library PATH for Boost")
+ 
+-set(GDAL_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for GDAL")
+-set(GDAL_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for GDAL")
++set(GDAL_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for GDAL")
++set(GDAL_LIB_PATH /usr/lib CACHE PATH "Library PATH for GDAL")
+ 
+-set(HDF5_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for HDF5")
+-set(HDF5_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for HDF5")
++set(HDF5_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for HDF5")
++set(HDF5_LIB_PATH /usr/lib CACHE PATH "Library PATH for HDF5")
+ 
+-set(GSL_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for GSL")
+-set(GSL_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for GSL")
++set(GSL_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for GSL")
++set(GSL_LIB_PATH /usr/lib CACHE PATH "Library PATH for GSL")
+ 
+-set(LIBLAS_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for LibLAS")
+-set(LIBLAS_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for LibLAS")
++set(LASLIB_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for Laslib")
++set(LASLIB_LIB_PATH /usr/lib CACHE PATH "Library PATH for Laslib")
+ 
+-set(CGAL_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for CGAL")
+-set(CGAL_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for CGAL")
++set(CGAL_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for CGAL")
++set(CGAL_LIB_PATH /usr/lib CACHE PATH "Library PATH for CGAL")
+ 
+-set(XERCESC_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for Xerces-c")
+-set(XERCESC_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for Xerces-c")
++set(XERCESC_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for Xerces-c")
++set(XERCESC_LIB_PATH /usr/lib CACHE PATH "Library PATH for Xerces-c")
+ 
+-set(GMP_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for GMP")
+-set(GMP_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for GMP")
++set(GMP_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for GMP")
++set(GMP_LIB_PATH /usr/lib CACHE PATH "Library PATH for GMP")
+ 
+-set(MPFR_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for MPFR")
+-set(MPFR_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for MPFR")
++set(MPFR_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for MPFR")
++set(MPFR_LIB_PATH /usr/lib CACHE PATH "Library PATH for MPFR")
+ 
+-set(SPDLIB_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for SPDLIB")
+-set(SPDLIB_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for SPDLIB")
++set(SPDLIB_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for SPDLIB")
++set(SPDLIB_LIB_PATH /usr/lib CACHE PATH "Library PATH for SPDLIB")
+ 
+ ###############################################################################
+ 
+@@ -140,8 +140,8 @@
+ include_directories(${GSL_INCLUDE_DIR})
+ set(GSL_LIBRARIES -L${GSL_LIB_PATH} -lgsl -lgslcblas)
+ 
+-include_directories(${LIBLAS_INCLUDE_DIR})
+-set(LIBLAS_LIBRARIES -L${LIBLAS_LIB_PATH} -llas -llas_c)
++include_directories(${LASLIB_INCLUDE_DIR})
++set(LASLIB_LIBRARIES -L${LASLIB_LIB_PATH} -lLASlib)
+ 
+ include_directories(${CGAL_INCLUDE_DIR})
+ set(CGAL_LIBRARIES -L${CGAL_LIB_PATH} -lCGAL)
+Index: examples/BlockProcessor/inSPDoutSPD/build.sh
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- examples/BlockProcessor/inSPDoutSPD/build.sh	(revision 382:aa7c0265435e21730d7fb4d6ecb0ccdaebf9f350)
++++ examples/BlockProcessor/inSPDoutSPD/build.sh	(revision 382+:aa7c0265435e+)
+@@ -3,8 +3,8 @@
+ cmake -D CMAKE_INSTALL_PREFIX=/Users/pete/Temp/spdtest/ \
+ -D HDF5_INCLUDE_DIR=$HDF5_INCLUDE_PATH \
+ -D HDF5_LIB_PATH=$HDF5_LIB_PATH \
+--D LIBLAS_INCLUDE_DIR=$LIBLAS_INCLUDE_PATH \
+--D LIBLAS_LIB_PATH=$LIBLAS_LIB_PATH \
++-D LASLIB_INCLUDE_DIR=$LASLIB_INCLUDE_PATH \
++-D LASLIB_LIB_PATH=$LASLIB_LIB_PATH \
+ -D GSL_INCLUDE_DIR=$GSL_INCLUDE_PATH \
+ -D GSL_LIB_PATH=$GSL_LIB_PATH \
+ -D CGAL_INCLUDE_DIR=$CGAL_INCLUDE_PATH \
+Index: examples/BlockProcessor/inSPDoutSPD/CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- examples/BlockProcessor/inSPDoutSPD/CMakeLists.txt	(revision 382:aa7c0265435e21730d7fb4d6ecb0ccdaebf9f350)
++++ examples/BlockProcessor/inSPDoutSPD/CMakeLists.txt	(revision 382+:aa7c0265435e+)
+@@ -4,7 +4,7 @@
+ # 
+ # Created 2010/12/14 by Peter Bunting
+ #
+-# These scripts were initial based on those used for libLAS (http://liblas.org/)
++# These scripts were initial based on those used for laslib (http://laslib.org/)
+ #
+ # History
+ # 2010/12/14 - Created by Peter Bunting
+@@ -15,35 +15,35 @@
+ # Set Project name and version
+ project (SPDLIB_Example)
+ 
+-set(BOOST_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for Boost")
+-set(BOOST_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for Boost")
++set(BOOST_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for Boost")
++set(BOOST_LIB_PATH /usr/lib CACHE PATH "Library PATH for Boost")
+ 
+-set(GDAL_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for GDAL")
+-set(GDAL_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for GDAL")
++set(GDAL_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for GDAL")
++set(GDAL_LIB_PATH /usr/lib CACHE PATH "Library PATH for GDAL")
+ 
+-set(HDF5_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for HDF5")
+-set(HDF5_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for HDF5")
++set(HDF5_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for HDF5")
++set(HDF5_LIB_PATH /usr/lib CACHE PATH "Library PATH for HDF5")
+ 
+-set(GSL_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for GSL")
+-set(GSL_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for GSL")
++set(GSL_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for GSL")
++set(GSL_LIB_PATH /usr/lib CACHE PATH "Library PATH for GSL")
+ 
+-set(LIBLAS_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for LibLAS")
+-set(LIBLAS_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for LibLAS")
++set(LASLIB_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for Laslib")
++set(LASLIB_LIB_PATH /usr/lib CACHE PATH "Library PATH for Laslib")
+ 
+-set(CGAL_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for CGAL")
+-set(CGAL_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for CGAL")
++set(CGAL_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for CGAL")
++set(CGAL_LIB_PATH /usr/lib CACHE PATH "Library PATH for CGAL")
+ 
+-set(XERCESC_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for Xerces-c")
+-set(XERCESC_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for Xerces-c")
++set(XERCESC_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for Xerces-c")
++set(XERCESC_LIB_PATH /usr/lib CACHE PATH "Library PATH for Xerces-c")
+ 
+-set(GMP_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for GMP")
+-set(GMP_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for GMP")
++set(GMP_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for GMP")
++set(GMP_LIB_PATH /usr/lib CACHE PATH "Library PATH for GMP")
+ 
+-set(MPFR_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for MPFR")
+-set(MPFR_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for MPFR")
++set(MPFR_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for MPFR")
++set(MPFR_LIB_PATH /usr/lib CACHE PATH "Library PATH for MPFR")
+ 
+-set(SPDLIB_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for SPDLIB")
+-set(SPDLIB_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for SPDLIB")
++set(SPDLIB_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for SPDLIB")
++set(SPDLIB_LIB_PATH /usr/lib CACHE PATH "Library PATH for SPDLIB")
+ 
+ ###############################################################################
+ 
+@@ -140,8 +140,8 @@
+ include_directories(${GSL_INCLUDE_DIR})
+ set(GSL_LIBRARIES -L${GSL_LIB_PATH} -lgsl -lgslcblas)
+ 
+-include_directories(${LIBLAS_INCLUDE_DIR})
+-set(LIBLAS_LIBRARIES -L${LIBLAS_LIB_PATH} -llas -llas_c)
++include_directories(${LASLIB_INCLUDE_DIR})
++set(LASLIB_LIBRARIES -L${LASLIB_LIB_PATH} -lLASlib)
+ 
+ include_directories(${CGAL_INCLUDE_DIR})
+ set(CGAL_LIBRARIES -L${CGAL_LIB_PATH} -lCGAL)
+Index: doc/index.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- doc/index.txt	(revision 382:aa7c0265435e21730d7fb4d6ecb0ccdaebf9f350)
++++ doc/index.txt	(revision 382+:aa7c0265435e+)
+@@ -9,4 +9,4 @@
+ ------------
+ HDF5 (C++)
+ GDAL
+-LibLAS
+\ No newline at end of file
++LASlib
+\ No newline at end of file
+Index: ngpython/README.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ngpython/README.txt	(revision 382:aa7c0265435e21730d7fb4d6ecb0ccdaebf9f350)
++++ ngpython/README.txt	(revision 382+:aa7c0265435e+)
+@@ -10,7 +10,7 @@
+ 
+ python setup.py build --gdalinclude=$GDAL_INCLUDE_PATH --boostinclude=$BOOST_INCLUDE_PATH \
+         --gslinclude=$GSL_INCLUDE_PATH --cgalinclude=$CGAL_INCLUDE_PATH \
+-        --lasinclude=$LIBLAS_INCLUDE_PATH --hdf5include=$HDF5_INCLUDE_PATH
++        --lasinclude=$LASLIB_INCLUDE_PATH --hdf5include=$HDF5_INCLUDE_PATH
+ python setup.py install
+ 
+ Obviously, $GDAL_INCLUDE_PATH must be set properly for your install. If these packages are 
+Index: include/spd/SPDLASFileExporter.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- include/spd/SPDLASFileExporter.h	(revision 382:aa7c0265435e21730d7fb4d6ecb0ccdaebf9f350)
++++ include/spd/SPDLASFileExporter.h	(revision 382+:aa7c0265435e+)
+@@ -35,7 +35,7 @@
+ #include <list>
+ #include <stdexcept>
+ 
+-#include "laswriter.hpp"
++#include <LASlib/laswriter.hpp>
+ 
+ #include "spd/SPDFile.h"
+ #include "spd/SPDPoint.h"
+Index: include/spd/SPDLASFileImporter.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- include/spd/SPDLASFileImporter.h	(revision 382:aa7c0265435e21730d7fb4d6ecb0ccdaebf9f350)
++++ include/spd/SPDLASFileImporter.h	(revision 382+:aa7c0265435e+)
+@@ -30,8 +30,8 @@
+ #include <fstream>
+ #include <stdexcept>
+ 
+-#include <lasreader.hpp>
+-#include <laswaveform13reader.hpp>
++#include <LASlib/laswaveform13reader.hpp>
++#include <LASlib/lasreader.hpp>
+ 
+ #include <ogr_spatialref.h>
+ 
+Index: src/spd/SPDLASFileExporter.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/spd/SPDLASFileExporter.cpp	(revision 382:aa7c0265435e21730d7fb4d6ecb0ccdaebf9f350)
++++ src/spd/SPDLASFileExporter.cpp	(revision 382+:aa7c0265435e+)
+@@ -84,7 +84,7 @@
+ 
+             if(spdFile->getSpatialReference() != "")
+             {
+-                /*liblas::SpatialReference lasSpatRef;
++                /*laslib::SpatialReference lasSpatRef;
+                 lasSpatRef.SetWKT(spdFile->getSpatialReference());
+                 lasFileHeader.SetSRS(lasSpatRef);*/
+             }
+Index: src/spd/SPDLASFileImporter.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/spd/SPDLASFileImporter.cpp	(revision 382:aa7c0265435e21730d7fb4d6ecb0ccdaebf9f350)
++++ src/spd/SPDLASFileImporter.cpp	(revision 382+:aa7c0265435e+)
+@@ -1149,7 +1149,7 @@
+             }
+ 
+             // Get array of RBG values (of type U16 in LASlib typedef)
+-            const unsigned short *rgb = pt.get_rgb();
++            const unsigned short *rgb = pt.get_RGB();
+ 
+             spdPt->red = rgb[0];
+             spdPt->green = rgb[1];
+@@ -1741,7 +1741,7 @@
+             }
+ 
+             // Get array of RBG values (of type U16 in LASlib typedef)
+-            const unsigned short *rgb = pt.get_rgb();
++            const unsigned short *rgb = pt.get_RGB();
+ 
+             spdPt->red = rgb[0];
+             spdPt->green = rgb[1];
+Index: src/exe/spdlastest/main.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/exe/spdlastest/main.cpp	(revision 382:aa7c0265435e21730d7fb4d6ecb0ccdaebf9f350)
++++ src/exe/spdlastest/main.cpp	(revision 382+:aa7c0265435e+)
+@@ -30,7 +30,7 @@
+ 
+ #include <spd/tclap/CmdLine.h>
+ 
+-#include <lasreader.hpp>
++#include <LASlib/lasreader.hpp>
+ 
+ #include "spd/SPDException.h"
+ #include "spd/SPDTextFileUtilities.h"
+Index: src/CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/CMakeLists.txt	(revision 382:aa7c0265435e21730d7fb4d6ecb0ccdaebf9f350)
++++ src/CMakeLists.txt	(revision 382+:aa7c0265435e+)
+@@ -316,7 +316,7 @@
+ 
+ add_library(${SPDLIB_LIB_NAME} ${SPDLIB_CPP_IO} ${SPDLIB_H_IO} ${SPDLIB_CPP_Processing_Interfaces} ${SPDLIB_H_Processing_Interfaces} ${SPDLIB_CPP_Processing_Algorithms} ${SPDLIB_H_Processing_Algorithms} ${SPDLIB_CPP_Utils} ${SPDLIB_H_Utils} ${SPDLIB_CPP_Frameworks} ${SPDLIB_H_Frameworks} ${CMPFIT_C} ${CMPFIT_H} ${TCLAP_H} ${TPS_CPP} ${TPS_H} )
+ # SPDLIB_NN_NAME no longer needed?
+-target_link_libraries(${SPDLIB_LIB_NAME} ${SPDLIB_MITLIB_NAME} ${BOOST_LIBRARIES} ${GDAL_LIBRARIES} ${HDF5_LIBRARIES} ${LIBLAS_LIBRARIES} ${GSL_LIBRARIES} ${CGAL_LIBRARIES} ${XERCESC_LIBRARIES} ${GMP_LIBRARIES} ${MPFR_LIBRARIES} ${SPDLIB_ALGLIB_NAME} )
++target_link_libraries(${SPDLIB_LIB_NAME} ${SPDLIB_MITLIB_NAME} ${BOOST_LIBRARIES} ${GDAL_LIBRARIES} ${HDF5_LIBRARIES} ${LASLIB_LIBRARIES} ${GSL_LIBRARIES} ${CGAL_LIBRARIES} ${XERCESC_LIBRARIES} ${GMP_LIBRARIES} ${MPFR_LIBRARIES} ${SPDLIB_ALGLIB_NAME} )
+ ###############################################################################
+ 
+ ###############################################################################
+Index: CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- CMakeLists.txt	(revision 382:aa7c0265435e21730d7fb4d6ecb0ccdaebf9f350)
++++ CMakeLists.txt	(revision 382+:aa7c0265435e+)
+@@ -4,7 +4,7 @@
+ # 
+ # Created 2010/12/14 by Peter Bunting
+ #
+-# These scripts were initial based on those used for libLAS (http://liblas.org/)
++# These scripts were initial based on those used for laslib (http://laslib.org/)
+ #
+ # History
+ # 2010/12/14 - Created by Peter Bunting
+@@ -70,32 +70,32 @@
+ option (BUILD_SHARED_LIBS "Build with shared library" ON)
+ set(SPDLIB_WITH_UTILITIES TRUE CACHE BOOL "Choose if SPDLib utilities should be built")
+ 
+-set(BOOST_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for Boost")
+-set(BOOST_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for Boost")
++set(BOOST_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for Boost")
++set(BOOST_LIB_PATH /usr/lib CACHE PATH "Library PATH for Boost")
+ 
+-set(GDAL_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for GDAL")
+-set(GDAL_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for GDAL")
++set(GDAL_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for GDAL")
++set(GDAL_LIB_PATH /usr/lib CACHE PATH "Library PATH for GDAL")
+ 
+-set(HDF5_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for HDF5")
+-set(HDF5_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for HDF5")
++set(HDF5_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for HDF5")
++set(HDF5_LIB_PATH /usr/lib CACHE PATH "Library PATH for HDF5")
+ 
+-set(GSL_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for GSL")
+-set(GSL_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for GSL")
++set(GSL_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for GSL")
++set(GSL_LIB_PATH /usr/lib CACHE PATH "Library PATH for GSL")
+ 
+-set(LIBLAS_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for LibLAS")
+-set(LIBLAS_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for LibLAS")
++set(LASLIB_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for Laslib")
++set(LASLIB_LIB_PATH /usr/lib CACHE PATH "Library PATH for Laslib")
+ 
+-set(CGAL_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for CGAL")
+-set(CGAL_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for CGAL")
++set(CGAL_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for CGAL")
++set(CGAL_LIB_PATH /usr/lib CACHE PATH "Library PATH for CGAL")
+ 
+-set(XERCESC_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for Xerces-c")
+-set(XERCESC_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for Xerces-c")
++set(XERCESC_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for Xerces-c")
++set(XERCESC_LIB_PATH /usr/lib CACHE PATH "Library PATH for Xerces-c")
+ 
+-set(GMP_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for GMP")
+-set(GMP_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for GMP")
++set(GMP_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for GMP")
++set(GMP_LIB_PATH /usr/lib CACHE PATH "Library PATH for GMP")
+ 
+-set(MPFR_INCLUDE_DIR /usr/local/include CACHE PATH "Include PATH for MPFR")
+-set(MPFR_LIB_PATH /usr/local/lib CACHE PATH "Library PATH for MPFR")
++set(MPFR_INCLUDE_DIR /usr/include CACHE PATH "Include PATH for MPFR")
++set(MPFR_LIB_PATH /usr/lib CACHE PATH "Library PATH for MPFR")
+ 
+ ###############################################################################
+ 
+@@ -271,11 +271,11 @@
+     set(GSL_LIBRARIES -L${GSL_LIB_PATH} -lgsl -lgslcblas)
+ endif(MSVC)
+ 
+-include_directories(${LIBLAS_INCLUDE_DIR})
++include_directories(${LASLIB_INCLUDE_DIR})
+ if (MSVC)
+-    set(LIBLAS_LIBRARIES -LIBPATH:${LIBLAS_LIB_PATH} las.lib)
++    set(LASLIB_LIBRARIES -LIBPATH:${LASLIB_LIB_PATH} las.lib)
+ else()
+-    set(LIBLAS_LIBRARIES -L${LIBLAS_LIB_PATH} -llas)
++    set(LASLIB_LIBRARIES -L${LASLIB_LIB_PATH} -lLASlib)
+ endif(MSVC)
+ 
+ include_directories(${CGAL_INCLUDE_DIR})

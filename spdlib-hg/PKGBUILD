@@ -1,0 +1,36 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+pkgname=spdlib-hg
+_pkgname=spdlib
+pkgver=3.3.0
+pkgrel=1
+pkgdesc="A set of open source software tools for processing laser scanning data (i.e., LiDAR), including data captured from airborne and terrestrial platforms."
+arch=('x86_64')
+url="http://www.spdlib.org/doku.php"
+provides=('spdlib')
+makedepends=('mercurial')
+depends=('lastools-git' 'gdal')
+source=('hg+https://bitbucket.org/petebunting/spdlib'
+    'liblas-to-laslib.patch')
+sha512sums=('SKIP' 'SKIP')
+
+
+build() {
+    cd ${srcdir}/${_pkgname}
+    patch -Np0 -i $srcdir/liblas-to-laslib.patch
+
+    mkdir -p build && cd build
+
+    cmake .. \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DBUILD_SHARED_LIBS=ON \
+        -DSPDLIB_WITH_UTILITIES=ON
+
+    make
+}
+
+
+package() {
+    cd ${srcdir}/${_pkgname}/build
+
+    make DESTDIR="$pkgdir/" install
+}
