@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=SPDPointsViewer
+Comment=A 3D Points Viewer application written in C++ using QT for view laser scanning data stored within the SPD format.
+Icon=SPDPointsViewer
+Exec=/usr/bin/SPDPointsViewer
+Terminal=False
+Type=Application
+Categories=Science;GIS;
