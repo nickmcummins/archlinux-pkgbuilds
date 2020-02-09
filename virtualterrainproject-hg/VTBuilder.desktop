@@ -2,6 +2,7 @@
 Name=VTBuilder
 Exec=env PROJ_LIB=/usr/share/proj GDAL_DATA=/usr/share/gdal /usr/bin/VTBuilder
 Path=/opt/VirtualTerrainProject/Data
+Comment=Tool for viewing and processing many kinds of geospatial data
 Type=Application
 Icon=VTBuilder
 
