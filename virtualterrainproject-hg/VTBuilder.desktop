@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=VTBuilder
+Exec=env PROJ_LIB=/usr/share/proj GDAL_DATA=/usr/share/gdal /usr/bin/VTBuilder
+Path=/opt/VirtualTerrainProject/Data
+Type=Application
+Icon=VTBuilder
+

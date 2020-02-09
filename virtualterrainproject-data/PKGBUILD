@@ -12,11 +12,18 @@ provides=('virtualterrainproject-data')
 depends=('virtualterrainproject')
 optdepends=()
 options=()
-source=("http://vterrain.org/dist/vtp-apps-data-130201.zip")
-md5sums=('SKIP')
+source=("http://vterrain.org/dist/vtp-apps-data-130201.zip"
+    "gdal2-data.zip")
+md5sums=('SKIP'
+    'SKIP')
 
 package() {
   cd "${srcdir}"
   mkdir -p "${pkgdir}/opt/${vtpdir}"
   cp -a Data "${pkgdir}/opt/${vtpdir}"
+  
+  mkdir -p $pkgdir/usr/share/gdal
+  for file in $srcdir/gdal2-data/*; do 
+      install -D -m 644 $file $pkgdir/usr/share/gdal
+  done
 }
