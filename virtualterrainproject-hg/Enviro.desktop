@@ -1,0 +1,8 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Name=Enviro
+Exec=env PROJ_LIB=/usr/share/proj GDAL_DATA=/usr/share/gdal /usr/bin/Enviro
+Path=/opt/VirtualTerrainProject/Data
+Comment=3D Runtime Environment.  It provides an interactive, realtime 3D navigation of your virtual terrain.
+Type=Application
+Icon=Enviro

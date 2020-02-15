@@ -15,8 +15,10 @@ optdepends=('virtualterrainproject-data')
 options=()
 source=("$pkgname::hg+https://bitbucket.org/bdiscoe/vtp"
     "vtp-src-fixes.patch"
-    "VTBuilder.desktop")
+    "VTBuilder.desktop"
+    "Enviro.desktop")
 md5sums=('SKIP'
+    'SKIP'
     'SKIP'
     'SKIP')
 
@@ -24,19 +26,18 @@ build() {
   cd "${pkgname}"  
   
   patch -Np0 -i "${srcdir}"/vtp-src-fixes.patch
-  #cp "${srcdir}"/FindMiniZip.cmake "${srcdir}/${pkgname}/CMakeModules"
-  #cp "${srcdir}"/FindQuaZip5.cmake "${srcdir}/${pkgname}/CMakeModules"
  
-#  inkscape --without-gui --export-plain-svg=${srcdir}/VTBuilder.svg $srcdir/$pkgname/TerrainApps/VTBuilder/icons/VTBuilder.ico
+  inkscape -z --export-plain-svg=${srcdir}/VTBuilder.svg $srcdir/$pkgname/TerrainApps/VTBuilder/icons/VTBuilder.ico
+  inkscape -z --export-plain-svg=$srcdir/Enviro.svg $srcdir/$pkgname/TerrainApps/Enviro/osx/Enviro.icns
+  
   #Build
   #if [[ -d "${srcdir}/build" ]]; then
   #  (rm -rf ${srcdir}/build)
   #fi
-
-
+  
   mkdir -p build
   cd build
-
+  export CPATH=/usr/include/qt
   cmake ../ \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
@@ -47,23 +48,22 @@ build() {
     -DVTP_USE_CPACK=OFF \
     -DQUIKGRID_INCLUDE_DIR=/usr/include \
     -DQUIKGRID_LIBRARY=/usr/lib/libquikgrid.so
-  make -j2
+  make
 }
 
 package() {
   cd ${pkgname}/build
 
-  make DESTDIR=${pkgdir} install || return 1  
+  make DESTDIR=${pkgdir} install || return 1
   install -D -m644 ${srcdir}/*.desktop -t ${pkgdir}/usr/share/applications
   
   install -D -m644 "${srcdir}/${pkgname}/license.txt" "${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE"
   install -D -m644 "${srcdir}/VTBuilder.svg" "${pkgdir}/usr/share/icons/hicolor/scalable/apps/VTBuilder.svg"
-  for resolution in `ls /usr/share/icons/hicolor/|egrep '[0-9]'`; do
-      convert -resize $resolution $srcdir/$pkgname/TerrainApps/VTBuilder/icons/VTBuilder.xpm $srcdir/VTBuilder-${resolution}.png
-      install -Dm644 "$srcdir/VTBuilder-${resolution}.png" ${pkgdir}/usr/share/icons/hicolor/${resolution}/apps/VTBuilder.png
-  done
+  install -D -m644 "${srcdir}/Enviro.svg" "${pkgdir}/usr/share/icons/hicolor/scalable/apps/Enviro.svg"
+  
   mkdir -p "${pkgdir}/opt/${_pkgname}"
   mkdir -p "${pkgdir}/opt/${_pkgname}/Apps"
+  
   cd "${srcdir}"/"${pkgname}"
   cp -a Docs "${pkgdir}/opt/${_pkgname}"
   cp -a Installers/*.xml "${pkgdir}/opt/${_pkgname}/Apps"
