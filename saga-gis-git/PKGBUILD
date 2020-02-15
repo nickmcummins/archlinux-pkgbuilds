@@ -1,6 +1,6 @@
 pkgname=saga-gis-git
 _pkgname=saga-gis
-pkgver=r4218.19ed8d0c2
+pkgver=r4268.4e8210450
 pkgrel=1
 pkgdesc="A Geographic Information System (GIS) software with immense capabilities for geodata processing and analysis."
 url="http://www.saga-gis.org"
@@ -31,13 +31,13 @@ pkgver() {
 
 build() {
   cd "${srcdir}"/code/${_pkgname}
-
+  dos2unix src/tools/grid/grid_gridding/nn/delaunay.c
   patch -Np0 -i "${srcdir}"/includes-cmakelists-wxLanguage-patches.patch
 
-  #Build
-  #if [[ -d "${srcdir}/build" ]]; then
-  #  (rm -rf ${srcdir}/build)
-  #fi
+  # Build
+  if [[ -d "${srcdir}/build" ]]; then
+    (rm -rf ${srcdir}/build)
+  fi
 
 
   mkdir -p build
@@ -145,7 +145,6 @@ package () {
   make DESTDIR="${pkgdir}" install
   install -D -m644 "${srcdir}/code/${_pkgname}/src/lgpl.txt" "${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE"
   
-  # install *.desktop files
   install -D -m 644 ${srcdir}/code/${_pkgname}/src/saga_core/saga_gui/res/*.desktop -t ${pkgdir}/usr/share/applications/
 
   install -Dm644 "${srcdir}/code/${_pkgname}/src/saga_core/saga_gui/res/saga.png" \
