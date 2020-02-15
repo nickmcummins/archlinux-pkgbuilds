@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.1
+Type=Application
+Name=TerrainBender
+Comment=Applies progressive bending to digital terrain models for 3D cartography
+Icon=TerrainBender
+Exec=TerrainBender
+Actions=
+

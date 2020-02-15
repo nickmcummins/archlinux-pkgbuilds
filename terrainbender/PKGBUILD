@@ -1,0 +1,43 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org> 
+pkgname=terrainbender
+_pkgname=TerrainBender
+pkgver=1.0.16
+pkgrel=1
+pkgdesc="3D maps with progressive bending show the landscape using a varying viewing angle from steep in the foreground to flat in the background."
+arch=('x86_64')
+url="https://www.terraincartography.com/terrainbender/"
+provides=(terrainbender)
+source=('http://www.terraincartography.com/terrainbender/TerrainBenderLinux_amd64.zip'
+    'http://www.terraincartography.com/terrainbender/TerrainBenderSrc.zip'
+    'TerrainBender.desktop'
+    'TerrainBender.sh')
+makedepends=('inkscape')
+md5sums=('SKIP'
+    'SKIP'
+    'SKIP'
+    'SKIP')
+        
+package()
+{
+    cd $srcdir/TerrainBender
+    cd "mac universal/Terrain Bender.app/Contents/Resources"
+    cp icon.icns $srcdir/TerrainBender.icns
+    
+    cd $srcdir 
+    icns2png -x TerrainBender.icns
+    for size in 16 32 128 256; do 
+        install -D -m 644 TerrainBender_${size}x${size}x32.png $pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/TerrainBender.png
+    done
+
+    cd $srcdir/dist-linux-amd64
+    
+    mkdir -p $pkgdir/opt/$pkgname
+    #mkdir -p $pkgdir/usr/bin
+    
+    install -D -m644 ${srcdir}/*.desktop -t ${pkgdir}/usr/share/applications
+    install -D $srcdir/TerrainBender.sh $pkgdir/usr/bin/TerrainBender
+    install -Dm 644 *.so $pkgdir/opt/$pkgname
+
+    cp -a lib $pkgdir/opt/$pkgname
+    cp -a TerrainBender.jar $pkgdir/opt/$pkgname
+}
