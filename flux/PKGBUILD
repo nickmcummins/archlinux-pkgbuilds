@@ -1,0 +1,25 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+
+pkgname=flux
+_pkgname=flux
+pkgver=1.4.4
+pkgrel=1
+pkgdesc=""
+url=""
+arch=('x86_64')
+depends=()
+optdepends=()
+source=("https://github.com/Distrotech/flux/archive/distrotech-flux-${pkgver}.tar.gz")
+md5sums=("SKIP")
+
+build() {
+  cd $srcdir/flux-distrotech-${_pkgname}-${pkgver}
+  ./autogen.sh
+  ./configure --prefix=/usr
+  make 
+}
+
+package() {
+  cd $srcdir/flux-distrotech-$_pkgname-$pkgver
+  make DESTDIR=$pkgdir install
+}
