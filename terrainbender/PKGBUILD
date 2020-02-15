@@ -9,11 +9,9 @@ url="https://www.terraincartography.com/terrainbender/"
 provides=(terrainbender)
 source=('http://www.terraincartography.com/terrainbender/TerrainBenderLinux_amd64.zip'
     'http://www.terraincartography.com/terrainbender/TerrainBenderSrc.zip'
-    'TerrainBender.desktop'
-    'TerrainBender.sh')
-makedepends=('inkscape')
+    'TerrainBender.desktop')
+makedepends=('libicns')
 md5sums=('SKIP'
-    'SKIP'
     'SKIP'
     'SKIP')
         
@@ -32,10 +30,8 @@ package()
     cd $srcdir/dist-linux-amd64
     
     mkdir -p $pkgdir/opt/$pkgname
-    #mkdir -p $pkgdir/usr/bin
     
     install -D -m644 ${srcdir}/*.desktop -t ${pkgdir}/usr/share/applications
-    install -D $srcdir/TerrainBender.sh $pkgdir/usr/bin/TerrainBender
     install -Dm 644 *.so $pkgdir/opt/$pkgname
 
     cp -a lib $pkgdir/opt/$pkgname

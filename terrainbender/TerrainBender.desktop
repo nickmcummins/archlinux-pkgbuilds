@@ -4,6 +4,7 @@ Type=Application
 Name=TerrainBender
 Comment=Applies progressive bending to digital terrain models for 3D cartography
 Icon=TerrainBender
-Exec=TerrainBender
+Exec=java -Xms8g -Xmx48g -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Djava.library.path=/opt/terrainbender -jar /opt/terrainbender/TerrainBender.jar
+Path=/opt/terrainbender
 Actions=
-
+Categories=GIS;
