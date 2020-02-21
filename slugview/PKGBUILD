@@ -1,0 +1,49 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+pkgname=slugview
+_pkgname=SlugView
+pkgver=3.4.2
+pkgrel=1
+pkgdesc="3-Dimensional point-cloud visualization and editing tool."
+arch=('x86_64')
+url="https://websites.pmc.ucsc.edu/~seisweb/SlugView/Slugview.html"
+depends=("jre8-openjdk")
+provides=(slugview)
+source=("https://websites.pmc.ucsc.edu/~seisweb/SlugView/Installer3.4.2.jar"
+    "SlugView.desktop"
+    "libnativewindow_awt.so" "libgluegen-rt.so"  "libnativewindow_x11.so" "libjogl_desktop.so")
+md5sums=('SKIP'
+    'SKIP'
+    'SKIP' 'SKIP' 'SKIP' 'SKIP')
+    
+build() {
+    cd $srcdir
+    unzip -o Installer3.4.2.jar 
+    rm lib/.DS_Store
+    rm lib/gluegen-rt-natives-windows-amd64.jar
+    rm lib/gluegen-rt-natives-macosx-universal.jar
+    rm lib/jogl-all-natives-macosx-universal.jar
+    rm lib/jogl-all-natives-windows-amd64.jar
+}
+
+package() {
+	msg2 "Installing desktop entry..."
+	install -Dm644 $srcdir/$_pkgname.desktop "$pkgdir/usr/share/applications/$_pkgname.desktop"
+
+    cd $srcdir
+    
+    mkdir -p $pkgdir/opt/$_pkgname/lib
+    mkdir -p $pkgdir/opt/$_pkgname/natives/linux-amd64
+    cp -a lib/*.jar $pkgdir/opt/$_pkgname/lib
+    cp *.so $pkgdir/opt/$_pkgname/natives/linux-amd64
+    cp -a manual $pkgdir/opt/$_pkgname
+    cp -a icons $pkgdir/opt/$_pkgname
+    
+    cp $_pkgname$pkgver.jar $pkgdir/opt/$_pkgname/SlugView.jar
+    
+    msg2 "Installing package..."
+    install -d $pkgdir/opt
+  
+  	msg2 "Installing icon..."
+    install -Dm644 $pkgdir/opt/$_pkgname/icons/slug-icon.png "$pkgdir/usr/share/pixmaps/$_pkgname.png"
+    
+}
