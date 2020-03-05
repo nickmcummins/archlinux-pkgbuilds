@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=displaz
+Comment=A hackable lidar viewer
+Icon=displaz
+Exec=displaz
+Terminal=false
+Type=Application
+Categories=Graphics;
