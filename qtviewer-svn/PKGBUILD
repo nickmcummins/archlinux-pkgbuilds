@@ -1,0 +1,50 @@
+# Maintainer: Nick M Cummins <nickmcummins@linuxmail.org>
+
+pkgname=qtviewer-svn
+_pkgname=qtviewer
+pkgver=5863
+pkgrel=1
+pkgdesc="Real-Time Terrain Rendering. Display high-resolution geospatial terrain data at real-time."
+arch=('i686' 'x86_64')
+url='http://www.open-terrain.org'
+license=('GPL')
+provides=('qtviewer')
+conflicts=('qtviewer')
+depends=('libmini' 'libgrid-svn' 'openscenegraph' 'glu')
+makedepends=('cmake' 'subversion' 'qt5-base')
+optdepends=()
+options=('strip')
+source=("${pkgname}::svn+http://svn.code.sf.net/p/libmini/code/libmini/qtviewer")
+md5sums=('SKIP')
+
+pkgver() {
+  svnversion "${SRCDEST}/${pkgname}" | tr -d [A-z]
+}
+
+build() {
+  cd "${pkgname}"  
+
+  #Build
+  if [[ -d "${srcdir}/build" ]]; then
+    (rm -rf ${srcdir}/build)
+  fi
+
+  #Build
+  if [[ -d "build" ]]; then
+    (rm -rf build)
+  fi
+
+  mkdir build
+  cd build
+
+  cmake ../ -DCMAKE_INSTALL_PREFIX=/usr \
+  -DOpenGL_GL_PREFERENCE=GLVND \
+  -DBUILD_WITH_QT5=ON
+  make -j1
+}
+
+package() {
+  cd ${pkgname}/build
+
+  make DESTDIR=${pkgdir} install || return 1  
+}
