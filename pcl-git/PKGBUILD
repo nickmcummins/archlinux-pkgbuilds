@@ -1,0 +1,103 @@
+# Maintainer: Maarten de Vries <maarten@de-vri.es>
+# Contributor: Yuxin Wu <ppwwyyxxc@gmail.com>
+# Contributor: Sven-Hendrik Haase <sh@lutzhaase.com>
+# Contributor: hauptmech
+# Contributor: figo.zhang
+# Contributor: lubosz
+# Maintainer: Nick M Cummins <nickmcummins@linuxmail.org> (Modified from AUR)
+
+pkgname=pcl-git
+_pkgname=pcl
+pkgver=r12193.0bb69c0c7
+pkgrel=1
+pkgdesc="a standalone, large scale, open project for 2D/3D image and point cloud processing"
+arch=(i686 x86_64)
+url="http://pointclouds.org/"
+license=('BSD')
+depends=(
+	boost
+	eigen
+	flann
+	vtk
+	qt5-base
+	qt5-webkit
+	qhull
+	glu
+	python2
+	libxt
+	openmpi
+)
+makedepends=(cmake git)
+source=(git+https://github.com/PointCloudLibrary/pcl patches.patch)
+sha256sums=(SKIP SKIP)
+conflicts=(pcl)
+provides=(pcl)
+
+pkgver() {
+	cd "$srcdir/pcl"
+	# Use the tag of the last commit
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+prepare() {
+    cd $_pkgname
+    patch -Np0 -i "${srcdir}"/patches.patch
+	mkdir -p  "$srcdir/build"
+	cd     "$srcdir/build"
+
+	cmake "${srcdir}/pcl" \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DBUILD_2d=ON \
+		-DBUILD_apps=ON \
+		-DBUILD_apps_3d_rec_framework=ON \
+		-DBUILD_apps_cloud_composer=ON \
+		-DBUILD_apps_in_hand_scanner=ON \
+		-DBUILD_apps_modeler=ON \
+		-DBUILD_apps_point_cloud_editor=ON \
+		-DBUILD_examples=ON \
+		-DBUILD_global_tests=OFF \
+		-DBUILD_surface_on_nurbs=ON \
+		-DBUILD_CUDA=ON \
+		-DBUILD_cuda_apps=ON \
+        -DBUILD_cuda_common=ON \
+        -DBUILD_cuda_features=ON \
+        -DBUILD_cuda_io=ON \
+        -DBUILD_cuda_sample_consensus=ON \
+        -DBUILD_cuda_segmentation=ON \
+		-DBUILD_GPU=ON \
+		-DBUILD_gpu_kinfu=ON \
+		-DBUILD_gpu_kinfu_large_scale=OFF \
+		-DBUILD_gpu_people=ON \
+		-DBUILD_gpu_surface=ON \
+		-DBUILD_gpu_tracking=ON \
+		-DBUILD_app_3d_rec_framework=ON \
+		-DBUILD_simulation=ON \
+		-DENSENSO_INCLUDE_DIR=/usr/include/ensenso \
+		-DENSENSO_LIBRARY=/usr/lib/libNxLib64.so \
+		-DBUILD_CUDA=ON \
+		-DBUILD_GPU=ON \
+		-DBUILD_visualization=ON \
+		-DWITH_CUDA=ON \
+		-DWITH_DOCS=OFF \
+		-DWITH_ENSENSO=ON \
+		-DWITH_OPENGL=ON \
+		-DWITH_OPENNI=OFF \
+		-DWITH_OPENNI2=ON \
+		-DWITH_QT=ON \
+		-DWITH_RSSDK=OFF \
+		-DWITH_RSSDK2=OFF \
+		-DWITH_TUTOTIALS=ON \
+		-DWITH_VTK=ON
+}
+
+build() {
+	cd "$srcdir/build"
+	make
+}
+
+package() {
+	cd "$srcdir/build"
+	make DESTDIR="${pkgdir}" install
+	install -Dm644 "$srcdir/pcl/LICENSE.txt" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
