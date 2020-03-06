@@ -1,0 +1,36 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail.org>
+
+pkgname=idv
+pkgver=5.7.0
+_pkgver=5_7
+pkgrel=1
+pkgdesc="Integrated Data Viewer. A software framework for analyzing and visualizing geoscience data."
+PKGEXT='.pkg.tar.lzo'
+arch=('any')
+url="https://www.unidata.ucar.edu/software/idv/index.html"
+depends=('jre8-openjdk' 'bash')
+makedepends=('imagemagick')
+provides=("idv")
+source=("https://www.unidata.ucar.edu/downloads/idv/current/ftp/idv_${_pkgver}_linux64_installer.sh"
+    'IDV.desktop')
+sha1sums=('SKIP' 'SKIP')
+package() {
+    cd $srcdir
+    chmod +x ./idv_${_pkgver}_linux64_installer.sh
+    ./idv_${_pkgver}_linux64_installer.sh -q -dir $pkgdir/opt/IDV
+
+    mkdir -p $pkgdir/usr/share/licenses/IDV
+    mv $pkgdir/opt/IDV/licenses/* $pkgdir/usr/share/licenses/IDV
+
+    for size in 16 32 64 256; do
+        convert -resize ${size} $pkgdir/opt/IDV/idv.gif $srcdir/idv_${size}.png
+        install -D -m644 $srcdir/idv_${size}.png $pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/IDV.png
+    done
+
+    install -D -m644 ${srcdir}/IDV.desktop -t ${pkgdir}/usr/share/applications
+
+    rm -rf $pkgdir/opt/IDV/licenses
+    rm $pkgdir/opt/IDV/uninstall
+    rm $pkgdir/opt/IDV/idv.gif
+    rm $pkgdir/opt/IDV/runIDV.ico
+}

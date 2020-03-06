@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.1
+Type=Application
+Name=Integrated Data Viewer (IDV)
+Comment=The Integrated Data Viewer (IDV) from Unidata is a Java(TM)-based software framework for analyzing and visualizing geoscience data.
+Icon=IDV
+Exec=/opt/IDV/jre/bin/java -Xms8g -Xmx48g -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -XX:+DisableExplicitGC -Didv.enableStereo=false -jar /opt/IDV/idv.jar
+Path=/opt/IDV
+Actions=
+Categories=GIS;
