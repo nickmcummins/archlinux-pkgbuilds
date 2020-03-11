@@ -5,6 +5,6 @@
 ![displaz-git Screenshot](https://raw.githubusercontent.com/nickmcummins/archlinux-pkgbuilds/master/screenshots/displaz-git.png)
 
 ## idv
-![displaz-git Screenshot](https://raw.githubusercontent.com/nickmcummins/archlinux-pkgbuilds/master/screenshots/idv.png)
+![idv Screenshot](https://raw.githubusercontent.com/nickmcummins/archlinux-pkgbuilds/master/screenshots/idv.png)
 
 
