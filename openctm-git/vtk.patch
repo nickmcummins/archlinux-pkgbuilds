@@ -1,0 +1,34 @@
+Index: tools/stl.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- tools/stl.cpp	(revision 91b3b71009ade4b036570526327a7e547fe43cbf)
++++ tools/stl.cpp	(date 1583962859044)
+@@ -136,7 +136,8 @@
+     aMesh->mVertices.push_back(Vector3(p[0], p[1], p[2]));
+   }
+ 
+-  vtkIdType *vertices, nVertices;
++  const vtkIdType *vertices;
++  vtkIdType nVertices;
+   mesh->BuildCells();
+   for (int i = 0; i < mesh->GetNumberOfCells(); i++) {
+     mesh->GetCellPoints(i, nVertices, vertices);
+Index: tools/vtk.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- tools/vtk.h	(revision 91b3b71009ade4b036570526327a7e547fe43cbf)
++++ tools/vtk.h	(date 1583962879728)
+@@ -39,7 +39,8 @@
+     aMesh->mVertices.push_back(Vector3(p[0], p[1], p[2]));
+   }
+ 
+-  vtkIdType *vertices, nVertices;
++  const vtkIdType *vertices;
++  vtkIdType nVertices;
+   mesh->BuildCells();
+   for (int i = 0; i < mesh->GetNumberOfCells(); i++) {
+     mesh->GetCellPoints(i, nVertices, vertices);

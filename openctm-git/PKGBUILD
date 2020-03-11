@@ -1,0 +1,44 @@
+# Maintainer: Nick M Cummins <nickmcummins dot linuxmail.org>
+
+pkgname=openctm-git
+_pkgname=OpenCTM
+pkgver=r450.91b3b71
+pkgrel=1
+pkgdesc="A file format, a software library and a tool set for compression of 3D triangle meshes. "
+arch=('x86_64')
+url="http://openctm.sourceforge.net/"
+depends=()
+provides=("openctm")
+source=("git+https://github.com/Danny02/OpenCTM.git"
+    "vtk.patch")
+sha1sums=('SKIP' 'SKIP')
+
+pkgver() {
+	cd ${srcdir}/${_pkgname}
+	# Use the tag of the last commit
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+	cd ${srcdir}/${_pkgname}
+	patch -Np0 -i $srcdir/vtk.patch
+	
+	cp Makefile.linux Makefile
+	make
+}
+
+package() {
+    mkdir -p ${pkgdir}/usr/lib
+    mkdir -p ${pkgdir}/usr/include
+    mkdir -p ${pkgdir}/usr/bin
+    mkdir -p ${pkgdir}/usr/share/man/man1
+
+    cd ${srcdir}/${_pkgname}
+    cp lib/libopenctm.so ${pkgdir}/usr/lib
+    cp lib/openctm.h ${pkgdir}/usr/include
+    cp lib/openctmpp.h ${pkgdir}/usr/include
+    cp tools/ctmconv ${pkgdir}/usr/bin
+    cp tools/ctmviewer ${pkgdir}/usr/bin
+    cp doc/ctmconv.1 ${pkgdir}/usr/share/man/man1
+    cp doc/ctmviewer.1 ${pkgdir}/usr/share/man/man1
+}
