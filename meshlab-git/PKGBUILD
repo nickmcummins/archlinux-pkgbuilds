@@ -1,0 +1,59 @@
+# Maintainer : Nick M Cummins <nickmcummins at linuxmail dot org>
+pkgname=meshlab-git
+_pkgname=meshlab
+pkgver=Meshlab.2020.03.r36.gd0fa7a31
+pkgrel=1
+pkgdesc="System for processing and editing of unstructured 3D models arising in 3D scanning (qt5 version)"
+arch=('i686' 'x86_64')
+url="https://www.meshlab.net"
+conflicts=('meshlab')
+provides=('meshlab')
+license=('GPL2')
+depends=('bzip2' 'desktop-file-utils' 'glu' 'openssl-1.0' 'qt5-base' 'qt5-declarative' 'qt5-script' 'qt5-xmlpatterns')
+makedepends=('cmake' 'ninja' 'git' 'muparser' 'levmar' 'lib3ds' 'mpir')
+optdepends=('u3d: for U3D and IDTF file support'
+            'lib3ds: for Autodesk`s 3D-Studio r3 and r4 .3DS file support'
+            'levmar: for isoparametrization and mutualcorrs plugins'
+            'muparser: for filer_func plugins'
+            'mpir: for Constructive Solid Geometry operation filters')
+source=("git+https://github.com/cnr-isti-vclab/meshlab.git"
+        "meshlab.desktop")
+sha256sums=('SKIP'
+            'SKIP')
+
+prepare() {
+    cd ${srcdir}
+    git submodule update --init --recursive
+    cd ${_pkgname}
+}
+
+pkgver() {
+  cd ${srcdir}/${pkgname%-git}
+  git describe --long --tags | sed 's/Meshlab-\([0-9]*-[0-9]*\)-[a-z0-9]*-/\1-/g;s/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+
+build() {
+    cd ${srcdir}/${_pkgname}/src
+    mkdir -p build && cd build
+
+    cmake .. \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DALLOW_SYSTEM_QHULL=FALSE \
+        -DINSTALL_SAMPLE_MESHES=TRUE \
+        -DINSTALL_SAMPLE_RANGEMAPS=TRUE
+    make
+
+}
+
+package() {
+    cd ${srcdir}/${_pkgname}/src/build
+    mkdir -p ${srcdir}/${_pkgname}/install/linux/resources
+    cp ${srcdir}/meshlab.desktop ${srcdir}/${_pkgname}/install/linux/resources/meshlab.desktop
+
+    make DESTDIR="$pkgdir" install
+
+    for size in 16 48 128 512; do
+        install -D -m 644 ../meshlab/images/eye${size}.png $pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/${_pkgname}.png
+    done
+}
