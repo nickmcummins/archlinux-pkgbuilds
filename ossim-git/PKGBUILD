@@ -23,11 +23,6 @@ pkgver() {
 build() {
   cd $srcdir/$_pkgname
 
-  #Build
-    if [[ -d "$srcdir/build" ]]; then
-    (rm -rf $srcdir/build)
-  fi
-
   mkdir -p build && cd build
 
 
@@ -39,7 +34,7 @@ build() {
   		-DBUILD_OSSIM_VIDEO=ON \
   		-DBUILD_OSSIM_MPI_SUPPORT=ON \
   		-DUSE_OSSIM_JSONCPP=OFF
-  make -j10
+  make -j1
 }
 
 
@@ -47,6 +42,12 @@ package() {
 	cd ${srcdir}/${_pkgname}/build
 	make DESTDIR="${pkgdir}/" install
 
+    mv $pkgdir/usr/lib64 $pkgdir/usr/lib
+
+    for cmakefilepath in ../cmake/CMakeModules/*.cmake; do
+        cmakefile=`basename $cmakefilepath`
+        install -Dm 644 $cmakefilepath $pkgdir/usr/share/cmake/Modules/$cmakefile
+    done
 
 }
 
