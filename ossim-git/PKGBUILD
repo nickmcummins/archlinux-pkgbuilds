@@ -1,0 +1,52 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+pkgname=ossim-git
+_pkgname=ossim
+pkgver=r2185.27ba8a59
+pkgrel=1
+pkgdesc="OSSIM is a powerful suite of geospatial libraries and applications used to process imagery, maps, terrain, and vector data."
+url="http://www.ossim.org"
+license=('LGPL')
+arch=('i686' 'x86_64')
+depends=('freetype2' 'gdal' 'libgeotiff' 'libjpeg' 'libtiff' 'openthreads' 'openjpeg'  'doxygen' 
+'hdf5-cpp-fortran' 'minizip' 'expat' 'ffmpeg' 'qt4' 'podofo' 'bzip2' 'freetype2' 'pdal')
+makedepends=('cmake')
+optdepends=( 'java-environment-common' 'openmpi' 'gpstk-bin' )
+source=("git+https://github.com/ossimlabs/ossim.git")
+md5sums=('SKIP')
+
+pkgver() {
+	cd ${srcdir}/${_pkgname}
+	# Use the tag of the last commit
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+  cd $srcdir/$_pkgname
+
+  #Build
+    if [[ -d "$srcdir/build" ]]; then
+    (rm -rf $srcdir/build)
+  fi
+
+  mkdir -p build && cd build
+
+
+  cmake .. \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_INSTALL_LIBDIR=lib \
+  		-DBUILD_OSSIM_PLANET=ON \
+  		-DBUILD_OSSIM_VIDEO=ON \
+  		-DBUILD_OSSIM_MPI_SUPPORT=ON \
+  		-DUSE_OSSIM_JSONCPP=OFF
+  make -j10
+}
+
+
+package() {
+	cd ${srcdir}/${_pkgname}/build
+	make DESTDIR="${pkgdir}/" install
+
+
+}
+
