@@ -1,6 +1,6 @@
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=8.2.0.4606.g362fa7c0c9
+pkgver=9.0.0.rc1.219.g1edcada481
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization'
 arch=('i686' 'x86_64')
@@ -10,8 +10,8 @@ depends=('jsoncpp' 'libxt' 'double-conversion' 'glew' 'hdf5' 'python' 'proj')
 makedepends=('git' 'cmake' 'doxygen' 'boost' 'java-environment' 'utf8cpp')
 provides=("vtk")
 conflicts=("vtk")
-source=("git+https://gitlab.kitware.com/vtk/vtk.git" "qvtkwidget2-get-frame.patch")
-sha256sums=("SKIP" "SKIP")
+source=("git+https://gitlab.kitware.com/vtk/vtk.git")
+sha256sums=("SKIP")
 
 pkgver() {
   cd "${srcdir}/vtk"
@@ -24,10 +24,9 @@ prepare() {
 
 build() {
   cd "${_pkgname}"
-  
- 
+
+
   cd "${srcdir}/vtk"
-  patch -Np0 -i "${srcdir}"/qvtkwidget2-get-frame.patch
   export JAVA_HOME=/usr/lib/jvm/default
   mkdir -p build && cd build
   cmake $srcdir/$_pkgname \
