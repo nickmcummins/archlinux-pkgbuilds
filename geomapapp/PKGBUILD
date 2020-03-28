@@ -1,0 +1,32 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail.org>
+
+pkgname=GeoMapApp
+pkgver=3.6.10
+pkgrel=1
+pkgdesc="Map-based application for browsing, visualizing and analyzing a diverse suite of curated global and regional geoscience data sets."
+PKGEXT='.pkg.tar.lzo'
+arch=('any')
+url="http://www.geomapapp.org/"
+depends=()
+makedepends=('libicns')
+provides=('GeoMapApp')
+source=("http://www.geomapapp.org/MapApp/GeoMapApp.jar"
+        'GeoMapApp.desktop'
+        'GeoMapApp.icns')
+sha1sums=('3ddfbdd1bc2334d9878ba7d670f79ee7fc33c416'
+        'SKIP'
+        'SKIP')
+
+package() {
+    cd ${srcdir}
+  
+    icns2png -x ${pkgname}.icns
+    for size in 16 32 128 256 512; do 
+        install -D -m 644 ${pkgname}_${size}x${size}x32.png ${pkgdir}/usr/share/icons/hicolor/${size}x${size}/apps/${pkgname}.png
+    done
+    
+    mkdir -p ${pkgdir}/opt/${pkgname}
+    install -Dm644 GeoMapApp.jar ${pkgdir}/opt/${pkgname}
+    
+    install -D -m644 ${srcdir}/*.desktop -t ${pkgdir}/usr/share/applications 
+}

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.1
+Type=Application
+Name=GeoMapApp
+Comment=Map-based application for browsing, visualizing and analyzing a diverse suite of curated global and regional geoscience data sets.
+Icon=GeoMapApp
+Exec=java -Xms8g -Xmx24g -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Djava.library.path=/opt/GeoMapApp -jar /opt/GeoMapApp/GeoMapApp.jar
+Path=/opt/GeoMapApp
+Actions=
+Categories=GIS;
