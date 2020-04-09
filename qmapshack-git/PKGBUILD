@@ -1,0 +1,43 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+
+pkgname=qmapshack-git
+pkgver=1.14.1.r4677.72bf4529
+pkgrel=1
+pkgdesc='Plan your next outdoor trip'
+arch=('x86_64')
+url='https://bitbucket.org/maproom/qmapshack'
+license=('GPL3')
+depends=('gdal' 'desktop-file-utils' 'quazip' 'qt5-webengine' 'routino>=3.1' 'alglib')
+makedepends=('cmake' 'mercurial' 'python')
+conflicts=('qmapshack' 'qmapshack-hg')
+provides=('qmapshack')
+source=("$pkgname::git+https://github.com/Maproom/qmapshack#branch=dev")
+sha256sums=('SKIP')
+
+pkgver() {
+	cd ${srcdir}/${pkgname}
+	# Use the tag of the last commit
+	REVISION=$(printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)")
+	GITVERSION=$(git describe --long --tags | sed -r 's/^v//;s/([^-]*-g)/r\1/;s/-/./g')
+	VERSION=$(python -c "import sys; print(sys.argv[1].split('.r')[0].replace('V_', '').strip())" ${GITVERSION})
+	printf "${VERSION}.${REVISION}"
+}
+
+build() {
+    cd ${srcdir}/${pkgname}
+
+    sed -i "s/set(VERSION_SUFFIX \"develop\")/set(VERSION_SUFFIX \"r${pkgver#*r}\")/" CMakeLists.txt
+    [ ! -f cmake/Modules/FindPROJ4.cmake ] && patch --quiet -p1 < FindPROJ4.patch
+    [ ! -f cmake/Modules/FindQuaZip5.cmake ] && patch --quiet -p1 < FindQuaZip5.patch
+
+    mkdir -p build && cd build
+    cmake .. \
+     -DCMAKE_INSTALL_PREFIX=/usr \
+     -DCMAKE_BUILD_TYPE=Release
+    make
+}
+
+package() {
+    cd ${srcdir}/${pkgname}/build
+    make DESTDIR="${pkgdir}" install
+}
