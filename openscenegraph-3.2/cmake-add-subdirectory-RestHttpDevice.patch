@@ -1,0 +1,11 @@
+--- src/osgPlugins/CMakeLists.txt
++++ src/osgPlugins/CMakeLists.txt
+@@ -266,7 +266,7 @@
+     ADD_SUBDIRECTORY(sdl)
+ ENDIF(SDL_FOUND)
+ 
+-IF(ASIO_FOUND)
++IF(ASIO_FOUND AND BUILD_REST_HTTP_DEVICE_PLUGIN)
+     ADD_SUBDIRECTORY(RestHttpDevice)
+ ENDIF(ASIO_FOUND)
+ 

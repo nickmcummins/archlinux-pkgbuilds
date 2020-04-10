@@ -1,0 +1,11 @@
+--- examples/CMakeLists.txt.orig	2020-04-09 17:26:58.898419026 -0700
++++ examples/CMakeLists.txt	2020-04-09 17:27:02.885075214 -0700
+@@ -200,7 +200,7 @@
+         ADD_SUBDIRECTORY(osgviewerFOX)
+     ENDIF(FOX_FOUND)
+ 
+-    IF   (wxWidgets_FOUND AND CMAKE_BUILD_TYPE)
++    IF   (wxWidgets_FOUND AND CMAKE_BUILD_TYPE AND BUILD_OSG_EXAMPLES_WX)
+         IF (${CMAKE_BUILD_TYPE} STREQUAL "Release")
+             ADD_SUBDIRECTORY(osgviewerWX)
+         ENDIF()

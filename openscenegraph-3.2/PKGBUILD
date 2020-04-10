@@ -1,0 +1,53 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+pkgname=openscenegraph-3.2
+pkgver=3.2.2
+pkgrel=1
+pkgdesc="An Open Source, high performance real-time graphics toolkit"
+arch=('i686' 'x86_64')
+license=('custom:OSGPL')
+url="http://www.openscenegraph.org"
+depends=('giflib4' 'jasper' 'librsvg' 'xine-lib' 'curl' 'pth' 'ffmpeg-compat-55')
+makedepends=('cmake' 'libvncserver')
+optdepends=('libvncserver' 'gdal1' 'openexr' 'poppler-glib')
+provides=(${pkgname})
+source=(https://github.com/openscenegraph/OpenSceneGraph/archive/OpenSceneGraph-${pkgver}.zip
+        cmake-add-subdirectory-RestHttpDevice.patch
+        cmake-build-examples-wx-flag.patch)
+md5sums=('SKIP'
+         'SKIP'
+         'SKIP')
+
+
+build() {
+  cd ${srcdir}/OpenSceneGraph-OpenSceneGraph-${pkgver}
+
+  patch -Np0 -i ${srcdir}/cmake-add-subdirectory-RestHttpDevice.patch
+  patch -Np0 -i ${srcdir}/cmake-build-examples-wx-flag.patch
+  mkdir -p build && cd build
+
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/opt/openscenegraph-3.2 \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_OSG_EXAMPLES=ON \
+    -DBUILD_OSG_EXAMPLES_WX=OFF \
+    -DBUILD_OSG_PACKAGES=ON \
+    -DBUILD_REST_HTTP_DEVICE_PLUGIN=OFF \
+    -DFFMPEG_LIBAVCODEC_INCLUDE_DIRS:PATH=/usr/include/ffmpeg-55 \
+    -DFFMPEG_LIBAVCODEC_LIBRARIES:FILEPATH=/usr/lib/libavcodec.so.55 \
+    -DFFMPEG_LIBAVDEVICE_INCLUDE_DIRS:PATH=/usr/include/ffmpeg-55 \
+    -DFFMPEG_LIBAVDEVICE_LIBRARIES:FILEPATH=/usr/lib/libavdevice.so.55 \
+    -DFFMPEG_LIBAVFORMAT_INCLUDE_DIRS:PATH=/usr/include/ffmpeg-55 \
+    -DFFMPEG_LIBAVFORMAT_LIBRARIES:FILEPATH=/usr/lib/libavformat.so.55 \
+    -DFFMPEG_LIBAVUTIL_INCLUDE_DIRS:PATH=/usr/include/ffmpeg-55 \
+    -DFFMPEG_LIBAVUTIL_LIBRARIES:FILEPATH=/usr/lib/libavutil.so.52 \
+    -DFFMPEG_LIBSWSCALE_INCLUDE_DIRS:PATH=/usr/include/ffmpeg-55
+  make -j10
+}
+
+package() {
+  cd ${srcdir}/OpenSceneGraph-OpenSceneGraph-${pkgver}/build
+  make DESTDIR="$pkgdir" install
+  mv "${pkgdir}/opt/openscenegraph-3.2/lib64" "${pkgdir}/opt/openscenegraph-3.2/lib"
+}
+
+#category: lib
