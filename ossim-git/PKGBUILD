@@ -1,7 +1,7 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
 pkgname=ossim-git
 _pkgname=ossim
-pkgver=r2185.27ba8a59
+pkgver=2.11.r2206.694dc861
 pkgrel=1
 pkgdesc="OSSIM is a powerful suite of geospatial libraries and applications used to process imagery, maps, terrain, and vector data."
 url="http://www.ossim.org"
@@ -17,7 +17,10 @@ md5sums=('SKIP')
 pkgver() {
 	cd ${srcdir}/${_pkgname}
 	# Use the tag of the last commit
-	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+	REVISION=$(printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)")
+	GITVERSION=$(git describe --long --tags | sed -r 's/^v//;s/([^-]*-g)/r\1/;s/-/./g')
+	VERSION=$(python -c "import sys; print('.'.join(sys.argv[1].split('.')[1:3]))" ${GITVERSION})
+	printf "${VERSION}.${REVISION}"
 }
 
 build() {
@@ -30,11 +33,19 @@ build() {
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DCMAKE_INSTALL_LIBDIR=lib \
+        -DCMAKE_CXX_FLAGS='' \
+        -DCMAKE_C_FLAGS='' \
+        -DCMAKE_SHARED_LINKER_FLAGS='' \
+        -DCMAKE_EXE_LINKER_FLAGS='' \
+        -DCMAKE_MODULE_LINKER_FLAGS='' \
   		-DBUILD_OSSIM_PLANET=ON \
   		-DBUILD_OSSIM_VIDEO=ON \
   		-DBUILD_OSSIM_MPI_SUPPORT=ON \
+  		-DGEOS_C_LIB=/usr/lib/libgeos_c.so \
+  		-DGEOS_LIB=/usr/lib/libgeos_c.so \
+  		-DGEOS_LIBRARY=/usr/lib/libgeos_c.so \
   		-DUSE_OSSIM_JSONCPP=OFF
-  make -j1
+  make
 }
 
 
