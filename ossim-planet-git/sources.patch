@@ -1,0 +1,38 @@
+Index: src/ossimPlanet/ossimPlanetLatLonHud.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/ossimPlanet/ossimPlanetLatLonHud.cpp	(revision 5612cf8ad483afbbb09e516cea34b2960d315fc9)
++++ src/ossimPlanet/ossimPlanetLatLonHud.cpp	(date 1586479309486)
+@@ -334,12 +334,12 @@
+ //   bb = osg::BoundingBox();
+    osg::Vec3d pos = osg::Vec3d(x, y+5, 0.0);
+ //   bb.expandBy(theRangeText->getBound());
+-   bb = theRangeText->getBoundingBox();
++   bb = theRangeText->getBound();
+    theRangeText->setPosition(pos);
+    int height = (int)(bb.yMax() - bb.yMin()) + 5;
+    pos += osg::Vec3d(0.0,(height), 0.0);
+    theLookText->setPosition(pos);
+-   bb = theLookText->getBoundingBox();
++   bb = theLookText->getBound();
+ //   bb.expandBy(theLookText->getBound());
+    height = (int)(bb.yMax() - bb.yMin()) + 5;
+    pos += osg::Vec3d(0.0,(height), 0.0);
+Index: src/ossimPlanet/ossimPlanetLand.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/ossimPlanet/ossimPlanetLand.cpp	(revision 5612cf8ad483afbbb09e516cea34b2960d315fc9)
++++ src/ossimPlanet/ossimPlanetLand.cpp	(date 1586479095583)
+@@ -876,7 +876,7 @@
+ {
+    theGL2Extensions = new osg::GL2Extensions(0);
+    theShadersInitializedFlag = false;
+-   if(!theGL2Extensions->isGlslSupported)
++   if(!theGL2Extensions->isGlslSupported())
+    {
+       theCurrentShaderProgram = 0;
+       theReaderWriter->setMultiTextureEnableFlag(false);
