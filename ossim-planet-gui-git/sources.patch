@@ -1,0 +1,35 @@
+Index: include/ossimPlanetQt/ossimPlanetQtAlertLayer.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- include/ossimPlanetQt/ossimPlanetQtAlertLayer.h	(revision d5e63187111090f51920f7929c05b368a7e4a28d)
++++ include/ossimPlanetQt/ossimPlanetQtAlertLayer.h	(date 1586486643233)
+@@ -55,7 +55,7 @@
+    }
+    virtual void drawImplementation(osg::RenderInfo& state)const;
+ 
+-   virtual osg::BoundingSphere computeBound()const;
++   virtual osg::BoundingBox computeBound() const;
+    virtual void addOrUpdateAlert(const AlertInfo& info);
+ protected:
+    
+Index: src/gui/ossimPlanetQtAlertLayer.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/gui/ossimPlanetQtAlertLayer.cpp	(revision d5e63187111090f51920f7929c05b368a7e4a28d)
++++ src/gui/ossimPlanetQtAlertLayer.cpp	(date 1586486643227)
+@@ -71,9 +71,8 @@
+    }
+ }
+ 
+-osg::BoundingSphere ossimPlanetQtAlertIconCallout::computeBound()const
+-{
+-   osg::BoundingSphere bounds;
++osg::BoundingBox ossimPlanetQtAlertIconCallout::computeBound() const {
++   osg::BoundingBox bounds;
+ 
+    return bounds;
+ }

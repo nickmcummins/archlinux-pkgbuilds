@@ -1,0 +1,68 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+pkgname=ossim-planet-gui-git
+_pkgname=ossim-planet-gui
+pkgver=r10.d5e6318
+pkgrel=1
+pkgdesc="C++ library for 3D visualization of imagery."
+url="http://www.ossim.org"
+license=('LGPL')
+arch=('i686' 'x86_64')
+depends=('ossim-planet')
+makedepends=('cmake')
+optdepends=( )
+source=("git+https://github.com/ossimlabs/ossim-planet-gui.git"
+    'sources.patch')
+md5sums=('SKIP'
+    'SKIP')
+
+pkgver() {
+	cd ${srcdir}/${_pkgname}
+	# Use the tag of the last commit
+    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+  cd $srcdir/$_pkgname
+  patch -Np0 -i ${srcdir}/sources.patch
+
+  mkdir -p build && cd build
+
+  export CPATH=/opt/openscenegraph-3.2/include
+  export LD_LIBRARY_PATH=/opt/openscenegraph-3.2/lib:/usr/lib
+
+  cmake .. \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_INSTALL_LIBDIR=lib \
+        -DCMAKE_CXX_FLAGS='' \
+        -DCMAKE_C_FLAGS='' \
+        -DCMAKE_SHARED_LINKER_FLAGS='' \
+        -DCMAKE_EXE_LINKER_FLAGS='' \
+        -DCMAKE_MODULE_LINKER_FLAGS='' \
+        -DCMAKE_MODULE_PATH=/usr/share/cmake/Modules \
+  		-DBUILD_OSSIM_PLANET=ON \
+  		-DOSGDB_LIBRARY=/opt/openscenegraph-3.2/lib/libosgDB.so \
+        -DOSGFX_LIBRARY=/opt/openscenegraph-3.2/lib/libosgFX.so \
+        -DOSGGA_LIBRARY=/opt/openscenegraph-3.2/lib/libosgGA.so \
+        -DOSGSHADOW_LIBRARY=/opt/openscenegraph-3.2/lib/libosgShadow.so \
+        -DOSGTERRAIN_LIBRARY=/opt/openscenegraph-3.2/lib/libosgTerrain.so \
+        -DOSGTEXT_LIBRARY=/opt/openscenegraph-3.2/lib/libosgText.so \
+        -DOSGUTIL_LIBRARY=/opt/openscenegraph-3.2/lib/libosgUtil.so \
+        -DOSGVIEWER_LIBRARY=/opt/openscenegraph-3.2/lib/libosgViewer.so \
+        -DOSGVOLUME_LIBRARY=/opt/openscenegraph-3.2/lib/libosgVolume.so \
+        -DOSGWIDGET_LIBRARY=/opt/openscenegraph-3.2/lib/libosgWidget.so \
+        -DOSG_LIBRARY=/opt/openscenegraph-3.2/lib/libosg.so \
+        -DOSG_INCLUDE_DIR=/opt/openscenegraph-3.2/include \
+        -DOSSIMPLANET_LIBRARY=/usr/lib/libossim-planet.so
+
+  make -j12
+}
+
+
+package() {
+	cd ${srcdir}/${_pkgname}/build
+	make DESTDIR="${pkgdir}/" install
+
+    mv $pkgdir/usr/lib64 $pkgdir/usr/lib
+}
+
