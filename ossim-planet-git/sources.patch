@@ -36,3 +36,29 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
     {
        theCurrentShaderProgram = 0;
        theReaderWriter->setMultiTextureEnableFlag(false);
+Index: src/ossimPlanet/ossimPlanetEphemeris.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/ossimPlanet/ossimPlanetEphemeris.cpp	(revision 5612cf8ad483afbbb09e516cea34b2960d315fc9)
++++ src/ossimPlanet/ossimPlanetEphemeris.cpp	(date 1586487888208)
+@@ -3,12 +3,12 @@
+ #include <osg/PositionAttitudeTransform>
+ #include <osg/io_utils>
+ //#include <gpstk/Geodetic.hpp>
+-#include <gpstk/SunPosition.hpp>
+-#include <gpstk/MoonPosition.hpp>
+-#include <gpstk/Position.hpp>
+-#include <gpstk/WGS84Ellipsoid.hpp>
+-#include <gpstk/SystemTime.hpp>
+-#include <gpstk/ReferenceFrame.hpp>
++#include <SunPosition.hpp>
++#include <MoonPosition.hpp>
++#include <Position.hpp>
++#include <WGS84Ellipsoid.hpp>
++#include <SystemTime.hpp>
++#include <ReferenceFrame.hpp>
+ //#include <gpstk/ECEF.hpp>
+ //#include <gpstk/WGS84Geoid.hpp>
+ #include <ossimPlanet/ossimPlanetEphemeris.h>
