@@ -1,0 +1,84 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+
+_name=PDAL
+pkgname=pdal-git
+pkgver=2.0.0.r255.gfb13585fd
+pkgrel=1
+pkgdesc="A C++ library for translating and manipulating point cloud data."
+arch=('x86_64')
+url="http://www.pdal.io"
+license=('BSD')
+depends=('gdal' 'geos' 'libgeotiff')
+makedepends=('cmake' 'python' 'python-numpy' 'git' 'sqlite' 'postgresql-libs' 'pcl' 'laszip')
+optdepends=('python-numpy: for the Python plugin'
+            'libxml2: for using the database drivers'
+            'sqlite: for the sqlite plugin'
+            'postgresql-libs: for the postgresql plugin'
+            'pcl: for PointCloudLibrary algorithms'
+            'laszip: for LASzip compression'
+            'laz-perf: an alternative LAZ implementation'
+            'jsoncpp: for JSON pipelines'
+            'fbx-sdk: for the FBX plugin'
+            'mrsid-sdk: for the MrSID plugin'
+            'cpd: for the Coherent Point Drift plugin'
+            'hdf5: for HDF support'
+            'mbsystem: for the MBIO plugin'
+            'openscenegraph: for the OpenSceneGraph plugin'
+            'tiledb: for the TileDB plugin'
+            'nitro: for the NITF plugin')
+provides=('pdal')
+conflicts=('pdal')
+source=("git+https://github.com/PDAL/PDAL" "niftwrap-wgs84fromzone.patch" "osgreader.patch")
+sha512sums=('SKIP' 'SKIP' 'SKIP')
+
+pkgver() {
+    cd ${srcdir}/${_name}
+    git describe --long --tags | sed -r 's/^v//;s/([^-]*-g)/r\1/;s/-/./g'
+}
+
+build() {
+    cd ${srcdir}/${_name}
+    patch -Np0 -i $srcdir/niftwrap-wgs84fromzone.patch
+    patch -Np0 -i $srcdir/osgreader.patch
+
+
+    #rm -rf build
+    mkdir -p build && cd build
+
+    cmake .. \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DBUILD_SHARED_LIBS=ON \
+        -DBUILD_PLUGIN_CPD=ON \
+        -DBUILD_PLUGIN_E57=ON \
+        -DBUILD_PLUGIN_FBX=ON \
+        -DBUILD_PLUGIN_GEOWAVE=OFF \
+        -DBUILD_PLUGIN_HDF=ON \
+        -DBUILD_PLUGIN_I3S=ON \
+        -DBUILD_PLUGIN_ICEBRIDGE=ON \
+        -DBUILD_PLUGIN_MATLAB=OFF \
+        -DBUILD_PLUGIN_MBIO=ON \
+        -DBUILD_PLUGIN_NITF=ON \
+       	-DBUILD_PLUGIN_OPENSCENEGRAPH=ON \
+        -DBUILD_PLUGIN_PGPOINTCLOUD=ON \
+        -DBUILD_PLUGIN_TILEDB=ON \
+        -DBUILD_TOOLS_NITFWRAP=ON \
+        -DWITH_LAZPERF=ON \
+        -DWITH_LASZIP=ON \
+        -DWITH_COMPLETION=ON \
+        -DWITH_TESTS=ON \
+        -DFBX_INCLUDE_DIR=/usr \
+        -DFBX_LIB=/usr/lib/libfbxsdk.so \
+        -DLASZIP_INCLUDE_DIR=/usr/include \
+        -DLASZIP_LIBRARY=/usr/lib/liblaszip.so
+        #-DRiVLib_DIR=
+        #-DBUILD_PLUGIN_RIVLIB=ON
+
+    make -j10
+}
+
+package() {
+    cd ${srcdir}/${_name}/build
+
+    make DESTDIR="$pkgdir/" install
+    install -Dm644 ../LICENSE.txt "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+}

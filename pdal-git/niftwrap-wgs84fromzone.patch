@@ -1,0 +1,16 @@
+Index: tools/nitfwrap/NitfWrap.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- tools/nitfwrap/NitfWrap.cpp	(revision fb13585fde14f5f72f15f436e44985ee813b899c)
++++ tools/nitfwrap/NitfWrap.cpp	(date 1587180188013)
+@@ -280,7 +280,7 @@
+             bounds.maxz = d.m_max;
+         }
+     }
+-    SpatialReference srs = SpatialReference::fromZone(h.m_coordId);
++    SpatialReference srs = SpatialReference::wgs84FromZone(h.m_coordId);
+     gdal::reprojectBounds(bounds, srs, "EPSG:4326");
+     return true;
+ }
