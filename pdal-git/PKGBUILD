@@ -2,7 +2,7 @@
 
 _name=PDAL
 pkgname=pdal-git
-pkgver=2.0.0.r255.gfb13585fd
+pkgver=2.0.0.r261.g539bb832b
 pkgrel=1
 pkgdesc="A C++ library for translating and manipulating point cloud data."
 arch=('x86_64')
@@ -28,8 +28,8 @@ optdepends=('python-numpy: for the Python plugin'
             'nitro: for the NITF plugin')
 provides=('pdal')
 conflicts=('pdal')
-source=("git+https://github.com/PDAL/PDAL" "niftwrap-wgs84fromzone.patch" "osgreader.patch")
-sha512sums=('SKIP' 'SKIP' 'SKIP')
+source=("git+https://github.com/PDAL/PDAL" "osgreader.patch")
+sha512sums=('SKIP' 'SKIP')
 
 pkgver() {
     cd ${srcdir}/${_name}
@@ -38,7 +38,6 @@ pkgver() {
 
 build() {
     cd ${srcdir}/${_name}
-    patch -Np0 -i $srcdir/niftwrap-wgs84fromzone.patch
     patch -Np0 -i $srcdir/osgreader.patch
 
 
@@ -70,10 +69,8 @@ build() {
         -DFBX_LIB=/usr/lib/libfbxsdk.so \
         -DLASZIP_INCLUDE_DIR=/usr/include \
         -DLASZIP_LIBRARY=/usr/lib/liblaszip.so
-        #-DRiVLib_DIR=
-        #-DBUILD_PLUGIN_RIVLIB=ON
 
-    make -j10
+    make
 }
 
 package() {
