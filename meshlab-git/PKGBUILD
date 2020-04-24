@@ -1,7 +1,7 @@
 # Maintainer : Nick M Cummins <nickmcummins at linuxmail dot org>
 pkgname=meshlab-git
 _pkgname=meshlab
-pkgver=2020.04.r36.gc2516bc5
+pkgver=2020.04.r102.g6b3ae510d
 pkgrel=1
 pkgdesc="System for processing and editing of unstructured 3D models arising in 3D scanning (qt5 version)"
 arch=('i686' 'x86_64')
