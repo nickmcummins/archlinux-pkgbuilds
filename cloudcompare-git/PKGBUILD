@@ -7,7 +7,7 @@
 
 name=cloudcompare
 pkgname=${name}-git
-pkgver=2.10.2.r573.g759e8bc7
+pkgver=2.10.2.r697.g7ffc133c
 pkgrel=1
 pkgdesc="A 3D point cloud (and triangular mesh) processing software"
 arch=('i686' 'x86_64')
@@ -20,17 +20,12 @@ conflicts=('cloudcompare')
 provides=('cloudcompare')
 source=("${name}::git+https://github.com/CloudCompare/CloudCompare.git"
         CloudCompare.desktop
-        ccViewer.desktop
-        constexpr.patch
-        )
+        ccViewer.desktop)
 md5sums=('SKIP'
          '379e09f6996b2b397429c0661c409bd0'
-         'b6dcb0dee15cc67011166a2fc774c5ef'
-         '456526b717c1b47d52990df8f06a04e0')
-
+         'b6dcb0dee15cc67011166a2fc774c5ef')
 prepare() {
   git -C "${name}" submodule update --init --recursive
-  git -C "${name}" apply -v "${srcdir}"/constexpr.patch
 }
 
 pkgver() {
@@ -42,7 +37,7 @@ build() {
   mkdir -p build && cd build
 
   cmake $srcdir/$name \
-        -Wno-dev \eigen
+        -Wno-dev \
         -DCMAKE_CXX_FLAGS=-fpermissive \
         -DOPTION_PDAL_LAS=ON \
         -DCMAKE_INSTALL_PREFIX=/usr \
@@ -95,7 +90,7 @@ build() {
         -DOPTION_USE_SHAPE_LIB=ON \
         -DEIGEN_ROOT_DIR=/usr/include/eigen3 \
         ..
-  make -j1
+  make
 }
 
 package() {
