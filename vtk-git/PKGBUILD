@@ -1,6 +1,8 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org> (Modified from AUR package)
+
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.0.0.rc1.219.g1edcada481
+pkgver=9.0.0.rc2.870.g5847a0f7bb
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization'
 arch=('i686' 'x86_64')
@@ -14,30 +16,28 @@ source=("git+https://gitlab.kitware.com/vtk/vtk.git")
 sha256sums=("SKIP")
 
 pkgver() {
-  cd "${srcdir}/vtk"
+  cd ${srcdir}/vtk
   git describe | sed 's:^v::;s:-:.:g'
 }
 
 prepare() {
-  cd "${srcdir}/vtk"
+  cd ${srcdir}/vtk
 }
 
 build() {
-  cd "${_pkgname}"
+  cd ${_pkgname}
 
-
-  cd "${srcdir}/vtk"
-  export JAVA_HOME=/usr/lib/jvm/default
+  cd ${srcdir}/vtk
   mkdir -p build && cd build
   cmake $srcdir/$_pkgname \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_SHARED_LIBS=ON \
-    -DINSTALL_CMAKE_PACKAGE_MODULE=OFF \
-    -DUSE_DCMTK=ON \
-    -DUSE_GDCM=ON \
-    -DUSE_SQLITE=ON \
+    -DINSTALL_CMAKE_PACKAGE_MODULE=ON \
+    -DUSE_DCMTK=OFF \
+    -DUSE_GDCM=OFF \
+    -DUSE_SQLITE=OFF \
     -DVTK_BUILD_ALL_MODULES=ON \
     -DVTK_BUILD_DOCUMENTATION=OFF \
     -DVTK_BUILD_EXAMPLES=ON \
@@ -46,7 +46,7 @@ build() {
     -DVTK_ENABLE_LOGGING=ON \
     -DVTK_ENABLE_VISRTX=OFF \
     -DVTK_LEGACY_REMOVE=OFF \
-    -DVTK_USE_LARGE_DATA=ON \
+    -DVTK_USE_LARGE_DATA=OFF \
     -DVTK_USE_EXTERNAL=ON \
     -DVTK_BUILD_TESTING=OFF \
     -DVTK_PYTHON_VERSION="3" \
@@ -212,14 +212,14 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_RenderingFreeTypeFontConfig=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingGL2PSOpenGL2=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingImage=YES \
-    -DVTK_MODULE_ENABLE_VTK_RenderingLICOpenGL2=YES \
+    -DVTK_MODULE_ENABLE_VTK_RenderingLICOpenGL2=NO \
     -DVTK_MODULE_ENABLE_VTK_RenderingLOD=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingLabel=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingMatplotlib=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingOpenGL2=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingOpenVR=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingParallel=YES \
-    -DVTK_MODULE_ENABLE_VTK_RenderingParallelLIC=YES \
+    -DVTK_MODULE_ENABLE_VTK_RenderingParallelLIC=NO \
     -DVTK_MODULE_ENABLE_VTK_RenderingQt=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingRayTracing=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingSceneGraph=YES \
@@ -313,8 +313,9 @@ build() {
     -DVTK_MODULE_USE_EXTERNAL_VTK_tiff=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_utf8=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_zlib=ON \
+    -DVTK_OPENGL_HAS_EGL=TRUE \
     -DVTK_OPENGL_USE_GLES=OFF \
-    -DVTK_SMP_IMPLEMENTATION_TYPE=OpenMP \
+    -DVTK_SMP_IMPLEMENTATION_TYPE=TBB \
     -DVTK_USE_64BIT_IDS=ON \
     -DVTK_USE_CUDA=ON \
     -DVTK_USE_MPI=ON \
@@ -322,7 +323,7 @@ build() {
     -DVTK_USE_X=ON \
     -DOpenVR_INCLUDE_DIR=/usr/include/openvr \
       ..
-  make -j1
+  make
 }
 
 package() {
