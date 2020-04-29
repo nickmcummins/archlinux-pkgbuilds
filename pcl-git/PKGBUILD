@@ -8,7 +8,7 @@
 
 pkgname=pcl-git
 _pkgname=pcl
-pkgver=r12193.0bb69c0c7
+pkgver=r12459.cd3ecd057
 pkgrel=1
 pkgdesc="a standalone, large scale, open project for 2D/3D image and point cloud processing"
 arch=(i686 x86_64)
@@ -51,7 +51,7 @@ prepare() {
 		-DBUILD_2d=ON \
 		-DBUILD_apps=ON \
 		-DBUILD_apps_3d_rec_framework=ON \
-		-DBUILD_apps_cloud_composer=ON \
+		-DBUILD_apps_cloud_composer=OFF \
 		-DBUILD_apps_in_hand_scanner=ON \
 		-DBUILD_apps_modeler=ON \
 		-DBUILD_apps_point_cloud_editor=ON \
@@ -79,14 +79,14 @@ prepare() {
 		-DBUILD_GPU=ON \
 		-DBUILD_visualization=ON \
 		-DWITH_CUDA=ON \
-		-DWITH_DOCS=OFF \
+		-DWITH_DOCS=ON \
 		-DWITH_ENSENSO=ON \
 		-DWITH_OPENGL=ON \
 		-DWITH_OPENNI=OFF \
 		-DWITH_OPENNI2=ON \
 		-DWITH_QT=ON \
 		-DWITH_RSSDK=OFF \
-		-DWITH_RSSDK2=OFF \
+		-DWITH_RSSDK2=ON \
 		-DWITH_TUTOTIALS=ON \
 		-DWITH_VTK=ON
 }

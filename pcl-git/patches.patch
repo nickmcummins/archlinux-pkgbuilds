@@ -1,10 +1,182 @@
+Index: apps/cloud_composer/include/pcl/apps/cloud_composer/items/fpfh_item.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- apps/cloud_composer/include/pcl/apps/cloud_composer/items/fpfh_item.h	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ apps/cloud_composer/include/pcl/apps/cloud_composer/items/fpfh_item.h	(date 1588188138057)
+@@ -43,7 +43,7 @@
+ #include <pcl/apps/cloud_composer/items/cloud_composer_item.h>
+ #include <pcl/visualization/pcl_plotter.h>
+ 
+-class QVTKWidget;
++class QVTKOpenGLNativeWidget;
+ 
+ namespace pcl
+ {
+@@ -74,7 +74,7 @@
+         pcl::PointCloud<pcl::FPFHSignature33>::Ptr fpfh_ptr_;
+         double radius_;
+         pcl::visualization::PCLPlotter::Ptr plot_;
+-        QVTKWidget *qvtk_;
++        QVTKOpenGLNativeWidget *qvtk_;
+         QWidget *hist_page_;
+     };
+ 
+Index: tools/mesh_sampling.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- tools/mesh_sampling.cpp	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ tools/mesh_sampling.cpp	(date 1588136905672)
+@@ -87,7 +87,7 @@
+ 
+   double A[3], B[3], C[3];
+   vtkIdType npts = 0;
+-  vtkIdType *ptIds = nullptr;
++  const vtkIdType *ptIds = nullptr;
+   polydata->GetCellPoints (el, npts, ptIds);
+   polydata->GetPoint (ptIds[0], A);
+   polydata->GetPoint (ptIds[1], B);
+@@ -138,7 +138,8 @@
+ 
+   double p1[3], p2[3], p3[3], totalArea = 0;
+   std::vector<double> cumulativeAreas (cells->GetNumberOfCells (), 0);
+-  vtkIdType npts = 0, *ptIds = nullptr;
++  vtkIdType npts = 0;
++  const vtkIdType *ptIds = nullptr;
+   std::size_t cellId = 0;
+   for (cells->InitTraversal (); cells->GetNextCell (npts, ptIds); cellId++)
+   {
+Index: apps/src/organized_segmentation_demo.ui
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- apps/src/organized_segmentation_demo.ui	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ apps/src/organized_segmentation_demo.ui	(date 1588195196457)
+@@ -37,7 +37,7 @@
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="3">
+-     <widget class="QVTKWidget" name="qvtk_widget">
++     <widget class="QVTKOpenGLNativeWidget" name="qvtk_widget">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>255</horstretch>
+@@ -214,9 +214,9 @@
+  </widget>
+  <customwidgets>
+   <customwidget>
+-   <class>QVTKWidget</class>
++   <class>QVTKOpenGLNativeWidget</class>
+    <extends>QWidget</extends>
+-   <header>QVTKWidget.h</header>
++   <header>QVTKOpenGLNativeWidget.h</header>
+   </customwidget>
+  </customwidgets>
+  <resources>
+Index: io/src/vtk_lib_io.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- io/src/vtk_lib_io.cpp	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ io/src/vtk_lib_io.cpp	(date 1587795717215)
+@@ -343,7 +343,7 @@
+ 
+   // Now handle the polygons
+   mesh.polygons.resize (nr_polygons);
+-  vtkIdType* cell_points;
++  const vtkIdType* cell_points;
+   vtkIdType nr_cell_points;
+   vtkCellArray * mesh_polygons = poly_data->GetPolys ();
+   mesh_polygons->InitTraversal ();
+Index: apps/cloud_composer/src/cloud_view.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- apps/cloud_composer/src/cloud_view.cpp	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ apps/cloud_composer/src/cloud_view.cpp	(date 1588188370900)
+@@ -7,15 +7,15 @@
+ 
+ #include <QDebug>
+ 
+-#include <QVTKWidget.h>
++#include <vtk-9.0/QVTKOpenGLNativeWidget.h>
+ 
+ pcl::cloud_composer::CloudView::CloudView (QWidget* parent)
+   : QWidget (parent)
+ {
+   vis_.reset (new pcl::visualization::PCLVisualizer ("", false));
+   vis_->getInteractorStyle ()->setKeyboardModifier (pcl::visualization::INTERACTOR_KB_MOD_SHIFT);
+-  //Create the QVTKWidget
+-  qvtk_ = new QVTKWidget (this);
++  //Create the QVTKOpenGLNativeWidget
++  qvtk_ = new QVTKOpenGLNativeWidget (this);
+   qvtk_->SetRenderWindow (vis_->getRenderWindow ());
+   initializeInteractorSwitch ();
+   vis_->setupInteractor (qvtk_->GetInteractor (), qvtk_->GetRenderWindow (), style_switch_);
+@@ -30,8 +30,8 @@
+   model_ = model;
+   vis_.reset (new pcl::visualization::PCLVisualizer ("", false));
+  // vis_->getInteractorStyle ()->setKeyboardModifier (pcl::visualization::INTERACTOR_KB_MOD_SHIFT);
+-  //Create the QVTKWidget
+-  qvtk_ = new QVTKWidget (this);
++  //Create the QVTKOpenGLNativeWidget
++  qvtk_ = new QVTKOpenGLNativeWidget (this);
+   qvtk_->SetRenderWindow (vis_->getRenderWindow ());
+   initializeInteractorSwitch ();
+   vis_->setupInteractor (qvtk_->GetInteractor (), qvtk_->GetRenderWindow (), style_switch_);
+Index: apps/modeler/src/render_window.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- apps/modeler/src/render_window.cpp	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ apps/modeler/src/render_window.cpp	(date 1588195196470)
+@@ -50,7 +50,7 @@
+ 
+ //////////////////////////////////////////////////////////////////////////////////////////////
+ pcl::modeler::RenderWindow::RenderWindow(RenderWindowItem* render_window_item, QWidget *parent, Qt::WindowFlags flags)
+-  : QVTKWidget(parent, flags),
++  : QVTKOpenGLNativeWidget(parent, flags),
+   axes_(vtkSmartPointer<vtkCubeAxesActor>::New()),
+   render_window_item_(render_window_item)
+ {
+@@ -107,7 +107,7 @@
+ {
+   dynamic_cast<SceneTree*>(render_window_item_->treeWidget())->selectRenderWindowItem(render_window_item_);
+ 
+-  QVTKWidget::focusInEvent(event);
++  QVTKOpenGLNativeWidget::focusInEvent(event);
+ }
+ 
+ //////////////////////////////////////////////////////////////////////////////////////////////
+Index: visualization/include/pcl/visualization/point_cloud_geometry_handlers.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- visualization/include/pcl/visualization/point_cloud_geometry_handlers.h	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ visualization/include/pcl/visualization/point_cloud_geometry_handlers.h	(date 1587797414803)
+@@ -45,6 +45,7 @@
+ #include <pcl/point_cloud.h>
+ #include <pcl/common/io.h>
+ // VTK includes
++#include <vtkRendererCollection.h>
+ #include <vtkSmartPointer.h>
+ #include <vtkPoints.h>
+ #include <vtkFloatArray.h>
 Index: apps/cloud_composer/include/pcl/apps/cloud_composer/point_selectors/interactor_style_switch.h
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
---- apps/cloud_composer/include/pcl/apps/cloud_composer/point_selectors/interactor_style_switch.h	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ apps/cloud_composer/include/pcl/apps/cloud_composer/point_selectors/interactor_style_switch.h	(date 1581195773987)
+--- apps/cloud_composer/include/pcl/apps/cloud_composer/point_selectors/interactor_style_switch.h	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ apps/cloud_composer/include/pcl/apps/cloud_composer/point_selectors/interactor_style_switch.h	(date 1588195196450)
 @@ -45,7 +45,7 @@
  #include <pcl/visualization/common/ren_win_interact_map.h>
  #include <pcl/visualization/pcl_visualizer.h>
@@ -32,223 +204,13 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
          /** \brief Internal pointer to PCLVisualizer that this Switch works with */
          pcl::visualization::PCLVisualizer::Ptr vis_;
        private:
-Index: apps/modeler/src/cloud_mesh_item.cpp
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
---- apps/modeler/src/cloud_mesh_item.cpp	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ apps/modeler/src/cloud_mesh_item.cpp	(date 1581159021905)
-@@ -155,9 +155,9 @@
- pcl::modeler::CloudMeshItem::createChannels()
- {
-   RenderWindowItem* render_window_item = dynamic_cast<RenderWindowItem*>(parent());
--  addChild(new PointsActorItem(this, cloud_mesh_, render_window_item->getRenderWindow()->GetRenderWindow()));
--  addChild(new NormalsActorItem(this, cloud_mesh_, render_window_item->getRenderWindow()->GetRenderWindow()));
--  addChild(new SurfaceActorItem(this, cloud_mesh_, render_window_item->getRenderWindow()->GetRenderWindow()));
-+  addChild(new PointsActorItem(this, cloud_mesh_, render_window_item->getRenderWindow()->renderWindow()));
-+  addChild(new NormalsActorItem(this, cloud_mesh_, render_window_item->getRenderWindow()->renderWindow()));
-+  addChild(new SurfaceActorItem(this, cloud_mesh_, render_window_item->getRenderWindow()->renderWindow()));
-   for (int i = 0, i_end = childCount(); i < i_end; ++ i)
-   {
-     ChannelActorItem* child_item = dynamic_cast<ChannelActorItem*>(child(i));
-@@ -241,7 +241,7 @@
-   for (int i = 0, i_end = childCount(); i < i_end; ++ i)
-   {
-     ChannelActorItem* child_item = dynamic_cast<ChannelActorItem*>(child(i));
--    child_item->switchRenderWindow(render_window_item->getRenderWindow()->GetRenderWindow());
-+    child_item->switchRenderWindow(render_window_item->getRenderWindow()->renderWindow());
-   }
- 
-   render_window_item->getRenderWindow()->updateAxes();
-Index: io/src/vtk_lib_io.cpp
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
---- io/src/vtk_lib_io.cpp	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ io/src/vtk_lib_io.cpp	(date 1581127063210)
-@@ -343,7 +343,7 @@
- 
-   // Now handle the polygons
-   mesh.polygons.resize (nr_polygons);
--  vtkIdType* cell_points;
-+  const vtkIdType *cell_points;
-   vtkIdType nr_cell_points;
-   vtkCellArray * mesh_polygons = poly_data->GetPolys ();
-   mesh_polygons->InitTraversal ();
-Index: visualization/include/pcl/visualization/impl/pcl_visualizer.hpp
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
---- visualization/include/pcl/visualization/impl/pcl_visualizer.hpp	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ visualization/include/pcl/visualization/impl/pcl_visualizer.hpp	(date 1581159517633)
-@@ -39,7 +39,6 @@
- #define PCL_PCL_VISUALIZER_IMPL_H_
- 
- #include <vtkVersion.h>
--#include <vtkSmartPointer.h>
- #include <vtkCellArray.h>
- #include <vtkLeaderActor2D.h>
- #include <vtkVectorText.h>
-@@ -1696,18 +1695,15 @@
-   {
-     // Create polys from polyMesh.polygons
-     vtkSmartPointer<vtkCellArray> cell_array = vtkSmartPointer<vtkCellArray>::New ();
--    vtkIdType *cell = cell_array->WritePointer (vertices.size (), vertices.size () * (max_size_of_polygon + 1));
-     int idx = 0;
-     if (!lookup.empty ())
-     {
-       for (std::size_t i = 0; i < vertices.size (); ++i, ++idx)
-       {
-         std::size_t n_points = vertices[i].vertices.size ();
--        *cell++ = n_points;
--        //cell_array->InsertNextCell (n_points);
-+        cell_array->InsertNextCell (n_points);
-         for (std::size_t j = 0; j < n_points; j++, ++idx)
--          *cell++ = lookup[vertices[i].vertices[j]];
--          //cell_array->InsertCellPoint (lookup[vertices[i].vertices[j]]);
-+          cell_array->InsertCellPoint (lookup[vertices[i].vertices[j]]);
-       }
-     }
-     else
-@@ -1715,11 +1711,9 @@
-       for (std::size_t i = 0; i < vertices.size (); ++i, ++idx)
-       {
-         std::size_t n_points = vertices[i].vertices.size ();
--        *cell++ = n_points;
--        //cell_array->InsertNextCell (n_points);
-+        cell_array->InsertNextCell (n_points);
-         for (std::size_t j = 0; j < n_points; j++, ++idx)
--          *cell++ = vertices[i].vertices[j];
--          //cell_array->InsertCellPoint (vertices[i].vertices[j]);
-+          cell_array->InsertCellPoint (vertices[i].vertices[j]);
-       }
-     }
-     vtkSmartPointer<vtkPolyData> polydata;
-@@ -1873,16 +1867,16 @@
- 
-   // Update the cells
-   cells = vtkSmartPointer<vtkCellArray>::New ();
--  vtkIdType *cell = cells->WritePointer (verts.size (), verts.size () * (max_size_of_polygon + 1));
-+  cells->AllocateEstimate(verts.size (), verts.size () * (max_size_of_polygon + 1));
-   int idx = 0;
-   if (!lookup.empty ())
-   {
-     for (std::size_t i = 0; i < verts.size (); ++i, ++idx)
-     {
-       std::size_t n_points = verts[i].vertices.size ();
--      *cell++ = n_points;
--      for (std::size_t j = 0; j < n_points; j++, cell++, ++idx)
--        *cell = lookup[verts[i].vertices[j]];
-+      cells->InsertNextCell(n_points);
-+      for (std::size_t j = 0; j < n_points; j++, ++idx)
-+        cells->InsertCellPoint(lookup[verts[i].vertices[j]]);
-     }
-   }
-   else
-@@ -1890,9 +1884,9 @@
-     for (std::size_t i = 0; i < verts.size (); ++i, ++idx)
-     {
-       std::size_t n_points = verts[i].vertices.size ();
--      *cell++ = n_points;
--      for (std::size_t j = 0; j < n_points; j++, cell++, ++idx)
--        *cell = verts[i].vertices[j];
-+      cells->InsertNextCell(n_points);
-+      for (std::size_t j = 0; j < n_points; j++, ++idx)
-+        cells->InsertCellPoint(verts[i].vertices[j]);
-     }
-   }
-   cells->GetData ()->SetNumberOfValues (idx);
-Index: apps/cloud_composer/src/cloud_view.cpp
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
---- apps/cloud_composer/src/cloud_view.cpp	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ apps/cloud_composer/src/cloud_view.cpp	(date 1581159246294)
-@@ -7,7 +7,7 @@
- 
- #include <QDebug>
- 
--#include <QVTKWidget.h>
-+#include <QVTKOpenGLNativeWidget.h>
- 
- pcl::cloud_composer::CloudView::CloudView (QWidget* parent)
-   : QWidget (parent)
-@@ -15,10 +15,10 @@
-   vis_.reset (new pcl::visualization::PCLVisualizer ("", false));
-   vis_->getInteractorStyle ()->setKeyboardModifier (pcl::visualization::INTERACTOR_KB_MOD_SHIFT);
-   //Create the QVTKWidget
--  qvtk_ = new QVTKWidget (this);
--  qvtk_->SetRenderWindow (vis_->getRenderWindow ());
-+  qvtk_ = new QVTKOpenGLNativeWidget (this);
-+  qvtk_->setRenderWindow (vis_->getRenderWindow());
-   initializeInteractorSwitch ();
--  vis_->setupInteractor (qvtk_->GetInteractor (), qvtk_->GetRenderWindow (), style_switch_);
-+  vis_->setupInteractor (qvtk_->interactor (), qvtk_->renderWindow (), style_switch_);
-   
-   QGridLayout *mainLayout = new QGridLayout (this);
-   mainLayout-> addWidget (qvtk_,0,0);
-@@ -31,10 +31,10 @@
-   vis_.reset (new pcl::visualization::PCLVisualizer ("", false));
-  // vis_->getInteractorStyle ()->setKeyboardModifier (pcl::visualization::INTERACTOR_KB_MOD_SHIFT);
-   //Create the QVTKWidget
--  qvtk_ = new QVTKWidget (this);
--  qvtk_->SetRenderWindow (vis_->getRenderWindow ());
-+  qvtk_ = new QVTKOpenGLNativeWidget (this);
-+  qvtk_->setRenderWindow (vis_->getRenderWindow ());
-   initializeInteractorSwitch ();
--  vis_->setupInteractor (qvtk_->GetInteractor (), qvtk_->GetRenderWindow (), style_switch_);
-+  vis_->setupInteractor (qvtk_->interactor (), qvtk_->renderWindow (), style_switch_);
-   setModel(model);
-   
-   QGridLayout *mainLayout = new QGridLayout (this);
-@@ -59,7 +59,7 @@
-   qvtk_->show();
-   qvtk_->update ();
-   
-- // vis_->addOrientationMarkerWidgetAxes (qvtk_->GetInteractor ());
-+ // vis_->addOrientationMarkerWidgetAxes (qvtk_->interactor ());
- }
- 
- void
-@@ -206,7 +206,8 @@
-   if (visible)
-   {
-     qDebug () << "Adding coordinate system!";
--    vis_->addOrientationMarkerWidgetAxes ( qvtk_->GetInteractor() );
-+    vis_->addOrientationMarkerWidgetAxes ( qvtk_->interactor() );
-+
-   }
-   else
-   {
-@@ -226,7 +227,7 @@
-     axes_widget_ = vtkSmartPointer<vtkOrientationMarkerWidget>::New ();
-     axes_widget_->SetOutlineColor ( 0.9300, 0.5700, 0.1300 );
-     axes_widget_->SetOrientationMarker( axes );
--    axes_widget_->SetInteractor( qvtk_->GetInteractor () );
-+    axes_widget_->SetInteractor( qvtk_->interactor () );
-     axes_widget_->SetViewport( 0.0, 0.0, 0.4, 0.4 );
-     axes_widget_->SetEnabled( 1 );
-     axes_widget_->InteractiveOn();
-@@ -257,7 +258,7 @@
- {
-   style_switch_ = vtkSmartPointer<InteractorStyleSwitch>::New();
-   style_switch_->initializeInteractorStyles (vis_, model_);
--  style_switch_->SetInteractor (qvtk_->GetInteractor ());
-+  style_switch_->SetInteractor (qvtk_->interactor ());
-   style_switch_->setCurrentInteractorStyle (interactor_styles::PCL_VISUALIZER);
-   
-   //Connect the events!
 Index: apps/cloud_composer/src/items/fpfh_item.cpp
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
---- apps/cloud_composer/src/items/fpfh_item.cpp	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ apps/cloud_composer/src/items/fpfh_item.cpp	(date 1581195899600)
+--- apps/cloud_composer/src/items/fpfh_item.cpp	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ apps/cloud_composer/src/items/fpfh_item.cpp	(date 1588187157431)
 @@ -3,7 +3,7 @@
  
  #include <QGridLayout>
@@ -283,25 +245,479 @@ IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
---- visualization/include/pcl/visualization/interactor_style.h	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ visualization/include/pcl/visualization/interactor_style.h	(date 1581196307543)
-@@ -51,8 +51,8 @@
- #include <boost/signals2/signal.hpp>
+--- visualization/include/pcl/visualization/interactor_style.h	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ visualization/include/pcl/visualization/interactor_style.h	(date 1588136469589)
+@@ -52,7 +52,7 @@
  #endif
  #include <vtkInteractorStyleRubberBandPick.h>
-+#include <vtkRendererCollection.h>
  
 -class vtkRendererCollection;
++#include <vtk-9.0/vtkRendererCollection.h>
  class vtkLegendScaleActor;
  class vtkScalarBarActor;
  class vtkPNGWriter;
+Index: visualization/include/pcl/visualization/vtk/vtkVertexBufferObjectMapper.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- visualization/include/pcl/visualization/vtk/vtkVertexBufferObjectMapper.h	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ visualization/include/pcl/visualization/vtk/vtkVertexBufferObjectMapper.h	(date 1588137310221)
+@@ -25,13 +25,13 @@
+ 
+ #include "vtkMapper.h"
+ #include "vtkSmartPointer.h"
++#include <vtk-9.0/vtkShaderProgram.h>
+ 
+ class vtkOpenGLRenderWindow;
+ class vtkPolyData;
+ class vtkRenderer;
+ class vtkRenderWindow;
+ class vtkShader2;
+-class vtkShaderProgram2;
+ class vtkVertexBufferObject;
+ 
+ class PCL_EXPORTS vtkVertexBufferObjectMapper : public vtkMapper
+@@ -56,7 +56,7 @@
+   void SetInput(vtkDataSet *input);
+   vtkPolyData *GetInput();
+   
+-  void SetProgram(vtkSmartPointer<vtkShaderProgram2> program)
++  void SetProgram(vtkSmartPointer<vtkShaderProgram> program)
+   {
+     this->program = program;
+   }
+@@ -118,7 +118,7 @@
+   vtkVertexBufferObject *normalVbo;
+ //  vtkVertexBufferObject *normalIndiceVbo;
+ 
+-  vtkSmartPointer<vtkShaderProgram2> program;
++  vtkSmartPointer<vtkShaderProgram> program;
+ 
+   int FillInputPortInformation(int, vtkInformation*) override;
+ 
+Index: apps/src/render_views_tesselated_sphere.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- apps/src/render_views_tesselated_sphere.cpp	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ apps/src/render_views_tesselated_sphere.cpp	(date 1588137247925)
+@@ -26,12 +26,14 @@
+ #include <vtkRenderer.h>
+ #include <vtkPolyDataMapper.h>
+ #include <vtkPointPicker.h>
++#include <vtkIdTypeArray.h>
+ 
+ void
+ pcl::apps::RenderViewsTesselatedSphere::generateViews() {
+   //center object
+   double CoM[3];
+-  vtkIdType npts_com = 0, *ptIds_com = nullptr;
++  vtkIdType npts_com = 0;
++  const vtkIdType *ptIds_com = nullptr;
+   vtkSmartPointer<vtkCellArray> cells_com = polydata_->GetPolys ();
+ 
+   double center[3], p1_com[3], p2_com[3], p3_com[3], totalArea_com = 0;
+@@ -90,7 +92,8 @@
+   // * Compute area of the mesh
+   //////////////////////////////
+   vtkSmartPointer<vtkCellArray> cells = mapper->GetInput ()->GetPolys ();
+-  vtkIdType npts = 0, *ptIds = nullptr;
++  vtkIdType npts = 0;
++  const vtkIdType *ptIds = nullptr;
+ 
+   double p1[3], p2[3], p3[3], totalArea = 0;
+   for (cells->InitTraversal (); cells->GetNextCell (npts, ptIds);)
+@@ -359,7 +362,8 @@
+       polydata->BuildCells ();
+ 
+       vtkSmartPointer<vtkCellArray> cells = polydata->GetPolys ();
+-      vtkIdType npts = 0, *ptIds = nullptr;
++      vtkIdType npts = 0;
++      const vtkIdType *ptIds = nullptr;
+ 
+       double p1[3], p2[3], p3[3], area, totalArea = 0;
+       for (cells->InitTraversal (); cells->GetNextCell (npts, ptIds);)
+Index: visualization/include/pcl/visualization/vtk/vtkVertexBufferObject.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- visualization/include/pcl/visualization/vtk/vtkVertexBufferObject.h	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ visualization/include/pcl/visualization/vtk/vtkVertexBufferObject.h	(date 1588135447841)
+@@ -34,11 +34,12 @@
+ #include "vtkgl.h" // Needed for gl data types exposed in API
+ #include <pcl/pcl_macros.h>
+ 
++#include <vtk-9.0/vtkUnsignedCharArray.h>
++
+ class vtkCellArray;
+ class vtkDataArray;
+ class vtkObject;
+ class vtkPoints;
+-class vtkUnsignedCharArray;
+ class vtkOpenGLExtensionManager;
+ class vtkRenderWindow;
+ 
+Index: visualization/include/pcl/visualization/pcl_visualizer.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- visualization/include/pcl/visualization/pcl_visualizer.h	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ visualization/include/pcl/visualization/pcl_visualizer.h	(date 1588136575459)
+@@ -53,10 +53,11 @@
+ #include <pcl/visualization/area_picking_event.h>
+ #include <pcl/visualization/interactor_style.h>
+ 
++#include <vtk-9.0/vtkRenderWindow.h>
++
+ // VTK includes
+ class vtkPolyData;
+ class vtkTextActor;
+-class vtkRenderWindow;
+ class vtkOrientationMarkerWidget;
+ class vtkAppendPolyData;
+ class vtkRenderWindow;
+Index: apps/src/openni_passthrough.ui
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- apps/src/openni_passthrough.ui	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ apps/src/openni_passthrough.ui	(date 1588195196467)
+@@ -37,7 +37,7 @@
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+-     <widget class="QVTKWidget" name="qvtk_widget">
++     <widget class="QVTKOpenGLNativeWidget" name="qvtk_widget">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>255</horstretch>
+@@ -94,9 +94,9 @@
+  </widget>
+  <customwidgets>
+   <customwidget>
+-   <class>QVTKWidget</class>
++   <class>QVTKOpenGLNativeWidget</class>
+    <extends>QWidget</extends>
+-   <header>QVTKWidget.h</header>
++   <header>QVTKOpenGLNativeWidget.h</header>
+   </customwidget>
+  </customwidgets>
+  <resources>
+Index: surface/src/vtk_smoothing/vtk_utils.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- surface/src/vtk_smoothing/vtk_utils.cpp	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ surface/src/vtk_smoothing/vtk_utils.cpp	(date 1588136109400)
+@@ -154,7 +154,7 @@
+   }
+ 
+   mesh.polygons.resize (nr_polygons);
+-  vtkIdType* cell_points;
++  const vtkIdType* cell_points;
+   vtkIdType nr_cell_points;
+   vtkCellArray * mesh_polygons = poly_data->GetPolys ();
+   mesh_polygons->InitTraversal ();
+Index: apps/modeler/include/pcl/apps/modeler/points_actor_item.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- apps/modeler/include/pcl/apps/modeler/points_actor_item.h	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ apps/modeler/include/pcl/apps/modeler/points_actor_item.h	(date 1588137176625)
+@@ -38,8 +38,7 @@
+ 
+ #include <pcl/apps/modeler/channel_actor_item.h>
+ #include <pcl/visualization/point_cloud_handlers.h>
+-
+-class vtkIdTypeArray;
++#include <vtk-9.0/vtkIdTypeArray.h>
+ 
+ namespace pcl
+ {
+Index: apps/modeler/include/pcl/apps/modeler/render_window.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- apps/modeler/include/pcl/apps/modeler/render_window.h	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ apps/modeler/include/pcl/apps/modeler/render_window.h	(date 1588195196474)
+@@ -38,7 +38,7 @@
+ 
+ #include <vtkSmartPointer.h>
+ 
+-#include <QVTKWidget.h>
++#include <vtk-9.0/QVTKOpenGLNativeWidget.h>
+ 
+ class vtkCubeAxesActor;
+ 
+@@ -48,7 +48,7 @@
+   {
+     class RenderWindowItem;
+ 
+-    class RenderWindow : public QVTKWidget
++    class RenderWindow : public QVTKOpenGLNativeWidget
+     {
+       public:
+         RenderWindow(RenderWindowItem* render_window_item, QWidget *parent = nullptr, Qt::WindowFlags flags = nullptr);
+Index: apps/modeler/include/pcl/apps/modeler/surface_actor_item.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- apps/modeler/include/pcl/apps/modeler/surface_actor_item.h	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ apps/modeler/include/pcl/apps/modeler/surface_actor_item.h	(date 1588137133872)
+@@ -38,8 +38,8 @@
+ 
+ #include <pcl/apps/modeler/channel_actor_item.h>
+ #include <pcl/visualization/point_cloud_handlers.h>
++#include <vtk-9.0/vtkIdTypeArray.h>
+ 
+-class vtkIdTypeArray;
+ 
+ namespace pcl
+ {
+Index: visualization/include/pcl/visualization/impl/pcl_visualizer.hpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- visualization/include/pcl/visualization/impl/pcl_visualizer.hpp	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ visualization/include/pcl/visualization/impl/pcl_visualizer.hpp	(date 1588136158083)
+@@ -1699,18 +1699,16 @@
+   {
+     // Create polys from polyMesh.polygons
+     vtkSmartPointer<vtkCellArray> cell_array = vtkSmartPointer<vtkCellArray>::New ();
+-    vtkIdType *cell = cell_array->WritePointer (vertices.size (), vertices.size () * (max_size_of_polygon + 1));
++    cell_array->AllocateEstimate(vertices.size(), (max_size_of_polygon + 1));
+     int idx = 0;
+     if (!lookup.empty ())
+     {
+       for (std::size_t i = 0; i < vertices.size (); ++i, ++idx)
+       {
+         std::size_t n_points = vertices[i].vertices.size ();
+-        *cell++ = n_points;
+-        //cell_array->InsertNextCell (n_points);
++        cell_array->InsertNextCell (n_points);
+         for (std::size_t j = 0; j < n_points; j++, ++idx)
+-          *cell++ = lookup[vertices[i].vertices[j]];
+-          //cell_array->InsertCellPoint (lookup[vertices[i].vertices[j]]);
++          cell_array->InsertCellPoint (lookup[vertices[i].vertices[j]]);
+       }
+     }
+     else
+@@ -1718,11 +1716,9 @@
+       for (std::size_t i = 0; i < vertices.size (); ++i, ++idx)
+       {
+         std::size_t n_points = vertices[i].vertices.size ();
+-        *cell++ = n_points;
+-        //cell_array->InsertNextCell (n_points);
++        cell_array->InsertNextCell (n_points);
+         for (std::size_t j = 0; j < n_points; j++, ++idx)
+-          *cell++ = vertices[i].vertices[j];
+-          //cell_array->InsertCellPoint (vertices[i].vertices[j]);
++          cell_array->InsertCellPoint (vertices[i].vertices[j]);
+       }
+     }
+     vtkSmartPointer<vtkPolyData> polydata;
+@@ -1876,16 +1872,16 @@
+ 
+   // Update the cells
+   cells = vtkSmartPointer<vtkCellArray>::New ();
+-  vtkIdType *cell = cells->WritePointer (verts.size (), verts.size () * (max_size_of_polygon + 1));
++  cells->AllocateEstimate(verts.size(), (verts.size() * (max_size_of_polygon +1)));
+   int idx = 0;
+   if (!lookup.empty ())
+   {
+     for (std::size_t i = 0; i < verts.size (); ++i, ++idx)
+     {
+       std::size_t n_points = verts[i].vertices.size ();
+-      *cell++ = n_points;
+-      for (std::size_t j = 0; j < n_points; j++, cell++, ++idx)
+-        *cell = lookup[verts[i].vertices[j]];
++      cells->InsertNextCell(n_points);
++      for (std::size_t j = 0; j < n_points; j++, ++idx)
++        cells->InsertCellPoint(lookup[verts[i].vertices[j]]);
+     }
+   }
+   else
+@@ -1893,9 +1889,9 @@
+     for (std::size_t i = 0; i < verts.size (); ++i, ++idx)
+     {
+       std::size_t n_points = verts[i].vertices.size ();
+-      *cell++ = n_points;
+-      for (std::size_t j = 0; j < n_points; j++, cell++, ++idx)
+-        *cell = verts[i].vertices[j];
++      cells->InsertNextCell(n_points);
++      for (std::size_t j = 0; j < n_points; j++, ++idx)
++        cells->InsertCellPoint(lookup[verts[i].vertices[j]]);
+     }
+   }
+   cells->GetData ()->SetNumberOfValues (idx);
+Index: apps/cloud_composer/include/pcl/apps/cloud_composer/cloud_view.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- apps/cloud_composer/include/pcl/apps/cloud_composer/cloud_view.h	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ apps/cloud_composer/include/pcl/apps/cloud_composer/cloud_view.h	(date 1588188647159)
+@@ -43,6 +43,7 @@
+ 
+ #include <pcl/visualization/pcl_visualizer.h>
+ #include <pcl/apps/cloud_composer/point_selectors/interactor_style_switch.h>
++#include <vtk-9.0/QVTKOpenGLNativeWidget.h>
+ 
+ class QItemSelection;
+ class QStandardItem;
+@@ -69,8 +70,8 @@
+       setModel (ProjectModel* new_model);
+       ProjectModel* 
+       getModel () const { return model_; }
+-      
+-      QVTKWidget* 
++
++      QVTKOpenGLNativeWidget*
+       getQVTK() const {return qvtk_; }
+       
+       pcl::visualization::PCLVisualizer::Ptr
+@@ -141,7 +142,7 @@
+       
+       pcl::visualization::PCLVisualizer::Ptr vis_;
+       ProjectModel* model_;
+-      QVTKWidget* qvtk_;
++      QVTKOpenGLNativeWidget* qvtk_;
+       vtkSmartPointer<InteractorStyleSwitch> style_switch_;
+       
+       vtkSmartPointer<vtkOrientationMarkerWidget> axes_widget_;
+Index: apps/modeler/include/pcl/apps/modeler/normals_actor_item.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- apps/modeler/include/pcl/apps/modeler/normals_actor_item.h	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ apps/modeler/include/pcl/apps/modeler/normals_actor_item.h	(date 1588137152428)
+@@ -38,8 +38,7 @@
+ 
+ #include <pcl/apps/modeler/channel_actor_item.h>
+ #include <pcl/visualization/point_cloud_handlers.h>
+-
+-class vtkIdTypeArray;
++#include <vtk-9.0/vtkIdTypeArray.h>
+ 
+ namespace pcl
+ {
+Index: apps/src/manual_registration/manual_registration.ui
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- apps/src/manual_registration/manual_registration.ui	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ apps/src/manual_registration/manual_registration.ui	(date 1588195196460)
+@@ -37,7 +37,7 @@
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="3">
+-     <widget class="QVTKWidget" name="qvtk_widget_src">
++     <widget class="QVTKOpenGLNativeWidget" name="qvtk_widget_src">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>255</horstretch>
+@@ -133,7 +133,7 @@
+      </layout>
+     </item>
+     <item row="0" column="7">
+-     <widget class="QVTKWidget" name="qvtk_widget_dst">
++     <widget class="QVTKOpenGLNativeWidget" name="qvtk_widget_dst">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>255</horstretch>
+@@ -161,9 +161,9 @@
+  </widget>
+  <customwidgets>
+   <customwidget>
+-   <class>QVTKWidget</class>
++   <class>QVTKOpenGLNativeWidget</class>
+    <extends>QWidget</extends>
+-   <header>QVTKWidget.h</header>
++   <header>QVTKOpenGLNativeWidget.h</header>
+   </customwidget>
+  </customwidgets>
+  <resources/>
+Index: apps/src/pcd_video_player/pcd_video_player.ui
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- apps/src/pcd_video_player/pcd_video_player.ui	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ apps/src/pcd_video_player/pcd_video_player.ui	(date 1588188195680)
+@@ -25,7 +25,7 @@
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+-      <widget class="QVTKWidget" name="qvtkWidget"/>
++      <widget class="QVTKOpenGLNativeWidget" name="qvtkWidget"/>
+      </item>
+      <item>
+       <widget class="QSlider" name="indexSlider">
+@@ -145,9 +145,9 @@
+  </widget>
+  <customwidgets>
+   <customwidget>
+-   <class>QVTKWidget</class>
++   <class>QVTKOpenGLNativeWidget</class>
+    <extends>QWidget</extends>
+-   <header>QVTKWidget.h</header>
++   <header>QVTKOpenGLNativeWidget.h</header>
+   </customwidget>
+  </customwidgets>
+  <resources/>
+Index: apps/src/pcd_video_player/pcd_video_player.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- apps/src/pcd_video_player/pcd_video_player.cpp	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ apps/src/pcd_video_player/pcd_video_player.cpp	(date 1588188195666)
+@@ -93,8 +93,8 @@
+ 
+   // Set up the qvtk window
+   vis_.reset (new pcl::visualization::PCLVisualizer ("", false));
+-  ui_->qvtkWidget->SetRenderWindow (vis_->getRenderWindow ());
+-  vis_->setupInteractor (ui_->qvtkWidget->GetInteractor (), ui_->qvtkWidget->GetRenderWindow ());
++  ui_->qvtkWidget->setRenderWindow (vis_->getRenderWindow ());
++  vis_->setupInteractor (ui_->qvtkWidget->interactor (), ui_->qvtkWidget->renderWindow ());
+   vis_->getInteractorStyle ()->setKeyboardModifier (pcl::visualization::INTERACTOR_KB_MOD_SHIFT);
+   ui_->qvtkWidget->update ();
+ 
+Index: visualization/src/interactor_style.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- visualization/src/interactor_style.cpp	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ visualization/src/interactor_style.cpp	(date 1587797500180)
+@@ -137,7 +137,7 @@
+ {
+   FindPokedRenderer (Interactor->GetEventPosition ()[0], Interactor->GetEventPosition ()[1]);
+ 
+-  ofstream ofs_cam (file.c_str ());
++  std::ofstream ofs_cam (file.c_str ());
+   if (!ofs_cam.is_open ())
+   {
+     return (false);
 Index: visualization/src/pcl_visualizer.cpp
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
---- visualization/src/pcl_visualizer.cpp	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ visualization/src/pcl_visualizer.cpp	(date 1581195708878)
+--- visualization/src/pcl_visualizer.cpp	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ visualization/src/pcl_visualizer.cpp	(date 1588136392583)
 @@ -3159,16 +3159,16 @@
  
    // Update the cells
@@ -317,9 +733,9 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 -      *cell++ = n_points;
 -      for (std::size_t j = 0; j < n_points; j++, cell++, ++idx)
 -        *cell = lookup[verts[i].vertices[j]];
-+      cells->InsertNextCell (n_points);
++      cells->InsertNextCell(n_points);
 +      for (std::size_t j = 0; j < n_points; j++, ++idx)
-+        cells->InsertCellPoint (lookup[verts[i].vertices[j]]);
++        cells->InsertCellPoint(lookup[verts[i].vertices[j]]);
      }
    }
    else
@@ -366,41 +782,28 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
  
      double p1[3], p2[3], p3[3], area, totalArea = 0;
      for (cells->InitTraversal (); cells->GetNextCell (npts, ptIds);)
-Index: apps/cloud_composer/include/pcl/apps/cloud_composer/cloud_view.h
+Index: surface/include/pcl/surface/vtk_smoothing/vtk.h
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
---- apps/cloud_composer/include/pcl/apps/cloud_composer/cloud_view.h	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ apps/cloud_composer/include/pcl/apps/cloud_composer/cloud_view.h	(date 1581159094924)
-@@ -69,8 +69,8 @@
-       setModel (ProjectModel* new_model);
-       ProjectModel* 
-       getModel () const { return model_; }
--      
--      QVTKWidget* 
-+
-+      QVTKOpenGLNativeWidget*
-       getQVTK() const {return qvtk_; }
-       
-       pcl::visualization::PCLVisualizer::Ptr
-@@ -141,7 +141,7 @@
-       
-       pcl::visualization::PCLVisualizer::Ptr vis_;
-       ProjectModel* model_;
--      QVTKWidget* qvtk_;
-+      QVTKOpenGLNativeWidget* qvtk_;
-       vtkSmartPointer<InteractorStyleSwitch> style_switch_;
-       
-       vtkSmartPointer<vtkOrientationMarkerWidget> axes_widget_;
+--- surface/include/pcl/surface/vtk_smoothing/vtk.h	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ surface/include/pcl/surface/vtk_smoothing/vtk.h	(date 1588136029653)
+@@ -43,5 +43,6 @@
+ #  pragma GCC system_header 
+ #endif
+ 
++#include <vtkUnsignedCharArray.h>
+ #include <vtkPolyData.h>
+ #include <vtkSmartPointer.h>
 Index: CMakeLists.txt
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
---- CMakeLists.txt	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ CMakeLists.txt	(date 1581200163737)
-@@ -377,25 +377,26 @@
+--- CMakeLists.txt	(revision 6cd964569eaebdf193f8279616af7f5202aad9f8)
++++ CMakeLists.txt	(date 1588184348057)
+@@ -367,25 +367,26 @@
  option(WITH_VTK "Build VTK-Visualizations" TRUE)
  if(WITH_VTK AND NOT ANDROID)
    set(PCL_VTK_COMPONENTS
@@ -446,7 +849,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
    )
    find_package(VTK COMPONENTS ${PCL_VTK_COMPONENTS})
    if(VTK_FOUND AND ("${VTK_VERSION}" VERSION_LESS 6.2))
-@@ -405,16 +406,15 @@
+@@ -395,16 +396,15 @@
  
    if(VTK_FOUND)
      if(NOT DEFINED VTK_RENDERING_BACKEND)
@@ -469,466 +872,3 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
        else()
          unset(QVTK_FOUND)
        endif()
-Index: apps/modeler/include/pcl/apps/modeler/render_window.h
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
---- apps/modeler/include/pcl/apps/modeler/render_window.h	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ apps/modeler/include/pcl/apps/modeler/render_window.h	(date 1581158591353)
-@@ -38,7 +38,7 @@
- 
- #include <vtkSmartPointer.h>
- 
--#include <QVTKWidget.h>
-+#include <QVTKOpenGLNativeWidget.h>
- 
- class vtkCubeAxesActor;
- 
-@@ -48,7 +48,7 @@
-   {
-     class RenderWindowItem;
- 
--    class RenderWindow : public QVTKWidget
-+    class RenderWindow : public QVTKOpenGLNativeWidget
-     {
-       public:
-         RenderWindow(RenderWindowItem* render_window_item, QWidget *parent = nullptr, Qt::WindowFlags flags = nullptr);
-Index: surface/src/vtk_smoothing/vtk_utils.cpp
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
---- surface/src/vtk_smoothing/vtk_utils.cpp	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ surface/src/vtk_smoothing/vtk_utils.cpp	(date 1581157166164)
-@@ -154,7 +154,7 @@
-   }
- 
-   mesh.polygons.resize (nr_polygons);
--  vtkIdType* cell_points;
-+  const vtkIdType *cell_points;
-   vtkIdType nr_cell_points;
-   vtkCellArray * mesh_polygons = poly_data->GetPolys ();
-   mesh_polygons->InitTraversal ();
-Index: apps/src/pcd_video_player/pcd_video_player.ui
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
---- apps/src/pcd_video_player/pcd_video_player.ui	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ apps/src/pcd_video_player/pcd_video_player.ui	(date 1581202567488)
-@@ -25,7 +25,7 @@
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
--      <widget class="QVTKWidget" name="qvtkWidget"/>
-+      <widget class="QVTKOpenGLNativeWidget" name="qvtkWidget"/>
-      </item>
-      <item>
-       <widget class="QSlider" name="indexSlider">
-@@ -145,9 +145,9 @@
-  </widget>
-  <customwidgets>
-   <customwidget>
--   <class>QVTKWidget</class>
-+   <class>QVTKOpenGLNativeWidget</class>
-    <extends>QWidget</extends>
--   <header>QVTKWidget.h</header>
-+   <header>QVTKOpenGLNativeWidget.h</header>
-   </customwidget>
-  </customwidgets>
-  <resources/>
-Index: visualization/include/pcl/visualization/vtk/vtkVertexBufferObjectMapper.h
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
---- visualization/include/pcl/visualization/vtk/vtkVertexBufferObjectMapper.h	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ visualization/include/pcl/visualization/vtk/vtkVertexBufferObjectMapper.h	(date 1581196704418)
-@@ -25,13 +25,13 @@
- 
- #include "vtkMapper.h"
- #include "vtkSmartPointer.h"
-+#include "vtkShaderProgram.h"
- 
- class vtkOpenGLRenderWindow;
- class vtkPolyData;
- class vtkRenderer;
- class vtkRenderWindow;
- class vtkShader2;
--class vtkShaderProgram2;
- class vtkVertexBufferObject;
- 
- class PCL_EXPORTS vtkVertexBufferObjectMapper : public vtkMapper
-@@ -56,7 +56,7 @@
-   void SetInput(vtkDataSet *input);
-   vtkPolyData *GetInput();
-   
--  void SetProgram(vtkSmartPointer<vtkShaderProgram2> program)
-+  void SetProgram(vtkSmartPointer<vtkShaderProgram> program)
-   {
-     this->program = program;
-   }
-@@ -118,7 +118,7 @@
-   vtkVertexBufferObject *normalVbo;
- //  vtkVertexBufferObject *normalIndiceVbo;
- 
--  vtkSmartPointer<vtkShaderProgram2> program;
-+  vtkSmartPointer<vtkShaderProgram> program;
- 
-   int FillInputPortInformation(int, vtkInformation*) override;
- 
-Index: visualization/src/vtk/vtkVertexBufferObjectMapper.cxx
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
---- visualization/src/vtk/vtkVertexBufferObjectMapper.cxx	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ visualization/src/vtk/vtkVertexBufferObjectMapper.cxx	(date 1581196704425)
-@@ -33,7 +33,6 @@
- #include "vtkProperty.h"
- #include "vtkRenderer.h"
- #include "vtkRenderWindow.h"
--#include "vtkShaderProgram2.h"
- #include "vtkShader2.h"
- #include "vtkShader2Collection.h"
- #include "vtkUniformVariables.h"
-Index: apps/src/manual_registration/manual_registration.ui
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
---- apps/src/manual_registration/manual_registration.ui	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ apps/src/manual_registration/manual_registration.ui	(date 1581202021210)
-@@ -37,7 +37,7 @@
-    </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="3">
--     <widget class="QVTKWidget" name="qvtk_widget_src">
-+     <widget class="QVTKOpenGLNativeWidget" name="qvtk_widget_src">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>255</horstretch>
-@@ -133,7 +133,7 @@
-      </layout>
-     </item>
-     <item row="0" column="7">
--     <widget class="QVTKWidget" name="qvtk_widget_dst">
-+     <widget class="QVTKOpenGLNativeWidget" name="qvtk_widget_dst">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>255</horstretch>
-@@ -161,9 +161,9 @@
-  </widget>
-  <customwidgets>
-   <customwidget>
--   <class>QVTKWidget</class>
-+   <class>QVTKOpenGLNativeWidget</class>
-    <extends>QWidget</extends>
--   <header>QVTKWidget.h</header>
-+   <header>QVTKOpenGLNativeWidget.h</header>
-   </customwidget>
-  </customwidgets>
-  <resources/>
-Index: apps/src/manual_registration/manual_registration.cpp
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
---- apps/src/manual_registration/manual_registration.cpp	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ apps/src/manual_registration/manual_registration.cpp	(date 1581158902008)
-@@ -70,8 +70,8 @@
- 
-   // Set up the source window
-   vis_src_.reset (new pcl::visualization::PCLVisualizer ("", false));
--  ui_->qvtk_widget_src->SetRenderWindow (vis_src_->getRenderWindow ());
--  vis_src_->setupInteractor (ui_->qvtk_widget_src->GetInteractor (), ui_->qvtk_widget_src->GetRenderWindow ());
-+  ui_->qvtk_widget_src->setRenderWindow (vis_src_->getRenderWindow());
-+  vis_src_->setupInteractor (ui_->qvtk_widget_src->interactor (), ui_->qvtk_widget_src->renderWindow ());
-   vis_src_->getInteractorStyle ()->setKeyboardModifier (pcl::visualization::INTERACTOR_KB_MOD_SHIFT);
-   ui_->qvtk_widget_src->update ();
- 
-@@ -79,8 +79,8 @@
- 
-   // Set up the destination window
-   vis_dst_.reset (new pcl::visualization::PCLVisualizer ("", false));
--  ui_->qvtk_widget_dst->SetRenderWindow (vis_dst_->getRenderWindow ());
--  vis_dst_->setupInteractor (ui_->qvtk_widget_dst->GetInteractor (), ui_->qvtk_widget_dst->GetRenderWindow ());
-+  ui_->qvtk_widget_dst->setRenderWindow (vis_dst_->getRenderWindow());
-+  vis_dst_->setupInteractor (ui_->qvtk_widget_dst->interactor (), ui_->qvtk_widget_dst->renderWindow ());
-   vis_dst_->getInteractorStyle ()->setKeyboardModifier (pcl::visualization::INTERACTOR_KB_MOD_SHIFT);
-   ui_->qvtk_widget_dst->update ();
- 
-Index: apps/src/pcd_video_player/pcd_video_player.cpp
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
---- apps/src/pcd_video_player/pcd_video_player.cpp	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ apps/src/pcd_video_player/pcd_video_player.cpp	(date 1581159021898)
-@@ -93,8 +93,8 @@
- 
-   // Set up the qvtk window
-   vis_.reset (new pcl::visualization::PCLVisualizer ("", false));
--  ui_->qvtkWidget->SetRenderWindow (vis_->getRenderWindow ());
--  vis_->setupInteractor (ui_->qvtkWidget->GetInteractor (), ui_->qvtkWidget->GetRenderWindow ());
-+  ui_->qvtkWidget->setRenderWindow (vis_->getRenderWindow ());
-+  vis_->setupInteractor (ui_->qvtkWidget->interactor (), ui_->qvtkWidget->renderWindow ());
-   vis_->getInteractorStyle ()->setKeyboardModifier (pcl::visualization::INTERACTOR_KB_MOD_SHIFT);
-   ui_->qvtkWidget->update ();
- 
-Index: apps/src/render_views_tesselated_sphere.cpp
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
---- apps/src/render_views_tesselated_sphere.cpp	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ apps/src/render_views_tesselated_sphere.cpp	(date 1581158313000)
-@@ -31,7 +31,8 @@
- pcl::apps::RenderViewsTesselatedSphere::generateViews() {
-   //center object
-   double CoM[3];
--  vtkIdType npts_com = 0, *ptIds_com = nullptr;
-+  vtkIdType npts_com = 0;
-+  const vtkIdType *ptIds_com = nullptr;
-   vtkSmartPointer<vtkCellArray> cells_com = polydata_->GetPolys ();
- 
-   double center[3], p1_com[3], p2_com[3], p3_com[3], totalArea_com = 0;
-@@ -90,7 +91,8 @@
-   // * Compute area of the mesh
-   //////////////////////////////
-   vtkSmartPointer<vtkCellArray> cells = mapper->GetInput ()->GetPolys ();
--  vtkIdType npts = 0, *ptIds = nullptr;
-+  vtkIdType npts = 0;
-+  const vtkIdType *ptIds = nullptr;
- 
-   double p1[3], p2[3], p3[3], totalArea = 0;
-   for (cells->InitTraversal (); cells->GetNextCell (npts, ptIds);)
-@@ -359,7 +361,8 @@
-       polydata->BuildCells ();
- 
-       vtkSmartPointer<vtkCellArray> cells = polydata->GetPolys ();
--      vtkIdType npts = 0, *ptIds = nullptr;
-+      vtkIdType npts = 0;
-+      const vtkIdType *ptIds = nullptr;
- 
-       double p1[3], p2[3], p3[3], area, totalArea = 0;
-       for (cells->InitTraversal (); cells->GetNextCell (npts, ptIds);)
-Index: apps/cloud_composer/include/pcl/apps/cloud_composer/items/fpfh_item.h
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
---- apps/cloud_composer/include/pcl/apps/cloud_composer/items/fpfh_item.h	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ apps/cloud_composer/include/pcl/apps/cloud_composer/items/fpfh_item.h	(date 1581195883610)
-@@ -43,7 +43,7 @@
- #include <pcl/apps/cloud_composer/items/cloud_composer_item.h>
- #include <pcl/visualization/pcl_plotter.h>
- 
--class QVTKWidget;
-+class QVTKOpenGLNativeWidget;
- 
- namespace pcl
- {
-@@ -74,7 +74,7 @@
-         pcl::PointCloud<pcl::FPFHSignature33>::Ptr fpfh_ptr_;
-         double radius_;
-         pcl::visualization::PCLPlotter::Ptr plot_;
--        QVTKWidget *qvtk_;
-+        QVTKOpenGLNativeWidget *qvtk_;
-         QWidget *hist_page_;
-     };
- 
-Index: tools/mesh_sampling.cpp
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
---- tools/mesh_sampling.cpp	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ tools/mesh_sampling.cpp	(date 1581158040564)
-@@ -87,7 +87,7 @@
- 
-   double A[3], B[3], C[3];
-   vtkIdType npts = 0;
--  vtkIdType *ptIds = nullptr;
-+  const vtkIdType *ptIds = nullptr;
-   polydata->GetCellPoints (el, npts, ptIds);
-   polydata->GetPoint (ptIds[0], A);
-   polydata->GetPoint (ptIds[1], B);
-@@ -138,7 +138,8 @@
- 
-   double p1[3], p2[3], p3[3], totalArea = 0;
-   std::vector<double> cumulativeAreas (cells->GetNumberOfCells (), 0);
--  vtkIdType npts = 0, *ptIds = nullptr;
-+  vtkIdType npts = 0;
-+  const vtkIdType *ptIds = nullptr;
-   std::size_t cellId = 0;
-   for (cells->InitTraversal (); cells->GetNextCell (npts, ptIds); cellId++)
-   {
-Index: surface/include/pcl/surface/vtk_smoothing/vtk.h
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
---- surface/include/pcl/surface/vtk_smoothing/vtk.h	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ surface/include/pcl/surface/vtk_smoothing/vtk.h	(date 1581157086447)
-@@ -45,3 +45,4 @@
- 
- #include <vtkPolyData.h>
- #include <vtkSmartPointer.h>
-+#include <vtkUnsignedCharArray.h>
-Index: visualization/src/interactor_style.cpp
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
---- visualization/src/interactor_style.cpp	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ visualization/src/interactor_style.cpp	(date 1581196307549)
-@@ -52,7 +52,6 @@
- #include <vtkScalarBarActor.h>
- #include <vtkPNGWriter.h>
- #include <vtkWindowToImageFilter.h>
--#include <vtkRendererCollection.h>
- #include <vtkActorCollection.h>
- #include <vtkLegendScaleActor.h>
- #include <vtkRenderer.h>
-@@ -137,7 +136,7 @@
- {
-   FindPokedRenderer (Interactor->GetEventPosition ()[0], Interactor->GetEventPosition ()[1]);
- 
--  ofstream ofs_cam (file.c_str ());
-+  std::ofstream ofs_cam (file.c_str ());
-   if (!ofs_cam.is_open ())
-   {
-     return (false);
-Index: apps/include/pcl/apps/render_views_tesselated_sphere.h
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
---- apps/include/pcl/apps/render_views_tesselated_sphere.h	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ apps/include/pcl/apps/render_views_tesselated_sphere.h	(date 1581158353593)
-@@ -11,6 +11,7 @@
- 
- #include <vtkSmartPointer.h>
- #include <vtkPolyData.h>
-+#include <vtkIdTypeArray.h>
- 
- #include <functional>
- 
-Index: apps/modeler/src/render_window.cpp
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
---- apps/modeler/src/render_window.cpp	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ apps/modeler/src/render_window.cpp	(date 1581158902002)
-@@ -50,7 +50,7 @@
- 
- //////////////////////////////////////////////////////////////////////////////////////////////
- pcl::modeler::RenderWindow::RenderWindow(RenderWindowItem* render_window_item, QWidget *parent, Qt::WindowFlags flags)
--  : QVTKWidget(parent, flags),
-+  : QVTKOpenGLNativeWidget(parent, flags),
-   axes_(vtkSmartPointer<vtkCubeAxesActor>::New()),
-   render_window_item_(render_window_item)
- {
-@@ -77,7 +77,7 @@
- void
- pcl::modeler::RenderWindow::initRenderer()
- {
--  vtkSmartPointer<vtkRenderWindow> win = GetRenderWindow();
-+  vtkSmartPointer<vtkRenderWindow> win = renderWindow();
-   vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-   win->AddRenderer(renderer);
- 
-@@ -107,7 +107,7 @@
- {
-   dynamic_cast<SceneTree*>(render_window_item_->treeWidget())->selectRenderWindowItem(render_window_item_);
- 
--  QVTKWidget::focusInEvent(event);
-+  QVTKOpenGLNativeWidget::focusInEvent(event);
- }
- 
- //////////////////////////////////////////////////////////////////////////////////////////////
-@@ -136,7 +136,7 @@
- void
- pcl::modeler::RenderWindow::render()
- {
--  GetRenderWindow()->Render();
-+  renderWindow()->Render();
- }
- 
- //////////////////////////////////////////////////////////////////////////////////////////////
-@@ -144,8 +144,8 @@
- pcl::modeler::RenderWindow::resetCamera()
- {
-   double bounds[6];
--  GetRenderWindow()->GetRenderers()->GetFirstRenderer()->ComputeVisiblePropBounds(bounds);
--  GetRenderWindow()->GetRenderers()->GetFirstRenderer()->ResetCamera(bounds);
-+  renderWindow()->GetRenderers()->GetFirstRenderer()->ComputeVisiblePropBounds(bounds);
-+  renderWindow()->GetRenderers()->GetFirstRenderer()->ResetCamera(bounds);
-   render();
- }
- 
-@@ -153,14 +153,14 @@
- void
- pcl::modeler::RenderWindow::getBackground(double& r, double& g, double& b)
- {
--  GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetBackground(r, g, b);
-+  renderWindow()->GetRenderers()->GetFirstRenderer()->GetBackground(r, g, b);
- }
- 
- //////////////////////////////////////////////////////////////////////////////////////////////
- void
- pcl::modeler::RenderWindow::setBackground(double r, double g, double b)
- {
--  GetRenderWindow()->GetRenderers()->GetFirstRenderer()->SetBackground(r, g, b);
-+  renderWindow()->GetRenderers()->GetFirstRenderer()->SetBackground(r, g, b);
- }
- 
- 
-@@ -170,7 +170,7 @@
- {
-   vtkBoundingBox bb;
- 
--  vtkActorCollection* actors = GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActors();
-+  vtkActorCollection* actors = renderWindow()->GetRenderers()->GetFirstRenderer()->GetActors();
- 
-   actors->InitTraversal();
-   for (int i = 0, i_end = actors->GetNumberOfItems(); i < i_end; ++ i)
-@@ -187,7 +187,7 @@
-   double bounds[6];
-   bb.GetBounds(bounds);
-   axes_->SetBounds(bounds);
--  axes_->SetCamera(GetRenderWindow()->GetRenderers()->GetFirstRenderer()->GetActiveCamera());
-+  axes_->SetCamera(renderWindow()->GetRenderers()->GetFirstRenderer()->GetActiveCamera());
- }
- 
- //////////////////////////////////////////////////////////////////////////////////////////////
-@@ -195,9 +195,9 @@
- pcl::modeler::RenderWindow::setShowAxes(bool flag)
- {
-   if (flag)
--    GetRenderWindow()->GetRenderers()->GetFirstRenderer()->AddActor(axes_);
-+    renderWindow()->GetRenderers()->GetFirstRenderer()->AddActor(axes_);
-   else
--    GetRenderWindow()->GetRenderers()->GetFirstRenderer()->RemoveActor(axes_);
-+    renderWindow()->GetRenderers()->GetFirstRenderer()->RemoveActor(axes_);
- 
-   return;
- }
-Index: visualization/include/pcl/visualization/point_cloud_color_handlers.h
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
---- visualization/include/pcl/visualization/point_cloud_color_handlers.h	(revision 0e452dd9a19fc4a493772549c76b89615e20813a)
-+++ visualization/include/pcl/visualization/point_cloud_color_handlers.h	(date 1581156937531)
-@@ -50,6 +50,7 @@
- #include <vtkDataArray.h>
- #include <vtkFloatArray.h>
- #include <vtkUnsignedCharArray.h>
-+#include <vtkRenderWindow.h>
- 
- namespace pcl
- {
