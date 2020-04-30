@@ -1,0 +1,16 @@
+Index: plugins/core/Standard/qPCL/PclUtils/utils/my_point_types.h
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- plugins/core/Standard/qPCL/PclUtils/utils/my_point_types.h	(revision 6be7d31c56708d5c0da5bf750fc73d01135ce92b)
++++ plugins/core/Standard/qPCL/PclUtils/utils/my_point_types.h	(date 1588214711610)
+@@ -18,6 +18,8 @@
+ #ifndef Q_PCL_PLUGIN_MY_POINT_TYPES_H
+ #define Q_PCL_PLUGIN_MY_POINT_TYPES_H
+ 
++#include <boost/cstdint.hpp>
++
+ //PCL
+ #include <pcl/register_point_struct.h>
+ #include <pcl/point_types.h>
