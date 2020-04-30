@@ -2,13 +2,13 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.0.0.rc2.927.g2757719d3d
+pkgver=9.0.0.rc2.931.g0be7b97b48
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization'
 arch=('i686' 'x86_64')
 url='http://www.vtk.org'
 license=('BSD')
-depends=('jsoncpp' 'libxt' 'double-conversion' 'glew' 'hdf5' 'python' 'proj')
+depends=('jsoncpp' 'libxt' 'double-conversion' 'glew' 'hdf5' 'python' 'proj' 'cuda' 'libharu' 'pegtl' 'openturns')
 makedepends=('git' 'cmake' 'doxygen' 'boost' 'java-environment' 'utf8cpp')
 provides=("vtk")
 conflicts=("vtk")
@@ -33,6 +33,7 @@ build() {
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_CUDA_COMPILER=/opt/cuda/bin/nvcc \
     -DBUILD_SHARED_LIBS=ON \
     -DVTK_BUILD_ALL_MODULES=ON \
     -DVTK_BUILD_DOCUMENTATION=OFF \
