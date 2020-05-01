@@ -1,7 +1,7 @@
 # Maintainer: Nick M Cummins <nickmcummins dot linuxmail.org>
 
 pkgname=cpd-git
-pkgver=r430.1f3637e
+pkgver=r431.bf98bf0
 pkgrel=1
 _pkgname="cpd"
 pkgdesc="C++ implementation of the Coherent Point Drift point set registration algorithm."
@@ -26,10 +26,9 @@ build() {
 	
 	cmake .. \
 		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DCMAKE_INSTALL_LIBDIR=lib \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DBUILD_SHARED_LIBS=ON
-	make -j10
+	make
 }
 
 
