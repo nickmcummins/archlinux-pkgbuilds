@@ -26,6 +26,8 @@ depends=(
 	python2
 	libxt
 	openmpi
+  librealsense
+  ensenso-sdk
 )
 makedepends=(cmake git)
 source=(git+https://github.com/PointCloudLibrary/pcl patches.patch)
