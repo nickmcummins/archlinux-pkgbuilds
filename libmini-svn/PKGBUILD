@@ -2,7 +2,7 @@
 
 pkgname='libmini-svn'
 _pkgname=libmini
-pkgver=5860
+pkgver=5863
 pkgrel=1
 pkgdesc="Real-Time Terrain Rendering. Display high-resolution geospatial terrain data at real-time."
 arch=('i686' 'x86_64')
