@@ -2,14 +2,14 @@
 
 _name=PDAL
 pkgname=pdal-git
-pkgver=2.0.0.r261.g539bb832b
+pkgver=2.0.0.r268.ge977ab3a4
 pkgrel=1
 pkgdesc="A C++ library for translating and manipulating point cloud data."
 arch=('x86_64')
 url="http://www.pdal.io"
 license=('BSD')
 depends=('gdal' 'geos' 'libgeotiff')
-makedepends=('cmake' 'python' 'python-numpy' 'git' 'sqlite' 'postgresql-libs' 'pcl' 'laszip')
+makedepends=('cmake' 'python' 'python-numpy' 'git' 'sqlite' 'postgresql-libs' 'pcl' 'laszip' 'cpd')
 optdepends=('python-numpy: for the Python plugin'
             'libxml2: for using the database drivers'
             'sqlite: for the sqlite plugin'
