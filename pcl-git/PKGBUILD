@@ -1,14 +1,8 @@
-# Maintainer: Maarten de Vries <maarten@de-vri.es>
-# Contributor: Yuxin Wu <ppwwyyxxc@gmail.com>
-# Contributor: Sven-Hendrik Haase <sh@lutzhaase.com>
-# Contributor: hauptmech
-# Contributor: figo.zhang
-# Contributor: lubosz
 # Maintainer: Nick M Cummins <nickmcummins@linuxmail.org> (Modified from AUR)
 
 pkgname=pcl-git
 _pkgname=pcl
-pkgver=r12459.cd3ecd057
+pkgver=1.10.0.r12530.ca57cd62b
 pkgrel=1
 pkgdesc="a standalone, large scale, open project for 2D/3D image and point cloud processing"
 arch=(i686 x86_64)
@@ -34,11 +28,14 @@ source=(git+https://github.com/nickmcummins/pcl)
 sha256sums=(SKIP)
 conflicts=(pcl)
 provides=(pcl)
-
+PKGEXT='.pkg.tar.lzo'
 pkgver() {
-	cd "$srcdir/pcl"
+	cd ${srcdir}/${_pkgname}
 	# Use the tag of the last commit
-	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+	REVISION=$(printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)")
+	GITVERSION=$(git describe --long --tags | sed -r 's/^v//;s/([^-]*-g)/r\1/;s/-/./g' | cut -c5-)
+	VERSION=$(python -c "import sys; print(sys.argv[1].split('.r')[0].replace('V_', '').strip())" ${GITVERSION})
+	printf "${VERSION}.${REVISION}"
 }
 
 prepare() {
