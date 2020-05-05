@@ -30,8 +30,8 @@ depends=(
   ensenso-sdk
 )
 makedepends=(cmake git)
-source=(git+https://github.com/PointCloudLibrary/pcl patches.patch)
-sha256sums=(SKIP SKIP)
+source=(git+https://github.com/nickmcummins/pcl)
+sha256sums=(SKIP)
 conflicts=(pcl)
 provides=(pcl)
 
@@ -42,8 +42,7 @@ pkgver() {
 }
 
 prepare() {
-    cd $_pkgname
-    patch -Np0 -i "${srcdir}"/patches.patch
+  cd $_pkgname
 	mkdir -p  "$srcdir/build"
 	cd     "$srcdir/build"
 
@@ -62,11 +61,11 @@ prepare() {
 		-DBUILD_surface_on_nurbs=ON \
 		-DBUILD_CUDA=ON \
 		-DBUILD_cuda_apps=ON \
-        -DBUILD_cuda_common=ON \
-        -DBUILD_cuda_features=ON \
-        -DBUILD_cuda_io=ON \
-        -DBUILD_cuda_sample_consensus=ON \
-        -DBUILD_cuda_segmentation=ON \
+    -DBUILD_cuda_common=ON \
+    -DBUILD_cuda_features=ON \
+    -DBUILD_cuda_io=ON \
+    -DBUILD_cuda_sample_consensus=ON \
+    -DBUILD_cuda_segmentation=ON \
 		-DBUILD_GPU=ON \
 		-DBUILD_gpu_kinfu=ON \
 		-DBUILD_gpu_kinfu_large_scale=OFF \
