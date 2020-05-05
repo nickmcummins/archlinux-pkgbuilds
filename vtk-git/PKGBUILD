@@ -2,7 +2,7 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.0.0.rc2.931.g0be7b97b48
+pkgver=9.0.0.rc2.959.gf6a0c410e4
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization'
 arch=('i686' 'x86_64')
@@ -36,7 +36,7 @@ build() {
     -DCMAKE_CUDA_COMPILER=/opt/cuda/bin/nvcc \
     -DBUILD_SHARED_LIBS=ON \
     -DVTK_BUILD_ALL_MODULES=ON \
-    -DVTK_BUILD_DOCUMENTATION=OFF \
+    -DVTK_BUILD_DOCUMENTATION=ON \
     -DVTK_BUILD_EXAMPLES=ON \
     -DBUILD_TESTING=OFF \
     -DVTK_ENABLE_KITS=ON \
@@ -322,6 +322,12 @@ build() {
     -DVTK_USE_X=ON \
     -DOpenVR_INCLUDE_DIR=/usr/include/openvr \
       ..
+      
+  cd Utilities/Doxygen
+  make DoxygenDoc 
+  
+  cd ../..
+  
   make
 }
 
