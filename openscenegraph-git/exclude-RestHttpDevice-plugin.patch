@@ -1,0 +1,20 @@
+Index: src/osgPlugins/CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/osgPlugins/CMakeLists.txt	(revision f2f22df8115aee710aa5429bf4965def3734edc7)
++++ src/osgPlugins/CMakeLists.txt	(date 1585772232888)
+@@ -303,9 +303,9 @@
+     ADD_PLUGIN_DIRECTORY(sdl)
+ ENDIF(SDL_FOUND)
+ 
+-IF(ASIO_FOUND)
+-    ADD_PLUGIN_DIRECTORY(RestHttpDevice)
+-ENDIF(ASIO_FOUND)
++#IF(ASIO_FOUND)
++#    ADD_PLUGIN_DIRECTORY(RestHttpDevice)
++#ENDIF(ASIO_FOUND)
+ 
+ 
+ IF(ZEROCONF_FOUND)

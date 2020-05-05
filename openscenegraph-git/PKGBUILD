@@ -1,0 +1,67 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+
+
+pkgname=openscenegraph-git
+_pkgname=openscenegraph
+pkgver=3.7.0r16243.c29e2e4f4
+_pkgver=3.7.0
+pkgrel=1
+pkgdesc="An open source, high performance real-time graphics toolkit"
+arch=('x86_64')
+url="http://www.openscenegraph.org"
+license=('custom:OSGPL')
+depends=('giflib' 'jasper' 'librsvg' 'xine-lib' 'curl' 'pth')
+makedepends=('cmake' 'libvncserver' 'qt5-base' 'ffmpeg' 'mesa')
+optdepends=('libvncserver' 'gdal' 'openexr' 'poppler-glib' 'qt5-base' 'ffmpeg')
+provides=('openscenegraph' 'openthreads')
+conflicts=('openscenegraph' 'openthreads')
+source=("openscenegraph::git+https://github.com/openscenegraph/OpenSceneGraph.git#branch=master"
+    'exclude-RestHttpDevice-plugin.patch')
+md5sums=('SKIP' 'SKIP')
+
+pkgver() {
+	cd ${srcdir}/${_pkgname}
+    printf "%sr%s.%s" "${_pkgver}" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+prepare() {
+  mkdir -p "${srcdir}/${pkgname%-git}/build"
+}
+
+build() {
+  cd "${srcdir}/${pkgname%-git}"
+
+  patch -Np0 -i "${srcdir}"/exclude-RestHttpDevice-plugin.patch
+
+  mkdir -p build && cd build
+
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIBRARY_OUTPUT_PATH=/usr/lib \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_CXX_FLAGS='-DASIO_ENABLE_BOOST' \
+    -DCMAKE_C_FLAGS='-DASIO_ENABLE_BOOST' \
+    -DBUILD_DOCUMENTATION=ON \
+    -DBUILD_OSG_APPLICATIONS=ON \
+    -DBUILD_DEPRECATED_SERIALIZERS=ON \
+    -DBUILD_OSG_EXAMPLES=ON \
+    -DBUILD_OSG_PLUGINS=ON \
+    -DBUILD_OSG_PLUGINS_BY_DEFAULT=ON \
+    -DOPENCASCADE_INCLUDE_DIR=/usr/include/opencascade \
+    -OPENCASCADE_LIBRARY_TYPE=Shared \
+    -DOSG_GL1_AVAILABLE=FALSE \
+    -DOSG_GL2_AVAILABLE=FALSE \
+    -DOSG_GL3_AVAILABLE=TRUE \
+    -DOSG_GLES3_AVAILABLE=TRUE \
+    -DOSG_GL_CONTEXT_VERSION=2.0 \
+    -DOpenGL_GL_PREFERENCE=LEGACY
+  make
+}
+
+package(){
+  cd "${srcdir}/${pkgname%-git}/build"
+  make DESTDIR="$pkgdir" install
+  install -Dm 644 "../LICENSE.txt" -t "${pkgdir}/usr/share/licenses/${pkgname}"
+  #mv "${pkgdir}/usr/lib64" "${pkgdir}/usr/lib"
+}
+
