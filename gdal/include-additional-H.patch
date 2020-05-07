@@ -1,0 +1,31 @@
+Index: ogr/GNUmakefile
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ogr/GNUmakefile	(revision 7652d752281951e989687c0270ce1c2d9b4219dd)
++++ ogr/GNUmakefile	(date 1577583801380)
+@@ -3,7 +3,7 @@
+ 
+ include ./file.lst
+ 
+-INST_H_FILES	=	ogr_core.h ogr_feature.h ogr_geometry.h ogr_p.h \
++INST_H_FILES	=	ogr_core.h ogr_feature.h ogr_geometry.h ogr_p.h ogr_proj_p.h \
+ 		ogr_spatialref.h ogr_srs_api.h ogrsf_frmts/ogrsf_frmts.h \
+ 		ogr_featurestyle.h ogr_api.h ogr_geocoding.h ogr_swq.h
+ 
+Index: port/GNUmakefile
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- port/GNUmakefile	(revision 7652d752281951e989687c0270ce1c2d9b4219dd)
++++ port/GNUmakefile	(date 1577583134810)
+@@ -106,6 +106,7 @@
+         cpl_json.h \
+ 	cplkeywordparser.h \
+ 	cpl_list.h \
++	cpl_mem_cache.h \
+ 	cpl_minixml.h \
+ 	cpl_minizip_ioapi.h \
+ 	cpl_minizip_unzip.h \
