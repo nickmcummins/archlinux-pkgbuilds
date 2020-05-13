@@ -26,22 +26,6 @@ IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
---- src/tools/grid/grid_gridding/nn/delaunay.c	(revision a95ee9852ab761a1514c2886795b247f0f260b04)
-+++ src/tools/grid/grid_gridding/nn/delaunay.c	(date 1578202760215)
-@@ -323,7 +323,7 @@
- //---------------------------------------------------------
- #else /* USE_QHULL */
- 
--#include <qhull/qhull_a.h>
-+#include <libqhull/qhull_a.h>
- 
- /* returns 1 if a,b,c are clockwise ordered */
- static int cw(delaunay *d, triangle *t)
-Index: src/saga_core/saga_gui/saga.cpp
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
-<+>UTF-8
-===================================================================
 --- src/saga_core/saga_gui/saga.cpp	(revision a95ee9852ab761a1514c2886795b247f0f260b04)
 +++ src/saga_core/saga_gui/saga.cpp	(date 1578201783052)
 @@ -133,7 +133,7 @@
