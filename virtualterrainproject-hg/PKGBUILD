@@ -1,5 +1,5 @@
 # Maintainer: Nick Cummins <nickmcummins@linuxmail.org>
-
+# Built: 2020-05-07 5:13PM
 pkgname='virtualterrainproject-hg'
 _pkgname='VirtualTerrainProject'
 pkgver=1.5r130211
@@ -9,7 +9,7 @@ arch=('i686' 'x86_64')
 url='http://vterrain.org/'
 license=('MIT')
 provides=('virtualterrainproject')
-depends=('libmini' 'libgrid-svn' 'openscenegraph' 'glu')
+depends=('libmini' 'libgrid-svn' 'openscenegraph' 'glu' 'quikgrid' 'libmini')
 makedepends=('gdal' 'openscenegraph' 'libmini' 'cmake' 'mercurial' 'inkscape')
 optdepends=('virtualterrainproject-data')
 options=()
@@ -27,13 +27,8 @@ build() {
   
   patch -Np0 -i "${srcdir}"/vtp-src-fixes.patch
  
-  inkscape -z --export-plain-svg=${srcdir}/VTBuilder.svg $srcdir/$pkgname/TerrainApps/VTBuilder/icons/VTBuilder.ico
-  inkscape -z --export-plain-svg=$srcdir/Enviro.svg $srcdir/$pkgname/TerrainApps/Enviro/osx/Enviro.icns
-  
-  #Build
-  #if [[ -d "${srcdir}/build" ]]; then
-  #  (rm -rf ${srcdir}/build)
-  #fi
+  inkscape --export-plain-svg=${srcdir}/VTBuilder.svg $srcdir/$pkgname/TerrainApps/VTBuilder/icons/VTBuilder.ico
+  inkscape --export-plain-svg=$srcdir/Enviro.svg $srcdir/$pkgname/TerrainApps/Enviro/osx/Enviro.icns
   
   mkdir -p build
   cd build
