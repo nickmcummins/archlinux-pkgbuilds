@@ -2,7 +2,7 @@
 
 pkgname=qtviewer-svn
 _pkgname=qtviewer
-pkgver=5863
+pkgver=5865
 pkgrel=1
 pkgdesc="Real-Time Terrain Rendering. Display high-resolution geospatial terrain data at real-time."
 arch=('i686' 'x86_64')
@@ -24,27 +24,17 @@ pkgver() {
 build() {
   cd "${pkgname}"  
 
-  #Build
-  if [[ -d "${srcdir}/build" ]]; then
-    (rm -rf ${srcdir}/build)
-  fi
-
-  #Build
-  if [[ -d "build" ]]; then
-    (rm -rf build)
-  fi
-
-  mkdir build
-  cd build
+  mkdir -p cmake-build-release
+  cd cmake-build-release
 
   cmake ../ -DCMAKE_INSTALL_PREFIX=/usr \
   -DOpenGL_GL_PREFERENCE=GLVND \
   -DBUILD_WITH_QT5=ON
-  make -j1
+  make
 }
 
 package() {
-  cd ${pkgname}/build
+  cd ${pkgname}/cmake-build-release
 
   make DESTDIR=${pkgdir} install || return 1  
 }
