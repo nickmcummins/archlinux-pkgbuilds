@@ -3,7 +3,7 @@
 
 pkgname=openscenegraph-git
 _pkgname=openscenegraph
-pkgver=3.7.0r16243.c29e2e4f4
+pkgver=3.7.0r16249.3547b9853
 _pkgver=3.7.0
 pkgrel=1
 pkgdesc="An open source, high performance real-time graphics toolkit"
@@ -25,7 +25,7 @@ pkgver() {
 }
 
 prepare() {
-  mkdir -p "${srcdir}/${pkgname%-git}/build"
+  mkdir -p "${srcdir}/${pkgname%-git}/cmake-build-release"
 }
 
 build() {
@@ -33,7 +33,7 @@ build() {
 
   patch -Np0 -i "${srcdir}"/exclude-RestHttpDevice-plugin.patch
 
-  mkdir -p build && cd build
+  mkdir -p cmake-build-release && cd cmake-build-release
 
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
@@ -60,7 +60,7 @@ build() {
 }
 
 package(){
-  cd "${srcdir}/${pkgname%-git}/build"
+  cd "${srcdir}/${pkgname%-git}/cmake-build-release"
   make DESTDIR="$pkgdir" install
   install -Dm 644 "../LICENSE.txt" -t "${pkgdir}/usr/share/licenses/${pkgname}"
   #mv "${pkgdir}/usr/lib64" "${pkgdir}/usr/lib"
