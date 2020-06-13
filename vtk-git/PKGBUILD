@@ -2,7 +2,7 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.0.0.961.g71bffccf04
+pkgver=9.0.0.966.g77ec1f240e
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization'
 arch=('i686' 'x86_64')
@@ -28,7 +28,7 @@ build() {
   cd ${_pkgname}
 
   cd ${srcdir}/vtk
-  mkdir -p build && cd build
+  mkdir -p cmake-build-release && cd cmake-build-release
   cmake $srcdir/$_pkgname \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
@@ -327,7 +327,7 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/vtk/build"
+  cd "${srcdir}/vtk/cmake-build-release"
   make DESTDIR="$pkgdir" install
   # Pack license
   install -D -m644 $srcdir/vtk/Copyright.txt $pkgdir/usr/share/licenses/$pkgname/LICENSE

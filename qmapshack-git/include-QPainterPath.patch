@@ -1,0 +1,30 @@
+Index: src/qmaptool/helpers/CDraw.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/qmaptool/helpers/CDraw.cpp	(revision 204f691298e4b541ef4bfc87d29a617a0dfc43e9)
++++ src/qmaptool/helpers/CDraw.cpp	(date 1591245949630)
+@@ -24,6 +24,7 @@
+ #include <QImage>
+ #include <QPointF>
+ #include <QtMath>
++#include <QtGui/QPainterPath>
+ 
+ QPen CDraw::penBorderBlue(QColor(10,10,150,220),2);
+ QPen CDraw::penBorderGray(Qt::lightGray,2);
+Index: src/qmapshack/helpers/CDraw.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/qmapshack/helpers/CDraw.cpp	(revision 204f691298e4b541ef4bfc87d29a617a0dfc43e9)
++++ src/qmapshack/helpers/CDraw.cpp	(date 1591245783924)
+@@ -24,6 +24,7 @@
+ #include <QImage>
+ #include <QPointF>
+ #include <QtMath>
++#include <QtGui/QPainterPath>
+ 
+ QPen CDraw::penBorderBlue(QColor(10, 10, 150, 220), 2);
+ QPen CDraw::penBorderGray(Qt::lightGray, 2);
