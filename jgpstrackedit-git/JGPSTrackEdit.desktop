@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.1
+Type=Application
+Name=JGPSTrackEdit
+Comment=GPS track editor for editing tracks and planning (multiple) day tours.
+Icon=JGPSTrackEdit
+Exec=java -Xms8g -Xmx24g -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -jar /opt/JGPSTrackEdit/JGPSTrackEdit.jar
+Path=/usr/share/JGPSTrackEdit
+Actions=
+Categories=GIS;
+Name[en_US]=JGPSTrackEdit
