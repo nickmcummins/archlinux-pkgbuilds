@@ -1,0 +1,42 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail.org>
+
+pkgname=cartotype-maps
+_pkgname=CartoTypeMaps
+pkgver=5.12.57
+pkgrel=1
+pkgdesc="Multi-platform desktop application for viewing maps, calculating routes, finding places, creating map images, and adding your own map data."
+arch=('x86_64')
+url="https://www.cartotype.com/the-maps-app"
+depends=()
+makedepends=('libicns' 'pngout' 'optipng' 'advancecomp')
+optdepends=('cartotype-maps-sample-data' 'cartotype-maps-sample-data-extra')
+provides=('cartotype-maps')
+source=("https://www.cartotype.com/assets/downloads/cartotype-maps-app-linux-r${pkgver}.zip"
+    "https://www.cartotype.com/assets/downloads/makemap_linux"
+    "CartoTypeMaps.desktop"
+    "CartoTypeMaps.icns")
+sha1sums=('SKIP'
+    'SKIP'
+    'SKIP'
+    'SKIP')
+
+package() {
+    cd ${srcdir}/${pkgname}-app-linux
+    rm ${_pkgname}-Linux-x64/${_pkgname}.sh
+
+    mkdir -p ${pkgdir}/opt
+    cp -a ${_pkgname}-Linux-x64 ${pkgdir}/opt/${_pkgname}
+
+    cd ${srcdir}
+    install -Dm755 makemap_linux ${pkgdir}/usr/bin/makemap
+
+    icns2png -x ${_pkgname}.icns
+    for size in 16 32 48 128 256; do
+        pngout ${_pkgname}_${size}x${size}x32.png -c3 -f3 -b128 -kbKGD -v &
+        optipng -o7 ${_pkgname}_${size}x${size}x32.png
+        advpng -z4 ${_pkgname}_${size}x${size}x32.png
+        install -D -m 644 ${_pkgname}_${size}x${size}x32.png ${pkgdir}/usr/share/icons/hicolor/${size}x${size}/apps/${_pkgname}.png
+    done
+    install -D -m644 ${srcdir}/*.desktop -t ${pkgdir}/usr/share/applications
+
+}
