@@ -1,0 +1,29 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail.org>
+
+pkgname=cartotype-maps-sample-data-extra
+pkgver=2020.3.12
+pkgrel=1
+pkgdesc="Extra sample maps which you can load into CartoTypeMaps."
+PKGEXT='.pkg.tar.lzo'
+arch=('x86_64')
+url="https://www.cartotype.com/the-maps-app"
+depends=('cartotype-maps')
+makedepends=()
+provides=('cartotype-maps-sample-data-extra')
+source=("https://www.cartotype.com/assets/downloads/maps/birmingham.ctm1"
+            "https://www.cartotype.com/assets/downloads/maps/london-and-thames-valley.ctm1"
+            "https://www.cartotype.com/assets/downloads/maps/london.ctm1"
+            "https://www.cartotype.com/assets/downloads/maps/santa_cruz.ctm1"
+            "https://www.cartotype.com/assets/downloads/maps/st_lucia.ctm1"
+            "https://www.cartotype.com/assets/downloads/maps/stockholm.ctm1")
+sha1sums=(        'SKIP'
+              'SKIP'
+              'SKIP'
+              'SKIP'
+              'SKIP'
+              'SKIP')
+
+package() {
+    mkdir -p ${pkgdir}/opt/CartoTypeMaps/sample-maps
+    cp ${srcdir}/*.ctm1 ${pkgdir}/opt/CartoTypeMaps/sample-maps
+}
