@@ -2,7 +2,7 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.0.0.966.g77ec1f240e
+pkgver=9.0.0.1239.ge6d8ac87a2
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization'
 arch=('i686' 'x86_64')
@@ -12,8 +12,10 @@ depends=('jsoncpp' 'libxt' 'double-conversion' 'glew' 'hdf5' 'python' 'proj' 'cu
 makedepends=('git' 'cmake' 'doxygen' 'boost' 'java-environment' 'utf8cpp')
 provides=("vtk")
 conflicts=("vtk")
-source=("git+https://gitlab.kitware.com/vtk/vtk.git")
-sha256sums=("SKIP")
+source=("git+https://gitlab.kitware.com/vtk/vtk.git"
+    "PoissonReconstruction-repo.patch")
+sha256sums=("SKIP"
+    "SKIP")
 
 pkgver() {
   cd ${srcdir}/vtk
@@ -25,9 +27,8 @@ prepare() {
 }
 
 build() {
-  cd ${_pkgname}
-
   cd ${srcdir}/vtk
+  patch -Np0 -i $srcdir/PoissonReconstruction-repo.patch
   mkdir -p cmake-build-release && cd cmake-build-release
   cmake $srcdir/$_pkgname \
     -DCMAKE_INSTALL_PREFIX=/usr \
@@ -122,6 +123,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_IOADIOS2=NO \
     -DVTK_MODULE_ENABLE_VTK_IOAMR=YES \
     -DVTK_MODULE_ENABLE_VTK_IOAsynchronous=YES \
+    -DVTK_MODULE_ENABLE_VTK_IOCONVERGECFD=YES \
     -DVTK_MODULE_ENABLE_VTK_IOCityGML=YES \
     -DVTK_MODULE_ENABLE_VTK_IOCore=YES \
     -DVTK_MODULE_ENABLE_VTK_IOEnSight=YES \
@@ -137,6 +139,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_IOImage=YES \
     -DVTK_MODULE_ENABLE_VTK_IOImport=YES \
     -DVTK_MODULE_ENABLE_VTK_IOInfovis=YES \
+    -DVTK_MODULE_ENABLE_VTK_IOIoss=YES \
     -DVTK_MODULE_ENABLE_VTK_IOLAS=NO \
     -DVTK_MODULE_ENABLE_VTK_IOLSDyna=YES \
     -DVTK_MODULE_ENABLE_VTK_IOLegacy=YES \
@@ -253,6 +256,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_glew=YES \
     -DVTK_MODULE_ENABLE_VTK_h5part=YES \
     -DVTK_MODULE_ENABLE_VTK_hdf5=YES \
+    -DVTK_MODULE_ENABLE_VTK_ioss=YES \
     -DVTK_MODULE_ENABLE_VTK_jpeg=YES \
     -DVTK_MODULE_ENABLE_VTK_jsoncpp=YES \
     -DVTK_MODULE_ENABLE_VTK_kissfft=YES \
@@ -296,7 +300,7 @@ build() {
     -DVTK_MODULE_USE_EXTERNAL_VTK_jpeg=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_jsoncpp=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_libharu=ON \
-    -DVTK_MODULE_USE_EXTERNAL_VTK_libproj=ON \
+    -DVTK_MODULE_USE_EXTERNAL_VTK_libproj=OFF \
     -DVTK_MODULE_USE_EXTERNAL_VTK_libxml2=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_lz4=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_lzma=ON \
