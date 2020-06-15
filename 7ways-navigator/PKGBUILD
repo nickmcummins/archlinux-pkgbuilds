@@ -1,0 +1,42 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail.org>
+
+pkgname=7ways-navigator
+_pkgname=7WaysNavigator
+pkgver=1.82.1310
+pkgrel=1
+pkgdesc="Easy navigator for trips of up to 10,000 km or more with memorizing routes and voice assistant."
+arch=('x86_64')
+url="https://navikey.org/7ways/"
+depends=()
+makedepends=('libicns' 'pngout' 'optipng' 'advancecomp')
+optdepends=()
+provides=('7ways-nagivator')
+source=("https://navikey.ru/files/7w/7ways-1308/7ways-linux-ubuntu-bionic-${arch}.zip"
+  "7WaysNavigator.desktop"
+  "7WaysNavigator.png")
+sha1sums=('SKIP'
+  'SKIP'
+  'SKIP')
+
+package() {
+    cd ${srcdir}
+    
+    mkdir -p ${pkgdir}/usr/bin
+    install -vDm 755 7ways/7ways -t ${pkgdir}/usr/bin
+    rm 7ways/7ways
+
+    mkdir -p ${pkgdir}/usr/share/
+    cp -a 7ways ${pkgdir}/usr/share/${pkgname}
+    
+    find ${pkgdir}/usr/share/${pkgname} -type d -exec chmod 777 '{}' \;
+
+    for size in 16 32 64 128; do
+        convert ${srcdir}/${_pkgname}.png -adaptive-resize ${size}x${size} ${srcdir}/${_pkgname}_${size}x${size}.png
+        pngout ${srcdir}/${_pkgname}_${size}x${size}.png
+        optipng -o7 ${srcdir}/${_pkgname}_${size}x${size}.png
+        advpng -z4 ${srcdir}/${_pkgname}_${size}x${size}.png
+        install -D -m 644 ${srcdir}/${_pkgname}_${size}x${size}.png ${pkgdir}/usr/share/icons/hicolor/${size}x${size}/apps/7ways.png
+    done
+    
+    install -D -m644 ${srcdir}/*.desktop -t ${pkgdir}/usr/share/applications
+}
