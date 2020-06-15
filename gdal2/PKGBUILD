@@ -62,7 +62,7 @@ build() {
 
   ./configure --prefix=/usr --with-netcdf --with-libtiff --with-sqlite3 --with-geotiff \
               --with-mysql --with-curl --with-hdf5 --with-perl --with-geos \
-              --with-png --with-poppler --with-spatialite --with-openjpeg
+              --with-png --with-poppler=no --with-spatialite --with-openjpeg
 
 # workaround for bug #13646
   sed -i 's/PY_HAVE_SETUPTOOLS=1/PY_HAVE_SETUPTOOLS=/g' ./GDALmake.opt
