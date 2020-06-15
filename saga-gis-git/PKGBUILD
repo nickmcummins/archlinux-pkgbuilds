@@ -13,7 +13,9 @@ depends=('wxgtk'
          'unixodbc'
          'jasper'
          'swig'
-         'opencv2-opt')
+         'opencv2-opt'
+         'kealib'
+         'pdal')
 optdepends=('opencv'
             'vigra'
             'liblas'
@@ -89,6 +91,7 @@ build() {
     -DWITH_TOOL_IO_GPS=ON \
     -DWITH_TOOL_IO_GRID=ON \
     -DWITH_TOOL_IO_GRID_IMAGE=ON \
+    -DWITH_TOOL_IO_PDAL=ON \
     -DWITH_TOOL_IO_SHAPES=ON \
     -DWITH_TOOL_IO_SHAPES_DXF=ON \
     -DWITH_TOOL_IO_SHAPES_DXF_USE_SYSTEM_DXF=OFF \
@@ -140,10 +143,10 @@ package () {
   cd ${srcdir}/${_pkgname}/${_pkgname}/build
   
   make DESTDIR="${pkgdir}" install
-  install -D -m644 "${srcdir}/code/${_pkgname}/src/lgpl.txt" "${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE"
+  install -D -m644 "${srcdir}/${_pkgname}/${_pkgname}/src/lgpl.txt" "${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE"
   
-  install -D -m 644 ${srcdir}/code/${_pkgname}/src/saga_core/saga_gui/res/*.desktop -t ${pkgdir}/usr/share/applications/
+  install -D -m 644 ${srcdir}/${_pkgname}/${_pkgname}/src/saga_core/saga_gui/res/*.desktop -t ${pkgdir}/usr/share/applications/
 
-  install -Dm644 "${srcdir}/code/${_pkgname}/src/saga_core/saga_gui/res/saga.png" \
+  install -Dm644 "${srcdir}/${_pkgname}/${_pkgname}/src/saga_core/saga_gui/res/saga.png" \
                    "${pkgdir}/usr/share/pixmaps/${_pkgname}.png"
 }

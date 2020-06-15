@@ -69,3 +69,19 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
  	}
 
  	#define PJ_GET_PROJS	pj_get_list_ref()
+Index: src/tools/io/CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/tools/io/CMakeLists.txt	(revision 95038b874d6d5f00328ecc385d365874496f53d2)
++++ src/tools/io/CMakeLists.txt	(date 1592193759809)
+@@ -7,7 +7,7 @@
+ if(WITH_GUI)
+ 	add_subdirectory(io_grid_image)
+ endif()
+-#add_subdirectory(io_pdal)
++add_subdirectory(io_pdal)
+ add_subdirectory(io_shapes)
+ add_subdirectory(io_shapes_dxf)
+ #add_subdirectory(io_shapes_las)
