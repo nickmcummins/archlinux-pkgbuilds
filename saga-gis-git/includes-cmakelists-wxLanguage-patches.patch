@@ -42,30 +42,30 @@ IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
---- src/tools/projection/pj_proj4/crs_base.cpp	(revision a95ee9852ab761a1514c2886795b247f0f260b04)
-+++ src/tools/projection/pj_proj4/crs_base.cpp	(date 1580352738592)
+--- src/tools/projection/pj_proj4/crs_transform.cpp	(revision 95038b874d6d5f00328ecc385d365874496f53d2)
++++ src/tools/projection/pj_proj4/crs_transform.cpp	(date 1592189081557)
 @@ -58,7 +58,7 @@
  //---------------------------------------------------------
  #ifndef PROJ6
  	extern "C" {
 -		#include <projects.h>
-+        #include <vtk-8.90/vtklibproj/src/projects.h>
++		#include <vtk-9.0/vtklibproj/src/projects.h>
  	}
- 
- 	#define PJ_GET_PROJS	pj_get_list_ref()
-Index: src/tools/projection/pj_proj4/crs_transform.cpp
+
+ 	#define PROJ4_FREE(p)	if( p )	{	pj_free((PJ *)p);	p	= NULL;	}
+Index: saga-gis/src/tools/projection/pj_proj4/crs_base.cpp
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
---- src/tools/projection/pj_proj4/crs_transform.cpp	(revision a95ee9852ab761a1514c2886795b247f0f260b04)
-+++ src/tools/projection/pj_proj4/crs_transform.cpp	(date 1580352738585)
+--- src/tools/projection/pj_proj4/crs_base.cpp	(revision 95038b874d6d5f00328ecc385d365874496f53d2)
++++ src/tools/projection/pj_proj4/crs_base.cpp	(date 1592189049091)
 @@ -58,7 +58,7 @@
  //---------------------------------------------------------
  #ifndef PROJ6
  	extern "C" {
 -		#include <projects.h>
-+		#include <vtk-8.90/vtklibproj/src/projects.h>
++		#include <vtk-9.0/vtklibproj/src/projects.h>
  	}
- 
- 	#define PROJ4_FREE(p)	if( p )	{	pj_free((PJ *)p);	p	= NULL;	}
+
+ 	#define PJ_GET_PROJS	pj_get_list_ref()
