@@ -2,7 +2,7 @@
 
 _name=PDAL
 pkgname=pdal-git
-pkgver=2.0.0.r273.g06eb582e8
+pkgver=2.1.0.r9125.eed55e75c
 pkgrel=1
 pkgdesc="A C++ library for translating and manipulating point cloud data."
 arch=('x86_64')
@@ -33,7 +33,11 @@ sha512sums=('SKIP' 'SKIP')
 
 pkgver() {
     cd ${srcdir}/${_name}
-    git describe --long --tags | sed -r 's/^v//;s/([^-]*-g)/r\1/;s/-/./g'
+    # Use the tag of the last commit
+	REVISION=$(printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)")
+	GITTAGS=$(git tag)
+	VERSION=$(python -c "import os; print(list(filter(lambda tag: len(tag) > 0 and tag[0].isdigit(), os.popen('git tag').read().split('\n')))[-1])")
+	printf "${VERSION}.${REVISION}"
 }
 
 build() {
