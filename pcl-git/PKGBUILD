@@ -2,7 +2,7 @@
 
 pkgname=pcl-git
 _pkgname=pcl
-pkgver=1.10.0.r12530.ca57cd62b
+pkgver=1.10.0.r12701.de16e07bb
 pkgrel=1
 pkgdesc="a standalone, large scale, open project for 2D/3D image and point cloud processing"
 arch=(i686 x86_64)
@@ -23,7 +23,7 @@ depends=(
   librealsense
   ensenso-sdk
 )
-makedepends=(cmake git)
+makedepends=(cmake git gcc9)
 source=(git+https://github.com/nickmcummins/pcl)
 sha256sums=(SKIP)
 conflicts=(pcl)
@@ -76,8 +76,15 @@ prepare() {
 		-DBUILD_CUDA=ON \
 		-DBUILD_GPU=ON \
 		-DBUILD_visualization=ON \
+		-DCMAKE_CXX_COMPILER=/usr/bin/c++-9 \
+		-DCMAKE_CXX_COMPILER_AR=/usr/bin/gcc-ar-9 \
+		-DCMAKE_CXX_COMPILER_RANLIB=/usr/bin/gcc-ranlib-9 \
+		-DCMAKE_C_COMPILER=/usr/bin/cc-9 \
+		-DCMAKE_C_COMPILER_AR=/usr/bin/gcc-ar-9 \
+		-DCMAKE_C_COMPILER_RANLIB=/usr/bin/gcc-ranlib-9 \
+		-DCUDA_ARCH_BIN=5.0 \
 		-DWITH_CUDA=ON \
-		-DWITH_DOCS=ON \
+		-DWITH_DOCS=OFF \
 		-DWITH_ENSENSO=ON \
 		-DWITH_OPENGL=ON \
 		-DWITH_OPENNI=OFF \
@@ -85,7 +92,6 @@ prepare() {
 		-DWITH_QT=ON \
 		-DWITH_RSSDK=OFF \
 		-DWITH_RSSDK2=ON \
-		-DWITH_TUTOTIALS=ON \
 		-DWITH_VTK=ON
 }
 
