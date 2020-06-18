@@ -1,6 +1,6 @@
 pkgname=lastools-git
 _pkgname=LAStools
-pkgver=r1144.8d03dfb
+pkgver=r1199.b921c41
 pkgrel=1
 pkgdesc="Efficient tools for LiDAR processing. Contains LASlib, a C++ programming API for reading / writing LIDAR data stored in standard LAS format."
 arch=('i686' 'x86_64')
@@ -21,7 +21,6 @@ build() {
   cd "$srcdir/$_pkgname"
   patch -Np1 -i ../../set-lib-directory.patch
     
-  rm -rf build
   mkdir -p build && cd build
 
   cmake .. \
@@ -36,8 +35,4 @@ package() {
     cd $srcdir/$_pkgname/build
 
     make DESTDIR="$pkgdir/" install
-    
-    #mv $pkgdir/usr/lib/LASlib/libLASlib.so $pkgdir/usr/lib
-    #rm -rf $pkgdir/usr/lib/LASlib
-  
 }
