@@ -1,5 +1,6 @@
 # Maintainer: Samuel Mesa <samuelmesa@linuxmail.org>
 # Contributor: F0ruD<fzerorubigd{AT}gmail{DOT}com>
+# Built: 2020-06-17 09:25PM PT
 
 pkgname=libsquish-svn
 pkgver=110
@@ -36,7 +37,7 @@ build() {
   -DBUILD_SQUISH_EXTRA=ON \
   -DBUILD_SQUISH_WITH_OPENMP=ON \
   -DBUILD_SQUISH_WITH_SSE2=ON
-  make -j8
+  make
 }
 
 package() {
