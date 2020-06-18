@@ -2,7 +2,7 @@
 
 pkgname='libmini-svn'
 _pkgname=libmini
-pkgver=5863
+pkgver=5865
 pkgrel=1
 pkgdesc="Real-Time Terrain Rendering. Display high-resolution geospatial terrain data at real-time."
 arch=('i686' 'x86_64')
@@ -50,7 +50,7 @@ build() {
   -DOpenGL_GL_PREFERENCE=GLVND \
   -DBUILD_MINI_WITH_GLUT=ON \
   -DBUILD_MINI_WITH_GREYC=ON
-  make -j10
+  make
 }
 
 package() {
