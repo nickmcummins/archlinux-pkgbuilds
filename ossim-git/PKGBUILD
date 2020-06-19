@@ -11,6 +11,7 @@ depends=('freetype2' 'gdal' 'libgeotiff' 'libjpeg' 'libtiff' 'openthreads' 'open
 'hdf5-cpp-fortran' 'minizip' 'expat' 'ffmpeg' 'qt4' 'podofo' 'bzip2' 'freetype2' 'pdal')
 makedepends=('cmake')
 optdepends=( 'java-environment-common' 'openmpi' 'gpstk-bin' )
+provides=(ossim)
 source=("git+https://github.com/ossimlabs/ossim.git")
 md5sums=('SKIP')
 
