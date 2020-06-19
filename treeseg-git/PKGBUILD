@@ -1,7 +1,7 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
 pkgname=treeseg-git
 _pkgname=treeseg
-pkgver=2.0.r45.90ab31f
+pkgver=2.0.r49.7a4cdac
 pkgrel=1
 pkgdesc="Extract individual trees from lidar point clouds."
 url="https://github.com/apburt/treeseg"
