@@ -1,7 +1,7 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
 pkgname=spdlib-git
 _pkgname=spdlib
-pkgver=3.3.0
+pkgver=3.3.7.gbef2ead
 pkgrel=1
 pkgdesc="A set of open source software tools for processing laser scanning data (i.e., LiDAR), including data captured from airborne and terrestrial platforms."
 arch=('x86_64')
@@ -9,10 +9,17 @@ url="http://www.spdlib.org/doku.php"
 provides=('spdlib')
 makedepends=('mercurial')
 depends=('lastools-git' 'gdal')
+conflicts=('spdlib-hg')
 source=('git+https://github.com/remotesensinginfo/spdlib'
     'liblas-to-laslib.patch')
 sha512sums=('SKIP' 'SKIP')
 
+pkgver() {
+	cd ${srcdir}/${_pkgname}
+	# Use the tag of the last commit
+	GITVERSION=$(git describe --long --tags)
+	printf "$(python -c "import sys; print(sys.argv[1].replace('Version_', '').replace('_', '.').replace('-', '.'))" ${GITVERSION})"
+}
 
 build() {
     cd ${srcdir}/${_pkgname}
@@ -21,6 +28,7 @@ build() {
     mkdir -p build && cd build
 
     cmake .. \
+        -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DBUILD_SHARED_LIBS=ON \
         -DSPDLIB_WITH_UTILITIES=ON
