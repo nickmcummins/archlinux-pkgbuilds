@@ -1,7 +1,7 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
 pkgname=ossim-git
 _pkgname=ossim
-pkgver=2.11.r2206.694dc861
+pkgver=2.11.r2239.1af3774c
 pkgrel=1
 pkgdesc="OSSIM is a powerful suite of geospatial libraries and applications used to process imagery, maps, terrain, and vector data."
 url="http://www.ossim.org"
@@ -11,6 +11,7 @@ depends=('freetype2' 'gdal' 'libgeotiff' 'libjpeg' 'libtiff' 'openthreads' 'open
 'hdf5-cpp-fortran' 'minizip' 'expat' 'ffmpeg' 'qt4' 'podofo' 'bzip2' 'freetype2' 'pdal')
 makedepends=('cmake')
 optdepends=( 'java-environment-common' 'openmpi' 'gpstk-bin' )
+provides=(ossim)
 source=("git+https://github.com/ossimlabs/ossim.git")
 md5sums=('SKIP')
 

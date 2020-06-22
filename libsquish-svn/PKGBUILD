@@ -1,5 +1,6 @@
 # Maintainer: Samuel Mesa <samuelmesa@linuxmail.org>
 # Contributor: F0ruD<fzerorubigd{AT}gmail{DOT}com>
+# Built: 2020-06-17 09:25PM PT
 
 pkgname=libsquish-svn
 pkgver=110
@@ -30,19 +31,18 @@ build() {
   mkdir build
   cd build
 
-  cmake ../ -DCMAKE_INSTALL_PREFIX=/usr \
-  -DCMAKE_INSTALL_LIBDIR=lib \
+  cmake .. \
+  -DCMAKE_INSTALL_PREFIX=/usr \
+  -DCMAKE_BUILD_TYPE=Release \
   -DBUILD_SHARED_LIBS=ON \
   -DBUILD_SQUISH_EXTRA=ON \
   -DBUILD_SQUISH_WITH_OPENMP=ON \
   -DBUILD_SQUISH_WITH_SSE2=ON
-  make -j8
+  make
 }
 
 package() {
   cd ${pkgname}/build
-
-  #make DESTDIR=${pkgdir} install || return 1  
   
   cmake -D CMAKE_INSTALL_PREFIX="$pkgdir/usr" -P cmake_install.cmake
 

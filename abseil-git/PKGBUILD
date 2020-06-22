@@ -1,0 +1,41 @@
+# Maintainer: Nick M Cummins <nickmcummins dot linuxmail.org>
+
+pkgname=abseil-git
+_pkgname="abseil-cpp"
+pkgver=r546.2c92bdc
+pkgrel=1
+pkgdesc="Abseil Common Libraries (C++)."
+arch=('x86_64')
+url="https://abseil.io"
+license=('Apache')
+depends=()
+provides=("abseil=$pkgver")
+source=("git+https://github.com/abseil/abseil-cpp")
+sha1sums=('SKIP')
+
+pkgver() {
+	cd ${srcdir}/${_pkgname}
+	# Use the tag of the last commit
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+	cd ${srcdir}/${_pkgname}
+	
+	mkdir -p cmake-build-release && cd cmake-build-release
+	
+	cmake .. \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DBUILD_SHARED_LIBS=ON
+	make
+}
+
+
+
+package() {
+	cd ${srcdir}/${_pkgname}/cmake-build-release
+	
+	make DESTDIR="${pkgdir}/" install
+	install -Dm644 "${srcdir}/${_pkgname}/LICENSE" "${pkgdir}/usr/share/licenses/abseil/LICENSE"
+}

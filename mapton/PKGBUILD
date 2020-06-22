@@ -1,0 +1,51 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+
+pkgname=mapton
+pkgver=2.0.1
+pkgrel=1
+pkgdesc="Some kind of map application"
+PKGEXT='.pkg.tar.lzo'
+arch=(any)
+url="https://mapton.org"
+license=('Apache')
+makedepends=('imagemagick' 'pngout' 'optipng' 'advancecomp')
+
+source=("https://github.com/trixon/mapton/releases/download/v${pkgver}/mapton-${pkgver}-linux.zip"
+        "mapton.desktop"
+        "mapton.png")
+sha256sums=('5b949f67b55eae7967e99abb87d0e24d4d362162fb9e3bb01adb3a7d9473f8cf'
+            '303620b07b9a48324acfa2541a1f93fe5630cca7919cd5b5b1141f0ffe7b6cd7'
+            'SKIP')
+
+
+build() {
+	# Requires JDK8
+	export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
+}
+
+package() {
+
+    mkdir -p ${pkgdir}/opt
+    cp -r ${srcdir}/mapton ${pkgdir}/opt
+	# Initial target directories
+	#install -d "$pkgdir"/opt/mapton "$pkgdir"/usr/bin
+
+	# Majority of files, ensure file permissions are correct
+	chmod -R u=rwX,go=rX "$pkgdir"/opt
+
+	# Executables and launchers
+	#install -D bin/mapton "$pkgdir"/opt/mapton/bin/mapton
+    mkdir -p ${pkgdir}/usr/bin
+	ln -s /opt/mapton/bin/mapton ${pkgdir}/usr/bin/mapton
+	install -D ${srcdir}/mapton.desktop ${pkgdir}/usr/share/applications/mapton.desktop
+	
+	for size in 16 32 64 128 256; do
+	    convert ${srcdir}/${pkgname}.png -adaptive-resize ${size}x${size} ${srcdir}/${pkgname}_${size}.png
+        pngout ${srcdir}/${pkgname}_${size}.png
+        optipng -o7 ${srcdir}/${pkgname}_${size}.png
+        advpng -z4 ${srcdir}/${pkgname}_${size}.png
+        install -D -m 644 ${srcdir}/${pkgname}_${size}.png ${pkgdir}/usr/share/icons/hicolor/${size}x${size}/apps/${pkgname}.png
+    done
+    
+   install -Dm 644 ${srcdir}/mapton/LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}"
+}

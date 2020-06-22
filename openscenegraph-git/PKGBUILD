@@ -3,7 +3,7 @@
 
 pkgname=openscenegraph-git
 _pkgname=openscenegraph
-pkgver=3.7.0r16249.3547b9853
+pkgver=3.7.0r16254.27f400bb9
 _pkgver=3.7.0
 pkgrel=1
 pkgdesc="An open source, high performance real-time graphics toolkit"

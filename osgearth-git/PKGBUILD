@@ -2,18 +2,18 @@
 
 pkgname=osgearth-git
 _gitname=osgearth
-pkgver=r12.e37673b
+pkgver=r123.6300333
 pkgrel=1
 pkgdesc="A terrain rendering toolkit for OpenSceneGraph"
 arch=('i686' 'x86_64')
 url='http://www.osgearth.org'
 license=('LGPL')
-depends=('openscenegraph' 'gdal' 'expat' 'curl' )
+depends=('openscenegraph' 'gdal' 'expat' 'curl' 'gdal2')
 optdepends=('geos: Improved vector support'
             'sqlite: Flat file cache'
             'libzip: Archive support')
 makedepends=('git' 'cmake')
-source=("$_gitname::git+https://github.com/gwaldron/osgearth" "patches.patch")
+    "geos-pointers.patch")
 provides=('osgearth')
 conflicts=('osgearth-qt4' 'osgearth')
 md5sums=('SKIP' 'SKIP')
@@ -28,20 +28,22 @@ pkgver() {
 
 build() {
     cd "$srcdir/$_gitname"
-    
-    patch -Np0 -i "${srcdir}"/patches.patch
-      
-    rm -rf build
-    mkdir -p build
-    cd build
+
+    patch -Np0 -i ${srcdir}/geos-pointers.patch
+
+    mkdir -p build && cd build
     cmake .. \
   			-DLIB_POSTFIX= \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DCMAKE_BUILD_TYPE=Release \
+        -DGDAL_CONFIG=/opt/gdal-2.0.0/bin/gdal-config \
+        -DGDAL_INCLUDE_DIR=/opt/gdal-2.0.0/include \
+        -DGDAL_LIBRARY=/opt/gdal-2.0.0/lib/libgdal.so \
         -DOpenGL_GL_PREFERENCE=GLVND \
+        -DOSGEARTH_BUILD_LEGACY_MP_TERRAIN_ENGINE=OFF \
         -DOSGEARTH_INSTALL_SHADERS=ON \
         -DOSGEARTH_ENABLE_NVTT_CPU_MIPMAPS=ON
-    make -j4
+    make
 }
 
 package() {

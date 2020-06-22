@@ -1,7 +1,7 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
 
 pkgname=qmapshack-git
-pkgver=1.14.1.r4710.204f6912
+pkgver=1.15.0.r4723.c88f80f3
 pkgrel=1
 pkgdesc='Plan your next outdoor trip'
 arch=('x86_64')
