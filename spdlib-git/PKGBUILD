@@ -1,5 +1,5 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
-pkgname=spdlib-hg
+pkgname=spdlib-git
 _pkgname=spdlib
 pkgver=3.3.0
 pkgrel=1
@@ -9,7 +9,7 @@ url="http://www.spdlib.org/doku.php"
 provides=('spdlib')
 makedepends=('mercurial')
 depends=('lastools-git' 'gdal')
-source=('hg+https://bitbucket.org/petebunting/spdlib'
+source=('git+https://github.com/remotesensinginfo/spdlib'
     'liblas-to-laslib.patch')
 sha512sums=('SKIP' 'SKIP')
 
