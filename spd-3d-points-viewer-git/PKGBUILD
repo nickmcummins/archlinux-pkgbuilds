@@ -1,7 +1,7 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
-pkgname=spd-3d-points-viewer-hg
+pkgname=spd-3d-points-viewer-git
 _pkgname=spd-3d-points-viewer
-pkgver=r26.3186458
+pkgver=r22.2ed73cb
 pkgrel=1
 pkgdesc="A 3D Points Viewer application written in C++ using QT for view laser scanning data stored within the SPD format."
 arch=('x86_64')
@@ -9,7 +9,7 @@ url="http://www.spdlib.org/doku.php?id=spdlib:points_viewer:points_viewer"
 provides=('spd-3d-points-viewer')
 makedepends=('mercurial' 'libicns')
 depends=('spdlib')
-source=('hg+https://bitbucket.org/petebunting/spd-3d-points-viewer'
+source=('spd-3d-points-viewer::git+https://github.com/remotesensinginfo/spdpointsviewer'
     'cmakelists.patch'
     'SPDPointsViewer.desktop')
 sha512sums=('SKIP' 'SKIP' 'SKIP')
