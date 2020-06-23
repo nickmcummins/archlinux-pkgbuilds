@@ -1,7 +1,7 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
 pkgname=spd-3d-points-viewer-git
 _pkgname=spd-3d-points-viewer
-pkgver=r22.2ed73cb
+pkgver=3.0.2.r22.2ed73cb
 pkgrel=1
 pkgdesc="A 3D Points Viewer application written in C++ using QT for view laser scanning data stored within the SPD format."
 arch=('x86_64')
@@ -9,6 +9,7 @@ url="http://www.spdlib.org/doku.php?id=spdlib:points_viewer:points_viewer"
 provides=('spd-3d-points-viewer')
 makedepends=('mercurial' 'libicns')
 depends=('spdlib')
+conflicts=('spd-3d-points-viewer-hg')
 source=('spd-3d-points-viewer::git+https://github.com/remotesensinginfo/spdpointsviewer'
     'cmakelists.patch'
     'SPDPointsViewer.desktop')
@@ -17,7 +18,8 @@ sha512sums=('SKIP' 'SKIP' 'SKIP')
 pkgver() {
 	cd ${srcdir}/${_pkgname}
 	# Use the tag of the last commit
-	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+    CMAKE_VERSION=$(python -c "import sys; import re; cmake_filename = sys.argv[1]; cmake_file = open(cmake_filename, 'r'); vars = dict(list(map(lambda varline: (re.search(r'(set\s\()([^\s]+)\s([^)]+)', varline).group(2), re.search(r'(set\s\()([^\s]+)\s([^)]+)', varline).group(3)), filter(lambda line: line.startswith('set ('), cmake_file.read().split('\n'))))); cmake_package = list(filter(lambda var: var.endswith('_VERSION_MAJOR'), vars.keys()))[0].split('_')[0]; version_major = vars[f'{cmake_package}_VERSION_MAJOR']; version_minor = vars[f'{cmake_package}_VERSION_MINOR']; version_patch = vars[f'{cmake_package}_VERSION_PATCH']; print(f'{version_major}.{version_minor}.{version_patch}')" ${srcdir}/${_pkgname}/CMakeLists.txt)
+    printf "%s.r%s.%s" "$CMAKE_VERSION" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 build() {
@@ -28,7 +30,7 @@ build() {
 
     cmake .. \
         -DCMAKE_INSTALL_PREFIX=/usr
-    make -j10
+    make
 }
 
 
@@ -44,6 +46,4 @@ package() {
     for size in 16 32 128 256 512; do
         install -D -m 644 ../SPDPointsViewer_${size}x${size}x32.png $pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/SPDPointsViewer.png
     done
-
-
 }
