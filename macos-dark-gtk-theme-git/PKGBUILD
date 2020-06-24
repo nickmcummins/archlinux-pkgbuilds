@@ -1,0 +1,36 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+
+_pkgname=macos-dark-gtk-theme
+pkgname=${_pkgname}-git
+pkgver=5.2.dark.r3.g286bd11
+pkgrel=1
+pkgdesc="macOS 10.15 'Catalina' dark GTK theme. Theme reproducing the clean and bright look of Apple's OS (but in dark mode)."
+arch=('any')
+url="https://github.com/B00merang-Project/macOS-Dark"
+license=('GPL3')
+
+depends=('gtk-engines' 'gtk-engine-murrine')
+optdepends=('gnome-themes-standard')
+makedepends=('git')
+
+provides=("${_pkgname}-git")
+conflicts=("${_pkgname}-git")
+
+source=("${_pkgname}::git+https://github.com/B00merang-Project/macOS-Dark.git")
+sha256sums=('SKIP')
+
+pkgver() {
+	cd "${srcdir}/${_pkgname}"
+	git describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+package() {
+  cd "${srcdir}/${_pkgname}"
+
+  # create theme dir
+  install -d -m 755 "$pkgdir/usr/share/themes/macOS-Dark"
+
+  # install theme
+  find * -type f -exec \
+  install -D -m 644 '{}' "$pkgdir/usr/share/themes/macOS-Dark/{}" \;
+}
