@@ -1,0 +1,41 @@
+pkgname=gta-git
+_pkgname=gta
+pkgver=1.2.1.r633.6a2de6c
+pkgrel=1
+pkgdesc="A library that reads and writes Generic Tagged Arrays (GTA) files, with interfaces in C and C++."
+arch=(i686 x86_64)
+url="https://marlam.de/gta/"
+license=('GPL2')
+depends=()
+makedepends=('cmake' 'git')
+source=('git+https://git.marlam.de/git/gta')
+sha256sums=('SKIP')
+provides=('gta')
+
+pkgver() {
+	cd ${srcdir}/${_pkgname}
+	# Use the tag of the last commit
+	TAG_VERSION=$(git describe --long --tags | sed -r 's/^v//;s/([^-]*-g)/r\1/;s/-/./g' | cut -c 8-12 --)
+	printf "%s.r%s.%s" "$TAG_VERSION" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+prepare() {
+	cd ${srcdir}/${_pkgname}
+	mkdir -p cmake-build-release && cd cmake-build-release
+
+	cmake ${srcdir}/gta/libgta \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_BUILD_TYPE=Release
+}
+
+build() {
+	cd ${srcdir}/${_pkgname}/cmake-build-release
+	make
+}
+
+package() {
+	cd ${srcdir}/${_pkgname}/cmake-build-release
+	make DESTDIR="${pkgdir}" install
+	
+    install -Dm644 ${srcdir}/${_pkgname}/libgta/COPYING ${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE
+}
