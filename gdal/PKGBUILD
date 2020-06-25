@@ -11,7 +11,8 @@ arch=('x86_64')
 url="http://www.gdal.org/"
 license=('custom')
 depends=('curl' 'geos' 'giflib' 'hdf5' 'libgeotiff' 'libjpeg-turbo' 'libpng' 'libspatialite' 'libtiff' 'netcdf'
-         'openjpeg2' 'poppler' 'cfitsio' 'sqlite' 'mariadb-libs' 'postgresql-libs' 'xerces-c' 'json-c' 'charls' 'gta')
+         'openjpeg2' 'poppler' 'cfitsio' 'sqlite' 'mariadb-libs' 'postgresql-libs' 'xerces-c' 'json-c' 
+         'charls' 'gta' 'tiledb')
 makedepends=('perl' 'swig' 'chrpath' 'doxygen' 'python-numpy' 'boost')
 optdepends=('postgresql: postgresql database support'
             'mariadb: mariadb database support'
@@ -44,13 +45,14 @@ build() {
 
   ./configure --prefix=/usr --with-netcdf --with-libtiff --with-sqlite3 --with-geotiff \
               --with-mysql --with-curl --with-hdf5 --with-perl --with-geos \
-              --with-png --with-poppler --with-spatialite --with-openjpeg
+              --with-png --with-poppler --with-spatialite --with-openjpeg \
+              --with-charls --with-kea --with-tiledb
 
 # workaround for bug #13646
 #   sed -i 's/PY_HAVE_SETUPTOOLS=1/PY_HAVE_SETUPTOOLS=/g' ./GDALmake.opt
 #   sed -i 's/EXE_DEP_LIBS/KILL_EXE_DEP_LIBS/' apps/GNUmakefile
 
-  make -j10
+  make
   #make man
 
   cd "${srcdir}"/$pkgbase-$pkgver/swig/python
