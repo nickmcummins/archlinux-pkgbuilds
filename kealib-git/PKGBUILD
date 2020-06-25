@@ -1,0 +1,48 @@
+# Contributor: Nick M Cummins <nickmcummins at linuxmail dot org>
+pkgname=kealib-git
+_pkgname=kealib
+pkgver=1.4.13.r391.e819d84
+pkgrel=1
+pkgdesc="An HDF5 Based Raster File Format and its GDAL plugin (Git version)"
+arch=('i686' 'x86_64')
+url='http://kealib.org'
+license=('MIT')
+makedepends=('cmake' 'git')
+depends=('hdf5' 'gdal')
+provides=('kealib')
+conflicts=('kealib')
+source=("git+https://github.com/ubarsc/kealib.git")
+sha256sums=('SKIP')
+
+pkgver() {
+	cd ${srcdir}/${_pkgname}
+	# Use the tag of the last commit
+	TAG_VERSION=$(git describe --long --tags | sed -r 's/^v//;s/([^-]*-g)/r\1/;s/-/./g' | cut -c 8-13 --)
+	printf "%s.r%s.%s" "$TAG_VERSION" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+
+build() {
+  cd ${srcdir}/${_pkgname}
+  mkdir -p cmake-build-release && cd cmake-build-release
+  
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_SKIP_RPATH=ON \
+    -DCMAKE_CXX_STANDARD=11 \
+    -DHDF5_INCLUDE_DIR=/usr/include \
+    -DGDAL_INCLUDE_DIR=/usr/include \
+    -DLIBKEA_WITH_GDAL=TRUE
+  make
+}
+
+check() {
+  cd ${srcdir}/${_pkgname}/cmake-build-release
+  make test
+}
+
+package() {
+  cd ${srcdir}/${_pkgname}/cmake-build-release
+  make DESTDIR=${pkgdir} install
+  install -Dm644 ${srcdir}/${_pkgname}/LICENSE.txt ${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE.txt
+}
