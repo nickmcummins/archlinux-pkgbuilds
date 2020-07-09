@@ -4,7 +4,7 @@
 
 pkgbase=gdal
 pkgname=('gdal' 'python-gdal')
-pkgver=3.1.0
+pkgver=3.1.2
 pkgrel=10
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
@@ -22,7 +22,7 @@ changelog=$pkgbase.changelog
 source=(https://download.osgeo.org/${pkgbase}/${pkgver}/${pkgbase}-${pkgver}.tar.xz
         gdal-perl-vendor.patch
         include-additional-H.patch)
-md5sums=('fe29a41d5813263fc33c1f9130f73e01'
+md5sums=('4273eda69b2976a87464b95d1b41273c'
           'SKIP'
           'SKIP')
 sha256sums=('SKIP'
