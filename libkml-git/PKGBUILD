@@ -46,6 +46,7 @@ build() {
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DWITH_SWIG=ON \
+    -DWITH_JAVA=ON \
     -DWITH_PYTHON=ON \
     -DBUILD_EXAMPLES=OFF
 
