@@ -1,0 +1,47 @@
+Index: src/swig/kmldom.i
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/swig/kmldom.i	(revision 878abd18793af1e49ffe70aa42409ece61f23681)
++++ src/swig/kmldom.i	(date 1595484944427)
+@@ -178,14 +178,14 @@
+ %include "std_string.i"
+ 
+ 
+-%include "kml/dom/xsd.h"
++%include "../kml/dom/xsd.h"
+ 
+ // Tell SWIG about the kmldom type ids (Type_Placemark, etc).
+ 
+-%include "kml/dom/kml22.h"
++%include "../kml/dom/kml22.h"
+ 
+ // Tell SWIG about the intrusive_ptr typedefs.
+-%include "kml/dom/kml_ptr.h"
++%include "../kml/dom/kml_ptr.h"
+ 
+ namespace kmlbase {
+ 
+@@ -355,4 +355,4 @@
+ }  // end namespace kmldom
+ 
+ // This must come after the elements declared above in kmlelements.i.
+-%include "kml/dom/kml_cast.h"
++%include "../kml/dom/kml_cast.h"
+Index: src/swig/kmlengine.i
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/swig/kmlengine.i	(revision 878abd18793af1e49ffe70aa42409ece61f23681)
++++ src/swig/kmlengine.i	(date 1595484944417)
+@@ -40,7 +40,7 @@
+ %include "std_string.i"
+ 
+ // Tell SWIG about the KML DOM intrusive_ptr typedefs.
+-%include "kml/dom/kml_ptr.h"
++%include "../kml/dom/kml_ptr.h"
+ 
+ %include "typemaps.i"
+ 

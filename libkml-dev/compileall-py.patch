@@ -1,0 +1,19 @@
+Index: cmake/pycompile.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- cmake/pycompile.py	(revision 916a801ed3143ab82c07ec108bad271aa441da16)
++++ cmake/pycompile.py	(date 1595467722286)
+@@ -1,3 +1,10 @@
+ import compileall
++import os
+ from sys import argv
+-compileall.compile_file(argv[1])
++
++if __name__ == '__main__':
++    pyfile = argv[1]
++    response = compileall.compile_file(pyfile, quiet=0, legacy=True)
++    print(f'compile_file returned {str(response)}.')
++    pycfile = pyfile.replace('.py', '.pyc')
++    print(f'{pycfile} exists? {os.path.exists(pycfile)}')
