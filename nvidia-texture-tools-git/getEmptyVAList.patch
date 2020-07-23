@@ -1,0 +1,29 @@
+Index: src/nvcore/Debug.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+--- src/nvcore/Debug.cpp	(revision eb34681ce8cc7ff1dcaa77a1d096fe424d2944a8)
++++ src/nvcore/Debug.cpp	(date 1595463831489)
+@@ -1015,11 +1015,10 @@
+ #endif
+ }
+ 
+-static va_list getEmptyVAList(va_list list, ...)
++static void getEmptyVAList(va_list& list, ...)
+ {
+     va_start(list, list);
+     va_end(list);
+-    return list;
+ }
+ 
+ /// Dump callstack using the specified handler.
+@@ -1035,7 +1034,7 @@
+         writeStackTrace(trace, size, callstackLevelsToSkip + 1, lines);     // + 1 to skip the call to dumpCallstack
+ 
+         va_list empty;
+-        empty = getEmptyVAList(empty);
++        getEmptyVAList(empty);
+ 
+         for (uint i = 0; i < lines.count(); i++) {
+             messageHandler->log(lines[i], empty);

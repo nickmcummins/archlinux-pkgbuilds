@@ -1,0 +1,43 @@
+# Maintainer: Evert Vorster < evorster at gmail dot com >
+# Contributor: Mike Roll <scaryspiderpig@gmail.com>
+# Contributor: Nick M Cummins <nickmcummins at linuxmail dot org>
+
+_pkgname=nvidia-texture-tools
+pkgname="${_pkgname}-git"
+pkgver=2.1.1.eb34681
+pkgrel=1
+pkgdesc="Texture processing tools with support for Direct3D 10 and 11 formats"
+arch=('i686' 'x86_64')
+url="https://github.com/castano/nvidia-texture-tools"
+license=('MIT')
+depends=('libpng' 'libjpeg' 'libtiff' 'openexr')
+conflicts=("${_pkgname}")
+provides=("${_pkgname}")
+makedepends=('cmake')
+source=('git+https://github.com/castano/nvidia-texture-tools.git'
+    'getEmptyVAList.patch')
+md5sums=('SKIP'
+    'SKIP')
+
+pkgver() {    
+    cd "${srcdir}/${_pkgname}"
+    echo "$(git tag | tail -1).$(git rev-parse --short HEAD)"
+}
+
+build() {
+    cd ${srcdir}/${_pkgname}
+    patch -Np0 -i ${srcdir}/getEmptyVAList.patch
+    mkdir -p build && cd build
+
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr  \
+	-DCMAKE_C_FLAGS:STRING="${CFLAGS} -msse4.1" \
+	-DCMAKE_CXX_FLAGS:STRING="${CXXFLAGS} -msse4.1" \
+	-DCUDA_HOST_COMPILER=/usr/bin/gcc-9
+  make -j10
+}
+
+package() {
+    cd ${srcdir}/${_pkgname}/build
+    make DESTDIR=${pkgdir} install
+}
