@@ -1,0 +1,83 @@
+Index: cmake/LibKMLHelper.cmake
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- cmake/LibKMLHelper.cmake	(revision 878abd18793af1e49ffe70aa42409ece61f23681)
++++ cmake/LibKMLHelper.cmake	(date 1595567825738)
+@@ -25,7 +25,7 @@
+       endif()	
+     endforeach()
+ 
+-    if(LIB_DEPEND MATCHES "(MINIZIP|URIPARSER)")
++    if(LIB_DEPEND MATCHES "MINIZIP")
+       list(APPEND LIB_SRCS $<TARGET_OBJECTS:${LIB_DEPEND}>)
+     else()
+       list(APPEND ${LIB_NAME}_LINK_LIBS ${LIB_DEPEND})
+Index: cmake/FindUriParser.cmake
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- cmake/FindUriParser.cmake	(revision 878abd18793af1e49ffe70aa42409ece61f23681)
++++ cmake/FindUriParser.cmake	(date 1595566558762)
+@@ -5,17 +5,11 @@
+ #  URIPARSER_LIBRARY     - uriparser library file
+ #  URIPARSER_FOUND       - TRUE if uriparser is found
+ 
+-if (URIPARSER_INCLUDE_DIR)
+- #check cache 
+-  set(URIPARSER_FIND_QUIETLY TRUE)
+-endif ()
+ 
+-if (NOT URIPARSER_INCLUDE_DIR)
+-    find_path(URIPARSER_INCLUDE_DIR NAMES Uri.h PATH_SUFFIXES uriparser)
+-    set(URIPARSER_INCLUDE_DIR ${URIPARSER_INCLUDE_DIR}/uriparser CACHE PATH "uriparser includes")
+-endif ()
++find_library(URIPARSER_LIBRARY NAMES uriparser::uriparser)
+ 
+-find_library(URIPARSER_LIBRARY NAMES uriparser)
++message("URIPARSER_INCLUDE_DIR: ${URIPARSER_INCLUDE_DIR}")
++message("URIPARSER_LIBRARY: ${URIPARSER_LIBRARY}")
+ 
+ if (URIPARSER_INCLUDE_DIR AND URIPARSER_LIBRARY)
+   set(URIPARSER_FOUND TRUE)
+@@ -23,13 +17,7 @@
+ endif ()
+ 
+ if (URIPARSER_FOUND)
+-   if (NOT URIPARSER_FIND_QUIETLY)
+-      message(STATUS "Found UriParser library: ${URIPARSER_LIBRARY}")
+-   endif ()
++   message(STATUS "Found UriParser library: ${URIPARSER_LIBRARY}")
+ else ()
+-   if (NOT URIPARSER_FIND_QUIETLY)
+-      message(FATAL_ERROR "Could NOT find UriParser library")
+-    else ()
+-      message(STATUS "Could NOT find UriParser library")
+-    endif ()
++   message(FATAL_ERROR "Could NOT find UriParser library")
+ endif ()
+Index: third_party/CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- third_party/CMakeLists.txt	(revision 878abd18793af1e49ffe70aa42409ece61f23681)
++++ third_party/CMakeLists.txt	(date 1595567882838)
+@@ -45,12 +45,13 @@
+ set_property(TARGET ZLIB PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${ZLIB_INCLUDE_DIR} )
+ 
+ ####################################### URIPARSER #######################################
+-find_package(URIPARSER QUIET)
++find_package(URIPARSER)
+ if(URIPARSER_FOUND)
++  message(STATUS "Found uriparser: ${URIPARSER_INCLUDE_DIR} ${URIPARSER_LIBRARY}")
+   add_library(URIPARSER SHARED IMPORTED GLOBAL)
+   set_property(TARGET URIPARSER PROPERTY IMPORTED_LOCATION ${URIPARSER_LIBRARY} )
+   set_property(TARGET URIPARSER PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${URIPARSER_INCLUDE_DIR} )
+-else()  
++else()
+   message(STATUS "URIPARSER not found. We will use third_party/uriparser")
+   file(GLOB URIPARSER_SOURCES uriparser/src/*.c)
+   add_library(URIPARSER OBJECT ${URIPARSER_SOURCES})

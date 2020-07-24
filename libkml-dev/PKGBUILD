@@ -23,8 +23,10 @@ provides=('libkml')
 conflicts=('libkml-dev' 'libkml-git')
 source=("libkml::git+https://github.com/libkml/libkml.git"
     'swig-relative-header-paths.patch'
-    'compileall-py.patch')
+    'compileall-py.patch'
+    'find-uriparser.patch')
 sha256sums=('SKIP'
+    'SKIP'
     'SKIP'
     'SKIP')
 
@@ -43,6 +45,7 @@ build() {
 
   patch -Np0 -i ${srcdir}/swig-relative-header-paths.patch
   patch -Np0 -i ${srcdir}/compileall-py.patch
+  patch -Np0 -i ${srcdir}/find-uriparser.patch
 
   rm -rf build && mkdir build && cd build
 
@@ -52,7 +55,8 @@ build() {
     -DWITH_SWIG=ON \
     -DWITH_JAVA=ON \
     -DWITH_PYTHON=ON \
-    -DBUILD_EXAMPLES=OFF
+    -DBUILD_EXAMPLES=OFF \
+    -DURIPARSER_LIBRARY=/usr/lib/liburiparser.so
 
   make
 }
