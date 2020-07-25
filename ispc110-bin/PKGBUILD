@@ -1,0 +1,23 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+
+pkgname=ispc110-bin
+_pkgname=ispc
+pkgver=1.10.0
+pkgrel=2
+pkgdesc="A compiler for high-performance SIMD programming on the CPU (v1.10.0, binary only)"
+arch=('x86_64')
+url="https://ispc.github.io/"
+license=('BSD')
+depends=('ncurses' 'zlib' 'llvm-libs' 'clang')
+makedepends=()
+source=("https://github.com/ispc/ispc/releases/download/v${pkgver}/ispc-v${pkgver}b-linux.tar.gz") # Borrowed from Fedora
+sha256sums=('SKIP')
+
+package() {
+  cd ${srcdir}/${_pkgname}-v${pkgver}-linux
+
+  mkdir -p ${pkgdir}/opt/ispc-${pkgver}/bin
+  install -Dm755 bin/ispc -t ${pkgdir}/opt/ispc-${pkgver}/bin
+  install -Dm644 LICENSE.txt -t "${pkgdir}"/usr/share/licenses/${_pkgname}-${pkgver}
+}
+
