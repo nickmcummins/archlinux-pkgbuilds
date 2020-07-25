@@ -1,0 +1,49 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+
+pkgname=ospray-git
+_pkgname=ospray
+pkgver=2.2.0.r8507.c902dca37
+_pkgver=2.2.0
+pkgrel=1
+pkgdesc="A Ray Tracing Based Rendering Engine for High-Fidelity Visualization (git version)"
+arch=(x86_64)
+url="https://www.ospray.org/"
+license=(Apache)
+depends=(intel-tbb embree ispc libgl glfw glu openmpi rkcommon)
+makedepends=(cmake)
+provides=(ospray)
+conflicts=(ospray)
+source=("git+https://github.com/ospray/ospray")
+sha256sums=('SKIP')
+
+pkgver() {
+    cd ${srcdir}/${_pkgname}
+    printf "${_pkgver}.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+    cd ${srcdir}/${_pkgname}
+
+    mkdir -p build && cd build
+
+    cmake .. \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_INSTALL_LIBDIR=lib \
+        -DOSPRAY_BUILD_ISA=ALL \
+        -DOSPRAY_ENABLE_TESTING=ON \
+        -DOSPRAY_MODULE_MPI=ON
+    make -j12
+}
+
+check() {
+    cd ${srcdir}/${_pkgname}/build
+    make test
+}
+
+package() {
+    cd ${srcdir}/${_pkgname}/build
+    make DESTDIR="${pkgdir}" install
+    # Remove tests
+    rm "${pkgdir}"/usr/bin/test_*
+    rm -r "${pkgdir}"/usr/scripts
+}
