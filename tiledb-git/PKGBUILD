@@ -2,9 +2,9 @@
 # Contributor: SaultDon <sault.don gmail>
 
 pkgname=tiledb-git
-pkgver=r2374.6f7f997d
+pkgver=2.1.0.r109.gb07a86c3
 pkgrel=1
-_pkgname="TileDB"
+_pkgname=TileDB
 pkgdesc="TileDB allows you to manage the massive dense and sparse multi-dimensional array data that frequently arise in many important scientific applications."
 arch=('any')
 url="https://tiledb.io/"
@@ -15,9 +15,10 @@ source=("git+https://github.com/TileDB-Inc/TileDB.git")
 sha1sums=('SKIP')
 
 pkgver() {
-	cd ${srcdir}/${_pkgname}
-	# Use the tag of the last commit
-	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+  cd ${srcdir}/${_pkgname}
+  GITREVISION=$(git describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g' | cut -b 11-)
+  VERSION=$(python -c "import re; cmake_file = open('tiledb/sm/c_api/tiledb_version.h', 'r'); defines_regex = r'#define\s([^\s]+)\s([^\s]+)'; vars = dict(list(map(lambda defineline: (re.search(defines_regex, defineline).group(1), re.search(defines_regex, defineline).group(2)), filter(lambda line: line.startswith('#define'), cmake_file.read().split('\n'))))); version_major = vars['TILEDB_VERSION_MAJOR']; version_minor = vars['TILEDB_VERSION_MINOR']; version_patch = vars['TILEDB_VERSION_PATCH']; print(f'{version_major}.{version_minor}.{version_patch}')")
+  printf "${VERSION}.${GITREVISION}"
 }
 
 build() {
@@ -30,7 +31,7 @@ build() {
 		-DCMAKE_INSTALL_LIBDIR=lib \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DTILEDB_INSTALL_LIBDIR=lib
-	make -j10
+	make
 }
 
 
