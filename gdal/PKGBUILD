@@ -21,12 +21,15 @@ options=('!emptydirs')
 changelog=$pkgbase.changelog
 source=(https://download.osgeo.org/${pkgbase}/${pkgver}/${pkgbase}-${pkgver}.tar.xz
         gdal-perl-vendor.patch
-        include-additional-H.patch)
+        include-additional-H.patch
+        jpeg2000.patch)
 md5sums=('4273eda69b2976a87464b95d1b41273c'
+          'SKIP'
           'SKIP'
           'SKIP')
 sha256sums=('SKIP'
             '2103b98f2f15954f042d5620658b30d703125927bde2e5eb671c5facb6c2f5ed'
+            'SKIP'
             'SKIP')
 
 prepare() {
@@ -38,6 +41,7 @@ prepare() {
 # Fix Perl bindings installation path
   patch -Np0 -i "${srcdir}"/gdal-perl-vendor.patch
   patch -Np0 -i "${srcdir}"/include-additional-H.patch
+  patch -Np0 -i ${srcdir}/jpeg2000.patch
 }
 
 build() {
