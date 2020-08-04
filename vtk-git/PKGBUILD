@@ -2,13 +2,13 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.0.20200730.r1646.gc916909d58
+pkgver=9.0.20200804.r1674.ga3f51a0b6b
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization'
 arch=('i686' 'x86_64')
 url='http://www.vtk.org'
 license=('BSD')
-depends=('jsoncpp' 'libxt' 'double-conversion' 'glew' 'hdf5' 'python' 'proj' 'cuda' 'libharu' 'pegtl' 'openturns')
+depends=('jsoncpp' 'libxt' 'double-conversion' 'glew' 'hdf5' 'python' 'proj' 'cuda' 'libharu' 'pegtl' 'openturns' 'ospray>=2.1.0')
 makedepends=('git' 'cmake' 'doxygen' 'boost' 'java-environment' 'utf8cpp')
 provides=("vtk")
 conflicts=("vtk")
