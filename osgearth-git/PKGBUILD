@@ -2,47 +2,42 @@
 
 pkgname=osgearth-git
 _gitname=osgearth
-pkgver=r123.6300333
+pkgver=3.0.0.r132.gbacb3222d
 pkgrel=1
 pkgdesc="A terrain rendering toolkit for OpenSceneGraph"
 arch=('i686' 'x86_64')
 url='http://www.osgearth.org'
 license=('LGPL')
-depends=('openscenegraph' 'gdal' 'expat' 'curl' 'gdal2')
+depends=('openscenegraph' 'gdal' 'expat' 'curl' 'gdal' 'rocksdb')
 optdepends=('geos: Improved vector support'
             'sqlite: Flat file cache'
             'libzip: Archive support')
 makedepends=('git' 'cmake')
-    "geos-pointers.patch")
+source=("$_gitname::git+https://github.com/nickmcummins/osgearth")
 provides=('osgearth')
 conflicts=('osgearth-qt4' 'osgearth')
-md5sums=('SKIP' 'SKIP')
+md5sums=('SKIP')
 
 pkgver() {
-	cd "${srcdir}/${_pkgname}"
-	( set -o pipefail
-	  git describe --long 2>/dev/null | sed 's/\([^-]*-g\)/r\1/;s/-/./g' ||
-	  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
-	)
+	cd "${srcdir}/${_gitname}"
+	VERSION=$(python -c "import re; cmake_file = open('src/osgEarth/Version', 'r'); defines_regex = r'#define\s([^\s]+)\s+([^\s]+)'; vars = dict(list(map(lambda defineline: (re.search(defines_regex, defineline).group(1), re.search(defines_regex, defineline).group(2)), filter(lambda line: line.startswith('#define'), cmake_file.read().split('\n'))))); version_major = vars['OSGEARTH_MAJOR_VERSION']; version_minor = vars['OSGEARTH_MINOR_VERSION']; version_patch = vars['OSGEARTH_PATCH_VERSION']; print(f'{version_major}.{version_minor}.{version_patch}')")
+    GITREVISION=$(git describe --long | sed 's/\([^-]*-g\)/r\1/;s/-/./g' | cut -b 14-)
+    printf "${VERSION}.${GITREVISION}"
 }
 
 build() {
     cd "$srcdir/$_gitname"
 
-    patch -Np0 -i ${srcdir}/geos-pointers.patch
-
     mkdir -p build && cd build
     cmake .. \
-  			-DLIB_POSTFIX= \
+    		-DLIB_POSTFIX= \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DCMAKE_BUILD_TYPE=Release \
-        -DGDAL_CONFIG=/opt/gdal-2.0.0/bin/gdal-config \
-        -DGDAL_INCLUDE_DIR=/opt/gdal-2.0.0/include \
-        -DGDAL_LIBRARY=/opt/gdal-2.0.0/lib/libgdal.so \
         -DOpenGL_GL_PREFERENCE=GLVND \
         -DOSGEARTH_BUILD_LEGACY_MP_TERRAIN_ENGINE=OFF \
         -DOSGEARTH_INSTALL_SHADERS=ON \
-        -DOSGEARTH_ENABLE_NVTT_CPU_MIPMAPS=ON
+        -DOSGEARTH_ENABLE_NVTT_CPU_MIPMAPS=ON \
+        -DROCKSDB_LIBRARY=/usr/lib/librocksdb.so
     make
 }
 
