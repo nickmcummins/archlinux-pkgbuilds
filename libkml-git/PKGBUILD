@@ -6,7 +6,7 @@
 
 # Contributor: Nick M Cummins <nickmcummins at linuxmail dog org>
 
-pkgname=libkml-dev
+pkgname=libkml-git
 _pkgname=libkml
 pkgver=1.3.1.r1062.878abd1
 _pkgver=1.3.1
@@ -20,7 +20,7 @@ optdepends=('swig: bindings for additional languages'
             'python2: python bindings')
 makedepends=('cmake' 'swig')    
 provides=('libkml')
-conflicts=('libkml-dev' 'libkml-git')
+conflicts=('libkml-dev' 'libkml')
 source=("libkml::git+https://github.com/libkml/libkml.git"
     'swig-relative-header-paths.patch'
     'compileall-py.patch'
