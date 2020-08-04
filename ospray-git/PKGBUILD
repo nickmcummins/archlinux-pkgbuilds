@@ -11,7 +11,7 @@ url="https://www.ospray.org/"
 license=(Apache)
 depends=(intel-tbb embree ispc libgl glfw glu openmpi rkcommon ispc110-bin openvkl)
 makedepends=(cmake)
-provides=(ospray)
+provides=(ospray=$pkgver)
 conflicts=(ospray)
 source=("git+https://github.com/ospray/ospray")
 sha256sums=('SKIP')
