@@ -2,29 +2,33 @@
 
 pkgname='libmini-svn'
 _pkgname=libmini
-pkgver=5865
+pkgver=11.7.r5865
+_svntag=11.7
 pkgrel=1
 pkgdesc="Real-Time Terrain Rendering. Display high-resolution geospatial terrain data at real-time."
 arch=('i686' 'x86_64')
-url='https://code.google.com/p/libmini/'
+url='https://libmini.sourceforge.io/'
 license=('GPL')
 provides=("libmini")
-
-depends=('libsquish-svn' 'openscenegraph' 'glu')
+depends=('libsquish' 'openscenegraph' 'glu')
 makedepends=('cmake' 'subversion' 'tcsh')
 optdepends=()
 options=()
-source=("${pkgname}::svn+http://svn.code.sf.net/p/libmini/code/libmini/mini" 
+_svnurl=http://svn.code.sf.net/p/libmini/code/libmini
+source=("${pkgname}::svn+${_svnurl}/mini"
     "fix-libMini-cmake.patch")
 md5sums=('SKIP'
     'SKIP')
 
 pkgver() {
-  svnversion "${SRCDEST}/${pkgname}" | tr -d [A-z]
+  SVNTAGS=$(svn log -v ${_svnurl}/tags/ | awk '/^   A/ { print $2 }')
+  #SVNTAG=$(python -c "import sys; svntags = list(set(map(lambda tag: tag.replace('/libmini/tags/mini-', '').split('/')[0], filter(lambda line: line.strip().startswith('/libmini/tags/mini-'), sys.argv[1].split('\n'))))); svntags = sorted(svntags, key=lambda tag: int(tag.split('.')[0]) * 100 + int(tag.split('.')[1])); print(svntags[-1])" ${SVNTAGS})
+  SVNREVISION=$(svnversion "${SRCDEST}/${pkgname}" | tr -d [A-z])
+  printf "${_svntag}.r${SVNREVISION}"
 }
 
 build() {
-  cd "${pkgname}"  
+  cd ${srcdir}/${pkgname}
   patch -Np0 -i "${srcdir}"/fix-libMini-cmake.patch
 
   #Build
@@ -32,8 +36,7 @@ build() {
     (rm -rf build)
   fi
 
-  mkdir build
-  cd build
+  mkdir build && cd build
 
   cmake ../ -DCMAKE_INSTALL_PREFIX=/usr \
   -DCMAKE_EXE_LINKER_FLAGS="" \
@@ -54,7 +57,7 @@ build() {
 }
 
 package() {
-  cd ${pkgname}/build
+  cd ${srcdir}/${pkgname}/build
 
   cmake -D CMAKE_INSTALL_PREFIX="$pkgdir/usr" -P cmake_install.cmake
   
