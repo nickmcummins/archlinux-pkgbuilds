@@ -2,7 +2,7 @@
 
 pkgname=pcl-git
 _pkgname=pcl
-pkgver=1.10.0.r12814.46d820683
+pkgver=1.10.0.r12863.8da6bbc83
 pkgrel=1
 pkgdesc="a standalone, large scale, open project for 2D/3D image and point cloud processing"
 arch=(i686 x86_64)
@@ -24,7 +24,7 @@ depends=(
   ensenso-sdk
 )
 makedepends=(cmake git gcc9)
-source=(git+https://github.com/nickmcummins/pcl)
+source=(git+https://github.com/nickmcummins/pcl#branch=pointpicking)
 sha256sums=(SKIP)
 conflicts=(pcl)
 provides=(pcl)
