@@ -3,22 +3,24 @@
 pkgname=ospray-git
 _pkgname=ospray
 pkgver=2.2.0.r8507.c902dca37
-_pkgver=2.2.0
+_cmake_version_file="cmake/ospray_version.cmake"
 pkgrel=1
 pkgdesc="A Ray Tracing Based Rendering Engine for High-Fidelity Visualization (git version)"
 arch=(x86_64)
 url="https://www.ospray.org/"
 license=(Apache)
-depends=(intel-tbb embree ispc libgl glfw glu openmpi rkcommon ispc110-bin)
+depends=(intel-tbb embree ispc libgl glfw glu openmpi rkcommon ispc110-bin openvkl)
 makedepends=(cmake)
-provides=(ospray)
+provides=(ospray=$pkgver)
 conflicts=(ospray)
 source=("git+https://github.com/ospray/ospray")
 sha256sums=('SKIP')
 
 pkgver() {
     cd ${srcdir}/${_pkgname}
-    printf "${_pkgver}.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+    VERSION=$(python3 -c "import sys; import re; cmake_filename = sys.argv[1]; cmake_file = open(cmake_filename, 'r'); setvar_regex = r'(set\s*\()([^\s]+)\s([^)]+)'; vars = dict(list(map(lambda varline: (re.search(setvar_regex, varline).group(2), re.search(setvar_regex, varline).group(3)), filter(lambda line: line.startswith('set') and line.endswith(')'), cmake_file.read().split('\n'))))); cmake_package = list(filter(lambda var: var.endswith('_VERSION_MAJOR'), vars.keys()))[0].split('_')[0]; version_major = vars[f'{cmake_package}_VERSION_MAJOR']; version_minor = vars[f'{cmake_package}_VERSION_MINOR']; version_patch = vars[f'{cmake_package}_VERSION_PATCH']; print(f'{version_major}.{version_minor}.{version_patch}')
+" ${_cmake_version_file})
+    printf "$VERSION.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 build() {
