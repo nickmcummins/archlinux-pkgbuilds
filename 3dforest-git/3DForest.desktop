@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=3DForest
+Comment=Tool for point cloud data processing from forest environment acquired by terrestrial laser scanner.
+Icon=3dforest
+Exec=/usr/bin/3DForest
+Terminal=False
+Type=Application
+Categories=Science;GIS;
+Name[en_US]=3DForest.desktop

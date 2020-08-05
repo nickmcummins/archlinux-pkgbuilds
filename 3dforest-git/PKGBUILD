@@ -1,0 +1,60 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+
+pkgname=3dforest-git
+_pkgname=3dforest
+pkgver=0.6.0.r134.debb055
+_pkgver=0.6.0
+pkgrel=1
+pkgdesc="Tool for point cloud data processing from forest environment acquired by terrestrial laser scanner."
+arch=(x86_64)
+url="https://www.3dforest.eu"
+license=(GPL3)
+depends=(boost flann gdal eigen pcl liblas openturns openvr ospray openvkl vtk)
+makedepends=(cmake)
+provides=(3dforest)
+conflicts=(3dforest)
+source=('git+https://github.com/janekT/3DForest'
+    'patches.patch'
+    '3DForest.png'
+    '3DForest.desktop')
+sha256sums=('SKIP'
+    'SKIP'
+    'SKIP'
+    'SKIP')
+
+pkgver() {
+    cd ${srcdir}/3DForest
+    printf "${_pkgver}.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+    cd ${srcdir}/3DForest
+
+    patch -Np0 -i ${srcdir}/patches.patch
+
+    mkdir -p cmake-build-release && cd cmake-build-release
+
+    cmake .. \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_INSTALL_LIBDIR=lib \
+        -DOpenVR_INCLUDE_DIR=/usr/include \
+        -DMPI_C_FOUND=1
+    make
+}
+
+package() {
+    cd ${srcdir}/3DForest/cmake-build-release
+    
+    install -d -m755 ${pkgdir}/usr/bin
+    install -t ${pkgdir}/usr/bin 3DForest
+
+	install -Dm644 ${srcdir}/3DForest/sourceCode/LICENSE.txt ${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE
+    
+    install -D -m 644 ${srcdir}/3DForest.png ${pkgdir}/usr/share/icons/hicolor/256x256/apps/${_pkgname}.png
+    for size in 16 32 64 128; do
+        convert ${srcdir}/3DForest.png -adaptive-resize ${size}x${size} ${srcdir}/3DForest_${size}x${size}.png
+        install -D -m 644 ${srcdir}/3DForest_${size}x${size}.png ${pkgdir}/usr/share/icons/hicolor/${size}x${size}/apps/${_pkgname}.png
+    done
+
+    install -D -m644 ${srcdir}/3DForest.desktop -t ${pkgdir}/usr/share/applications
+}
