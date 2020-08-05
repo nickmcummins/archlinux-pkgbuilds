@@ -28,7 +28,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 --- sourceCode/mainwindow.h	(revision debb055558deacc14b8174cf222ea66d6c1a24ba)
-+++ sourceCode/mainwindow.h	(date 1595634420331)
++++ sourceCode/mainwindow.h	(date 1596596273169)
 @@ -17,7 +17,8 @@
  #define MAINWINDOW_H_INCLUDED
  
@@ -39,6 +39,15 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
  #include <QtWidgets/QMainWindow>
  #include "gui.h"
  #include "project.h"
+@@ -492,7 +493,7 @@
+ 
+ //QVTKWIDGET - display and hide clouds
+   //QVTKWidget *qvtkwidget;
+-    QVTKOpenGLWidget *qvtkwidget;
++    QVTKOpenGLStereoWidget *qvtkwidget;
+     /**< Define QVTKWidget */
+   //Visualizer *m_vis;
+     pcl::visualization::PCLVisualizer *m_vis; /**< Visualizer */
 Index: sourceCode/skeleton.cpp
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
@@ -116,7 +125,29 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 --- sourceCode/mainwindow.cpp	(revision debb055558deacc14b8174cf222ea66d6c1a24ba)
-+++ sourceCode/mainwindow.cpp	(date 1596588593003)
++++ sourceCode/mainwindow.cpp	(date 1596600232935)
+@@ -104,16 +104,16 @@
+     setWindowTitle ( tr("3D Forest - Forest lidar data processing tool") );
+ 
+ //QVTKwidget - visualizer
+-    qvtkwidget = new QVTKOpenGLWidget(this);
++    qvtkwidget = new QVTKOpenGLStereoWidget(this);
+ 
+-    auto renderer = vtkSmartPointer<vtkRenderer >::New();
+-    auto renderWindow = vtkSmartPointer<vtkGenericOpenGLRenderWindow >::New();
++    vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
++    vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+ 
+     renderWindow->AddRenderer(renderer);
+-    
++
+     m_vis = new pcl::visualization::PCLVisualizer(renderer, renderWindow, "data viewer", true);
+     m_vis->setShowFPS(false);
+-    qvtkwidget->SetRenderWindow(m_vis->getRenderWindow());
++    qvtkwidget->setRenderWindow(m_vis->getRenderWindow());
+     coordianteAxes();
+     setCentralWidget(qvtkwidget);
+     qvtkwidget->show();
 @@ -7136,7 +7136,7 @@
      auto name = (m_cloud->get_name().toStdString());
      auto indices = event.getPointsIndices(name);
