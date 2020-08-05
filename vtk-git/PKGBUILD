@@ -8,7 +8,8 @@ pkgdesc='A software system for 3D computer graphics, image processing, and visua
 arch=('i686' 'x86_64')
 url='http://www.vtk.org'
 license=('BSD')
-depends=('jsoncpp' 'libxt' 'double-conversion' 'glew' 'hdf5' 'python' 'proj' 'cuda' 'libharu' 'pegtl' 'openturns' 'ospray>=2.1.0')
+depends=('cuda' 'double-conversion' 'embree' 'gdal' 'glew' 'hdf5' 'jsoncpp' 'libarchive' 'libharu' 'libxt' 'openslide' 
+    'openturns' 'openvkl' 'openvr' 'ospray>=2.1.0' 'pdal' 'pegtl' 'proj' 'python')
 makedepends=('git' 'cmake' 'doxygen' 'boost' 'java-environment' 'utf8cpp')
 provides=("vtk")
 conflicts=("vtk")
@@ -27,6 +28,7 @@ pkgver() {
 build() {
   cd ${srcdir}/vtk
   patch -Np0 -i $srcdir/PoissonReconstruction-repo.patch
+  
   mkdir -p cmake-build-release && cd cmake-build-release
   cmake $srcdir/$_pkgname \
     -DCMAKE_INSTALL_PREFIX=/usr \
