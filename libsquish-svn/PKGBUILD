@@ -1,9 +1,10 @@
 # Maintainer: Samuel Mesa <samuelmesa@linuxmail.org>
 # Contributor: F0ruD<fzerorubigd{AT}gmail{DOT}com>
+# Contributor: Nick M Cummins <nickmcummins at linuxmail dog org>
 # Built: 2020-06-17 09:25PM PT
 
 pkgname=libsquish-svn
-pkgver=110
+pkgver=1.15.r110
 pkgrel=1
 pkgdesc="DXT compression library - svn build"
 arch=('i686' 'x86_64')
@@ -12,12 +13,15 @@ makedepends=('subversion' 'cmake')
 license=('MIT')
 provides=('libsquish')
 conflicts=('libsquish')
-
-source=("${pkgname}::svn+http://svn.code.sf.net/p/libsquish/code/trunk")
+_svnurl=http://svn.code.sf.net/p/libsquish/code
+source=("${pkgname}::svn+${_svnurl}/trunk")
 md5sums=('SKIP')
 
 pkgver() {
-  svnversion "${SRCDEST}/${pkgname}" | tr -d [A-z]
+  SVNTAGS=$(svn log -v ${_svnurl}/tags/ | awk '/^   A/ { print $2 }')
+  SVNTAG=$(python -c "import sys; svntags = sys.argv[1]; svntags = list(set(map(lambda tag: tag.replace('/tags/', ''), filter(lambda line: line.startswith('/tags/'), svntags.split('\n'))))); svntags.sort(); print(svntags[-1])" ${SVNTAGS})
+  SVNREVISION=$(svnversion "${SRCDEST}/${pkgname}" | tr -d [A-z])
+  printf "${SVNTAG}.r${SVNREVISION}"
 }
 
 build() {
