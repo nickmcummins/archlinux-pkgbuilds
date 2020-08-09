@@ -1,7 +1,7 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
 
 pkgname=qmapshack-git
-pkgver=1.15.0.r4723.c88f80f3
+pkgver=1.15.0.r4730.b364163d
 pkgrel=1
 pkgdesc='Plan your next outdoor trip'
 arch=('x86_64')
@@ -11,9 +11,8 @@ depends=('gdal' 'desktop-file-utils' 'quazip' 'qt5-webengine' 'routino>=3.1' 'al
 makedepends=('cmake' 'mercurial' 'python')
 conflicts=('qmapshack' 'qmapshack-hg')
 provides=('qmapshack')
-source=("$pkgname::git+https://github.com/Maproom/qmapshack#branch=dev"
-    "include-QPainterPath.patch")
-sha256sums=('SKIP' 'SKIP')
+source=("$pkgname::git+https://github.com/Maproom/qmapshack#branch=dev")
+sha256sums=('SKIP')
 
 pkgver() {
 	cd ${srcdir}/${pkgname}
@@ -26,7 +25,6 @@ pkgver() {
 
 build() {
     cd ${srcdir}/${pkgname}
-    patch -Np0 -i $srcdir/include-QPainterPath.patch
 
     sed -i "s/set(VERSION_SUFFIX \"develop\")/set(VERSION_SUFFIX \"r${pkgver#*r}\")/" CMakeLists.txt
     [ ! -f cmake/Modules/FindPROJ4.cmake ] && patch --quiet -p1 < FindPROJ4.patch
