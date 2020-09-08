@@ -4,7 +4,7 @@
 
 pkgbase=gdal
 pkgname=('gdal' 'python-gdal')
-pkgver=3.1.2
+pkgver=3.1.3
 pkgrel=10
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
@@ -19,17 +19,14 @@ optdepends=('postgresql: postgresql database support'
             'perl: perl binding support')
 options=('!emptydirs')
 changelog=$pkgbase.changelog
-source=(https://download.osgeo.org/${pkgbase}/${pkgver}/${pkgbase}-${pkgver}.tar.xz
+source=(https://download.osgeo.org/${pkgbase}/${pkgver}/${pkgbase}-${pkgver}.tar.gz
         gdal-perl-vendor.patch
-        include-additional-H.patch
-        jpeg2000.patch)
-md5sums=('4273eda69b2976a87464b95d1b41273c'
-          'SKIP'
+        include-additional-H.patch)
+md5sums=('4094633f28a589a7b4b483aa51beb37c'
           'SKIP'
           'SKIP')
 sha256sums=('SKIP'
             '2103b98f2f15954f042d5620658b30d703125927bde2e5eb671c5facb6c2f5ed'
-            'SKIP'
             'SKIP')
 
 prepare() {
@@ -41,7 +38,6 @@ prepare() {
 # Fix Perl bindings installation path
   patch -Np0 -i "${srcdir}"/gdal-perl-vendor.patch
   patch -Np0 -i "${srcdir}"/include-additional-H.patch
-  patch -Np0 -i ${srcdir}/jpeg2000.patch
 }
 
 build() {
