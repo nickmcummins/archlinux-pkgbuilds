@@ -2,7 +2,7 @@
 
 pkgname=ospray-git
 _pkgname=ospray
-pkgver=2.2.0.r8507.c902dca37
+pkgver=2.4.0.r8616.616dcea05
 _cmake_version_file="cmake/ospray_version.cmake"
 pkgrel=1
 pkgdesc="A Ray Tracing Based Rendering Engine for High-Fidelity Visualization (git version)"
