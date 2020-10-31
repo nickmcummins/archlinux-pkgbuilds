@@ -19,7 +19,7 @@ optdepends=('postgresql: postgresql database support'
             'perl: perl binding support')
 options=('!emptydirs')
 changelog=$pkgbase.changelog
-source=(https://download.osgeo.org/${pkgbase}/${pkgver}/${pkgbase}-${pkgver}.tar.xz
+source=(https://download.osgeo.org/${pkgbase}/${pkgver}/${pkgbase}-${pkgver}.tar.gz
         gdal-perl-vendor.patch
         include-additional-H.patch)
 md5sums=('4273eda69b2976a87464b95d1b41273c'
