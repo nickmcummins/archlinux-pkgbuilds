@@ -2,7 +2,7 @@
 
 pkgname=rkcommon-git
 _pkgname=rkcommon
-pkgver=1.4.2.r119.098e257
+pkgver=1.5.1.r135.ab6835b
 pkgrel=1
 pkgdesc="Intel RenderKit common C++/CMake infrastructure  (git version)"
 arch=(x86_64)
