@@ -1,7 +1,7 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
 
 pkgname=qmapshack-git
-pkgver=1.15.0.r4730.b364163d
+pkgver=1.15.0.r4738.af993618
 pkgrel=1
 pkgdesc='Plan your next outdoor trip'
 arch=('x86_64')
@@ -33,7 +33,9 @@ build() {
     mkdir -p cmake-build-release && cd cmake-build-release
     cmake .. \
      -DCMAKE_INSTALL_PREFIX=/usr \
-     -DCMAKE_BUILD_TYPE=Release
+     -DCMAKE_BUILD_TYPE=Release \
+     -DQUAZIP_LIBRARIES=/usr/lib/libquazip1-qt5.so \
+     -DQUAZIP_INCLUDE_DIR=/usr/include/QuaZip-Qt5-1.1/quazip
     make
 }
 
