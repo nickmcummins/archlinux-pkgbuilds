@@ -1,7 +1,7 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
 
 pkgname=qmapshack-git
-pkgver=1.15.0.r4738.af993618
+pkgver=1.15.2.r4787.6f4d4dd0
 pkgrel=1
 pkgdesc='Plan your next outdoor trip'
 arch=('x86_64')
@@ -25,10 +25,6 @@ pkgver() {
 
 build() {
     cd ${srcdir}/${pkgname}
-
-    sed -i "s/set(VERSION_SUFFIX \"develop\")/set(VERSION_SUFFIX \"r${pkgver#*r}\")/" CMakeLists.txt
-    [ ! -f cmake/Modules/FindPROJ4.cmake ] && patch --quiet -p1 < FindPROJ4.patch
-    [ ! -f cmake/Modules/FindQuaZip5.cmake ] && patch --quiet -p1 < FindQuaZip5.patch
 
     mkdir -p cmake-build-release && cd cmake-build-release
     cmake .. \
