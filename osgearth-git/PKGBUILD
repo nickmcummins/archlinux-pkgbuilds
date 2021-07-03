@@ -2,7 +2,7 @@
 
 pkgname=osgearth-git
 _gitname=osgearth
-pkgver=3.0.0.r132.gbacb3222d
+pkgver=3.1.0.r1070.ga66036660
 pkgrel=1
 pkgdesc="A terrain rendering toolkit for OpenSceneGraph"
 arch=('i686' 'x86_64')
@@ -13,7 +13,7 @@ optdepends=('geos: Improved vector support'
             'sqlite: Flat file cache'
             'libzip: Archive support')
 makedepends=('git' 'cmake')
-source=("$_gitname::git+https://github.com/nickmcummins/osgearth")
+source=("$_gitname::git+https://github.com/gwaldron/osgearth")
 provides=('osgearth')
 conflicts=('osgearth-qt4' 'osgearth')
 md5sums=('SKIP')
@@ -21,7 +21,7 @@ md5sums=('SKIP')
 pkgver() {
 	cd "${srcdir}/${_gitname}"
 	VERSION=$(python -c "import re; cmake_file = open('src/osgEarth/Version', 'r'); defines_regex = r'#define\s([^\s]+)\s+([^\s]+)'; vars = dict(list(map(lambda defineline: (re.search(defines_regex, defineline).group(1), re.search(defines_regex, defineline).group(2)), filter(lambda line: line.startswith('#define'), cmake_file.read().split('\n'))))); version_major = vars['OSGEARTH_MAJOR_VERSION']; version_minor = vars['OSGEARTH_MINOR_VERSION']; version_patch = vars['OSGEARTH_PATCH_VERSION']; print(f'{version_major}.{version_minor}.{version_patch}')")
-    GITREVISION=$(git describe --long | sed 's/\([^-]*-g\)/r\1/;s/-/./g' | cut -b 14-)
+    GITREVISION=$(git describe --long | sed 's/\([^-]*-g\)/r\1/;s/-/./g' | cut -b 26-)
     printf "${VERSION}.${GITREVISION}"
 }
 
