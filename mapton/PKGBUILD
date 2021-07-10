@@ -1,7 +1,7 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
 
 pkgname=mapton
-pkgver=2.0.1
+pkgver=2.2.1
 pkgrel=1
 pkgdesc="Some kind of map application"
 PKGEXT='.pkg.tar.lzo'
@@ -13,7 +13,7 @@ makedepends=('imagemagick' 'pngout' 'optipng' 'advancecomp')
 source=("https://github.com/trixon/mapton/releases/download/v${pkgver}/mapton-${pkgver}-linux.zip"
         "mapton.desktop"
         "mapton.png")
-sha256sums=('5b949f67b55eae7967e99abb87d0e24d4d362162fb9e3bb01adb3a7d9473f8cf'
+sha256sums=('425704eaaa904c65a31fe24e93c99c4e7843483e5a91b0d3e847e1119e7a699b'
             '303620b07b9a48324acfa2541a1f93fe5630cca7919cd5b5b1141f0ffe7b6cd7'
             'SKIP')
 

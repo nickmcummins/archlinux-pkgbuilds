@@ -8,6 +8,9 @@
 ## geomapapp
 ![geomapapp Screenshot](https://raw.githubusercontent.com/nickmcummins/archlinux-pkgbuilds/master/screenshots/geomapapp.png)
 
+## mapton
+![mapton Screenshot](https://raw.githubusercontent.com/nickmcummins/archlinux-pkgbuilds/master/screenshots/mapton.png)
+
 ## idv
 ![idv Screenshot](https://raw.githubusercontent.com/nickmcummins/archlinux-pkgbuilds/master/screenshots/idv.png)
 
