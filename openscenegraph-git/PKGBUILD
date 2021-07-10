@@ -3,7 +3,7 @@
 
 pkgname=openscenegraph-git
 _pkgname=openscenegraph
-pkgver=3.7.0.r16256.d5225ea53
+pkgver=3.7.0.r16318.76a58ebaf
 _pkgver=3.7.0
 pkgrel=1
 pkgdesc="An open source, high performance real-time graphics toolkit"
@@ -48,7 +48,7 @@ build() {
     -DBUILD_OSG_PLUGINS=ON \
     -DBUILD_OSG_PLUGINS_BY_DEFAULT=ON \
     -DOPENCASCADE_INCLUDE_DIR=/usr/include/opencascade \
-    -OPENCASCADE_LIBRARY_TYPE=Shared \
+    -DOPENCASCADE_LIBRARY_TYPE=Shared \
     -DOSG_GL1_AVAILABLE=FALSE \
     -DOSG_GL2_AVAILABLE=FALSE \
     -DOSG_GL3_AVAILABLE=TRUE \

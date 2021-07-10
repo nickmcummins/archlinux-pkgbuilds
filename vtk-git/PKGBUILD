@@ -2,14 +2,14 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.0.20201031.r2265.g03373008fa
+pkgver=9.0.20210612.r4655.ge54ccb46db5
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization'
 arch=('i686' 'x86_64')
 url='http://www.vtk.org'
 license=('BSD')
 depends=('cuda' 'double-conversion' 'embree' 'gdal' 'glew' 'hdf5' 'jsoncpp' 'libarchive' 'libharu' 'libxt' 'openslide' 
-    'openturns' 'openvkl' 'openvr' 'ospray>=2.1.0' 'pdal' 'pegtl' 'proj' 'python')
+    'openturns' 'openvkl' 'openvr' 'ospray>=2.1.0' 'pdal' 'pegtl' 'proj' 'python' 'cli11' 'qt6-base' 'qt6-quick3d')
 makedepends=('git' 'cmake' 'doxygen' 'boost' 'java-environment' 'utf8cpp')
 provides=("vtk")
 conflicts=("vtk")
@@ -118,6 +118,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_FiltersVerdict=YES \
     -DVTK_MODULE_ENABLE_VTK_GUISupportQt=YES \
     -DVTK_MODULE_ENABLE_VTK_GUISupportQtSQL=YES \
+    -DVTK_MODULE_ENABLE_VTK_GUISupportQtQuick=NO \
     -DVTK_MODULE_ENABLE_VTK_GeovisCore=YES \
     -DVTK_MODULE_ENABLE_VTK_GeovisGDAL=YES \
     -DVTK_MODULE_ENABLE_VTK_IOADIOS2=NO \
@@ -303,6 +304,7 @@ build() {
     -DVTK_MODULE_USE_EXTERNAL_VTK_libharu=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_libproj=OFF \
     -DVTK_MODULE_USE_EXTERNAL_VTK_libxml2=ON \
+    -DVTK_MODULE_USE_EXTERNAL_VTK_pegtl=OFF \
     -DVTK_MODULE_USE_EXTERNAL_VTK_lz4=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_lzma=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_mpi4py=ON \

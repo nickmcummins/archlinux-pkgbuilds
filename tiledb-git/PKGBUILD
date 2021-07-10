@@ -2,7 +2,7 @@
 # Contributor: SaultDon <sault.don gmail>
 
 pkgname=tiledb-git
-pkgver=2.1.0.r109.gb07a86c3
+pkgver=2.4.0.r206.gca47c91e
 pkgrel=1
 _pkgname=TileDB
 pkgdesc="TileDB allows you to manage the massive dense and sparse multi-dimensional array data that frequently arise in many important scientific applications."
@@ -27,10 +27,12 @@ build() {
 	mkdir -p build && cd build
 	
 	cmake .. \
-		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DCMAKE_INSTALL_LIBDIR=lib \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DTILEDB_INSTALL_LIBDIR=lib
+      -DCMAKE_C_FLAGS=-Wno-error=maybe-uninitialized \
+      -DCMAKE_CXX_FLAGS=-Wno-error=maybe-uninitialized \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_INSTALL_LIBDIR=lib \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DTILEDB_INSTALL_LIBDIR=lib
 	make
 }
 

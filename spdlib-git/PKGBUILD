@@ -1,7 +1,7 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
 pkgname=spdlib-git
 _pkgname=spdlib
-pkgver=3.3.7.gbef2ead
+pkgver=3.3.9.gcf88633
 pkgrel=1
 pkgdesc="A set of open source software tools for processing laser scanning data (i.e., LiDAR), including data captured from airborne and terrestrial platforms."
 arch=('x86_64')

@@ -1,0 +1,46 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+pkgname=teaser-plusplus-git
+_pkgname=teaser-plusplus
+pkgver=2.0.r40.d79d0c6
+pkgrel=1
+pkgdesc="A fast and robust point cloud registration library (git version)"
+url="hhttps://github.com/MIT-SPARK/TEASER-plusplus"
+license=('MIT')
+arch=('i686' 'x86_64')
+depends=()
+makedepends=('cmake')
+optdepends=( )
+source=("${_pkgname}::git+https://github.com/MIT-SPARK/TEASER-plusplus.git")
+provides=('teaser-plusplus')
+md5sums=('SKIP')
+
+pkgver() {
+	cd ${srcdir}/${_pkgname}
+	# Use the tag of the last commit
+	REVISION=$(printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)")
+	GITVERSION=$(git describe --long --tags | sed -r 's/^v//;s/([^-]*-g)/r\1/;s/-/./g')
+	VERSION=$(python -c "import sys; print(sys.argv[1].split('.r')[0])" ${GITVERSION})
+	printf "${VERSION}.${REVISION}"
+}
+
+build() {
+  cd $srcdir/$_pkgname
+  mkdir -p cmake-build-release && cd cmake-build-release
+
+
+  cmake .. \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DBUILD_GMOCK=OFF \
+        -DBUILD_TESTS=OFF \
+        -DINSTALL_GTEST=OFF
+  make
+}
+
+
+package() {
+	cd ${srcdir}/${_pkgname}/cmake-build-release
+
+    make DESTDIR="$pkgdir" install
+}
+

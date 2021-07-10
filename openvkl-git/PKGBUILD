@@ -2,13 +2,13 @@
 
 pkgname=openvkl-git
 _pkgname=openvkl
-pkgver=0.11.0.r939.aaf2d4f
+pkgver=0.13.0.r1124.84b9d78
 pkgrel=1
 pkgdesc="Intel(R) Open Volume Kernel Library. A collection of high-performance volume computation kernels, developed at Intel."
 arch=(x86_64)
 url="https://www.openvkl.org/"
 license=(Apache)
-depends=(embree)
+depends=(embree rkcommon ispc)
 makedepends=(cmake)
 provides=(openvkl)
 conflicts=(openvkl)
