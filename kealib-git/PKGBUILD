@@ -1,7 +1,7 @@
 # Contributor: Nick M Cummins <nickmcummins at linuxmail dot org>
 pkgname=kealib-git
 _pkgname=kealib
-pkgver=1.4.13.r391.e819d84
+pkgver=1.4.14.r400.0cdd195
 pkgrel=1
 pkgdesc="An HDF5 Based Raster File Format and its GDAL plugin (Git version)"
 arch=('i686' 'x86_64')
@@ -36,10 +36,6 @@ build() {
   make
 }
 
-check() {
-  cd ${srcdir}/${_pkgname}/cmake-build-release
-  make test
-}
 
 package() {
   cd ${srcdir}/${_pkgname}/cmake-build-release
