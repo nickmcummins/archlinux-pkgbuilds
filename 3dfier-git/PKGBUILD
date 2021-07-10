@@ -1,7 +1,7 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
 pkgname=3dfier-git
 _pkgname=3dfier
-pkgver=2.2.r1373.04508de
+pkgver=1.3.1.r1454.2ba7c7d
 pkgrel=1
 pkgdesc="Takes 2D GIS datasets (e.g. topographical datasets) and '3dfies' them by lifting every polygon to 3D."
 url="http://tudelft3d.github.io/3dfier"
@@ -10,34 +10,34 @@ arch=('i686' 'x86_64')
 depends=('lastools')
 makedepends=('cmake')
 optdepends=( )
-source=("git+https://github.com/tudelft3d/3dfier.git")
+source=("git+https://github.com/tudelft3d/3dfier.git" "cxx-standard-14.patch")
 provides=('3dfier')
-md5sums=('SKIP')
+md5sums=('SKIP' 'SKIP')
 
 pkgver() {
 	cd ${srcdir}/${_pkgname}
 	# Use the tag of the last commit
 	REVISION=$(printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)")
 	GITVERSION=$(git describe --long --tags | sed -r 's/^v//;s/([^-]*-g)/r\1/;s/-/./g')
-	VERSION=$(python -c "import sys; print('.'.join(sys.argv[1].split('.')[1:3]))" ${GITVERSION})
+	VERSION=$(python -c "import sys; print(sys.argv[1].split('.r')[0])" ${GITVERSION})
 	printf "${VERSION}.${REVISION}"
 }
 
 build() {
   cd $srcdir/$_pkgname
-  mkdir -p build && cd build
+  patch -Np0 -i "${srcdir}"/cxx-standard-14.patch
+  mkdir -p cmake-build-release && cd cmake-build-release
 
 
   cmake .. \
         -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_INSTALL_PREFIX=/usr \
-        -DLASLIB_INCLUDE_DIR=/usr/include/LASlib
+        -DCMAKE_INSTALL_PREFIX=/usr
   make
 }
 
 
 package() {
-	cd ${srcdir}/${_pkgname}/build
+	cd ${srcdir}/${_pkgname}/cmake-build-release
 	make DESTDIR="${pkgdir}/" install
 
 }
