@@ -2,7 +2,7 @@
 
 pkgname=pcl-git
 _pkgname=pcl
-pkgver=1.10.0.r12863.8da6bbc83
+pkgver=1.12.0.r13456.d242fcbdb
 pkgrel=1
 pkgdesc="a standalone, large scale, open project for 2D/3D image and point cloud processing"
 arch=(i686 x86_64)
@@ -24,8 +24,8 @@ depends=(
   ensenso-sdk
 )
 makedepends=(cmake git gcc9)
-source=(git+https://github.com/nickmcummins/pcl#branch=pointpicking)
-sha256sums=(SKIP)
+source=(git+https://github.com/PointCloudLibrary/pcl 'find-mpi-qt6.patch')
+sha256sums=(SKIP SKIP)
 conflicts=(pcl)
 provides=(pcl)
 PKGEXT='.pkg.tar.lzo'
@@ -39,68 +39,68 @@ pkgver() {
 }
 
 prepare() {
-  cd $_pkgname
-	mkdir -p  "$srcdir/build"
-	cd     "$srcdir/build"
+    cd ${srcdir}/${_pkgname}
+    patch -Np0 -i $srcdir/find-mpi-qt6.patch
+    mkdir -p cmake-build-release && cd cmake-build-release
 
 	cmake "${srcdir}/pcl" \
-		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DBUILD_2d=ON \
-		-DBUILD_apps=ON \
-		-DBUILD_apps_3d_rec_framework=ON \
-		-DBUILD_apps_cloud_composer=OFF \
-		-DBUILD_apps_in_hand_scanner=ON \
-		-DBUILD_apps_modeler=ON \
-		-DBUILD_apps_point_cloud_editor=ON \
-		-DBUILD_examples=ON \
-		-DBUILD_global_tests=OFF \
-		-DBUILD_surface_on_nurbs=ON \
-		-DBUILD_CUDA=ON \
-		-DBUILD_cuda_apps=ON \
-    -DBUILD_cuda_common=ON \
-    -DBUILD_cuda_features=ON \
-    -DBUILD_cuda_io=ON \
-    -DBUILD_cuda_sample_consensus=ON \
-    -DBUILD_cuda_segmentation=ON \
-		-DBUILD_GPU=ON \
-		-DBUILD_gpu_kinfu=ON \
-		-DBUILD_gpu_kinfu_large_scale=OFF \
-		-DBUILD_gpu_people=ON \
-		-DBUILD_gpu_surface=ON \
-		-DBUILD_gpu_tracking=ON \
-		-DBUILD_simulation=ON \
-		-DENSENSO_INCLUDE_DIR=/usr/include/ensenso \
-		-DENSENSO_LIBRARY=/usr/lib/libNxLib64.so \
-		-DBUILD_CUDA=ON \
-		-DBUILD_GPU=ON \
-		-DBUILD_visualization=ON \
-		-DCMAKE_CXX_COMPILER=/usr/bin/c++-9 \
-		-DCMAKE_CXX_COMPILER_AR=/usr/bin/gcc-ar-9 \
-		-DCMAKE_CXX_COMPILER_RANLIB=/usr/bin/gcc-ranlib-9 \
-		-DCMAKE_C_COMPILER=/usr/bin/cc-9 \
-		-DCMAKE_C_COMPILER_AR=/usr/bin/gcc-ar-9 \
-		-DCMAKE_C_COMPILER_RANLIB=/usr/bin/gcc-ranlib-9 \
-		-DCUDA_ARCH_BIN=5.0 \
-		-DWITH_CUDA=ON \
-		-DWITH_DOCS=OFF \
-		-DWITH_ENSENSO=ON \
-		-DWITH_OPENGL=ON \
-		-DWITH_OPENNI=OFF \
-		-DWITH_OPENNI2=ON \
-		-DWITH_QT=ON \
-		-DWITH_RSSDK=OFF \
-		-DWITH_RSSDK2=ON \
-		-DWITH_VTK=ON
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_2d=ON \
+        -DBUILD_apps=ON \
+        -DBUILD_apps_3d_rec_framework=ON \
+        -DBUILD_apps_cloud_composer=OFF \
+        -DBUILD_apps_in_hand_scanner=ON \
+        -DBUILD_apps_modeler=ON \
+        -DBUILD_apps_point_cloud_editor=ON \
+        -DBUILD_examples=ON \
+        -DBUILD_global_tests=OFF \
+        -DBUILD_surface_on_nurbs=ON \
+        -DBUILD_CUDA=ON \
+        -DBUILD_cuda_apps=ON \
+        -DBUILD_cuda_common=ON \
+        -DBUILD_cuda_features=ON \
+        -DBUILD_cuda_io=ON \
+        -DBUILD_cuda_sample_consensus=ON \
+        -DBUILD_cuda_segmentation=ON \
+        -DBUILD_GPU=ON \
+        -DBUILD_gpu_kinfu=ON \
+        -DBUILD_gpu_kinfu_large_scale=OFF \
+        -DBUILD_gpu_people=ON \
+        -DBUILD_gpu_surface=ON \
+        -DBUILD_gpu_tracking=ON \
+        -DBUILD_simulation=ON \
+        -DENSENSO_INCLUDE_DIR=/usr/include/ensenso \
+        -DENSENSO_LIBRARY=/usr/lib/libNxLib64.so \
+        -DBUILD_CUDA=ON \
+        -DBUILD_GPU=ON \
+        -DBUILD_visualization=ON \
+        -DCMAKE_CXX_COMPILER=/usr/bin/c++-9 \
+        -DCMAKE_CXX_COMPILER_AR=/usr/bin/gcc-ar-9 \
+        -DCMAKE_CXX_COMPILER_RANLIB=/usr/bin/gcc-ranlib-9 \
+        -DCMAKE_C_COMPILER=/usr/bin/cc-9 \
+        -DCMAKE_C_COMPILER_AR=/usr/bin/gcc-ar-9 \
+        -DCMAKE_C_COMPILER_RANLIB=/usr/bin/gcc-ranlib-9 \
+        -DCUDA_ARCH_BIN=5.0 \
+        -DWITH_CUDA=ON \
+        -DWITH_DOCS=OFF \
+        -DWITH_ENSENSO=ON \
+        -DWITH_OPENGL=ON \
+        -DWITH_OPENNI=OFF \
+        -DWITH_OPENNI2=ON \
+        -DWITH_QT=ON \
+        -DWITH_RSSDK=OFF \
+        -DWITH_RSSDK2=ON \
+        -DWITH_VTK=ON
 }
 
 build() {
-	cd "$srcdir/build"
-	make
+    cd ${srcdir}/${_pkgname}/cmake-build-release
+    make
 }
 
 package() {
-	cd "$srcdir/build"
-	make DESTDIR="${pkgdir}" install
-	install -Dm644 "$srcdir/pcl/LICENSE.txt" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+    cd ${srcdir}/${_pkgname}/cmake-build-release
+    make DESTDIR="${pkgdir}" install
+    install -Dm644 "$srcdir/pcl/LICENSE.txt" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }

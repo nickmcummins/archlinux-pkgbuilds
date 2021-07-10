@@ -1,0 +1,49 @@
+--- CMakeLists.txt
++++ CMakeLists.txt
+@@ -266,6 +266,7 @@ endif()
+ 
+ # OpenMP (optional)
+ option(WITH_OPENMP "Build with parallelization using OpenMP" TRUE)
++find_package(MPI REQUIRED)
+ if(WITH_OPENMP)
+   find_package(OpenMP COMPONENTS C CXX)
+ endif()
+@@ -380,29 +381,29 @@ if(WITH_VTK)
+   endif()
+ endif()
+ 
+-#VTK can depend on Qt and search for its required version, so search after so we can overwrite Qt5_FOUND if the version we require is not found.
++#VTK can depend on Qt and search for its required version, so search after so we can overwrite Qt6_FOUND if the version we require is not found.
+ option(WITH_QT "Build QT Front-End" TRUE)
+ if(WITH_QT)
+-  find_package(Qt5 5.9.5 COMPONENTS Concurrent OpenGL Widgets)
++  find_package(Qt6 6.1 COMPONENTS Concurrent OpenGL Widgets)
+   set(QT_DISABLE_PRECATED_BEFORE_VAL "0x050900")
+   
+-  if(Qt5_FOUND)
+-    message(STATUS "Qt5 version: ${Qt5_VERSION}")
+-    set(QT5_FOUND ${Qt5_FOUND})
++  if(Qt6_FOUND)
++    message(STATUS "Qt6 version: ${Qt6_VERSION}")
++    set(QT6_FOUND ${Qt6_FOUND})
+     #Set Cmake Auto features to skip .hh files
+     if(POLICY CMP0100)
+       cmake_policy(SET CMP0100 OLD)
+     endif()
+     
+-    get_property(core_def TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_DEFINITIONS)
++    get_property(core_def TARGET Qt6::Core PROPERTY INTERFACE_COMPILE_DEFINITIONS)
+     list(APPEND core_def "QT_DISABLE_DEPRECATED_BEFORE=${QT_DISABLE_PRECATED_BEFORE_VAL}")
+-    set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_DEFINITIONS ${core_def})
++    set_property(TARGET Qt6::Core PROPERTY INTERFACE_COMPILE_DEFINITIONS ${core_def})
+ 
+   else()
+-    message(STATUS "Qt5 is not found.")
++    message(STATUS "Qt6 is not found.")
+   endif()
+ else()
+-  set(Qt5_FOUND FALSE)
++  set(Qt6_FOUND FALSE)
+ endif()
+ 
+ #Find PCAP
