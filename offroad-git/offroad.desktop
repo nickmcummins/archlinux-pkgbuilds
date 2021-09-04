@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=OffRoad
+Comment=Offline vector map display ported from OsmAnd
+Exec=java -Xms8g -Xmx24g -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -jar /opt/offroad/OffRoad.jar
+Icon=offroad
+Categories=Utility;Maps;

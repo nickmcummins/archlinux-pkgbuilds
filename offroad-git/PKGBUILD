@@ -1,0 +1,50 @@
+# Maintainer: Balló György <ballogyor+arch at gmail dot com>
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+
+pkgname=offroad-git
+_pkgname=offroad
+pkgver=0.6.r280.3c27a936
+pkgrel=1
+pkgdesc="Offline vector map display ported from OsmAnd (Git version)"
+arch=('any')
+url="https://sourceforge.net/projects/offroadosm/"
+license=('GPL')
+depends=('hicolor-icon-theme' 'imagemagick' 'java-runtime')
+provides=('offroad')
+conflicts=('offroad')
+source=("${_pkgname}::git+https://git.code.sf.net/p/offroadosm/code"
+        "${_pkgname}.desktop")
+sha256sums=('SKIP'
+            'SKIP')
+
+pkgver() {
+  cd ${srcdir}/${_pkgname}
+  GITREVISION=$(printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)")
+  VERSION=$(python -c "import xml.etree.ElementTree as ET; root = ET.parse('build.xml').getroot(); print(list(filter(lambda p: p.attrib['name'] == 'ver', root.findall('.//property')))[0].attrib['value'])")
+  printf "${VERSION}.${GITREVISION}"
+}
+
+build() {
+  cd ${srcdir}/${_pkgname}
+  ant
+}
+
+package() {
+  cd ${srcdir}  
+  bsdtar -xf ${_pkgname}/dist/lib/Resources.jar ${_pkgname}_icon.png
+  cd ${srcdir}/${_pkgname}/dist
+
+  install -Dm644 OffRoad.jar "${pkgdir}/opt/${_pkgname}/OffRoad.jar"
+  install -Dm644 -t "${pkgdir}/opt/${_pkgname}/lib/" lib/*.jar
+  install -Dm644 ${srcdir}/${_pkgname}.desktop ${pkgdir}/usr/share/applications/${_pkgname}.desktop
+
+  for size in 32 64 128 256; do
+    convert ${srcdir}/${_pkgname}_icon.png -adaptive-resize ${size}x${size} ${srcdir}/${_pkgname}_${size}x${size}.png
+    pngout ${srcdir}/${_pkgname}_${size}x${size}.png
+    optipng -o7 ${srcdir}/${_pkgname}_${size}x${size}.png
+    advpng -z4 ${srcdir}/${_pkgname}_${size}x${size}.png
+    install -D -m 644 ${srcdir}/${_pkgname}_${size}x${size}.png ${pkgdir}/usr/share/icons/hicolor/${size}x${size}/apps/${_pkgname}.png
+  done
+
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE
+}
