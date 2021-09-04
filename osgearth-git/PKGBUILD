@@ -11,7 +11,8 @@ license=('LGPL')
 depends=('openscenegraph' 'gdal' 'expat' 'curl' 'gdal' 'rocksdb')
 optdepends=('geos: Improved vector support'
             'sqlite: Flat file cache'
-            'libzip: Archive support')
+            'libzip: Archive support'
+            'blend2d: Blend2D support')
 makedepends=('git' 'cmake')
 source=("$_gitname::git+https://github.com/gwaldron/osgearth")
 provides=('osgearth')
