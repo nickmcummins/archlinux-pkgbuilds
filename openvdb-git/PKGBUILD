@@ -1,0 +1,49 @@
+# Maintainer : Sven-Hendrik Haase <svenstaro@gmail.com>
+# Contributor: Nick M Cummins <nickmcummins at linuxmail dot org>
+
+pkgname=openvdb-git
+_pkgname=openvdb
+pkgver=8.1.1.r3006.c5c12551
+pkgrel=1
+pkgdesc='A large suite of tools for the efficient storage and manipulation of sparse volumetric data discretized on three-dimensional grids (Git version)'
+url='https://github.com/dreamworksanimation/openvdb'
+arch=('x86_64')
+license=('MPL')
+depends=('boost-libs' 'intel-tbb' 'zlib' 'jemalloc' 'blosc' 'log4cplus')
+makedepends=('doxygen' 'boost' 'cmake' 'mesa' 'cppunit' 'glfw-x11' 'glu' 'python' 'python-numpy' 'ninja')
+optdepends=('glfw: for tools'
+            'glu: for tools'
+            'python-numpy: python module')
+provides=('openvdb')
+conflicts=('openvdb')
+source=("${_pkgname}::git+https://github.com/AcademySoftwareFoundation/openvdb.git")
+sha512sums=('SKIP')
+
+pkgver() {
+  cd ${srcdir}/${_pkgname}
+  GITREVISION=$(printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)")
+  VERSION=$(python -c "import re; cmakelines = list(filter(lambda line: line.startswith('set(OpenVDB') and line.find('_VERSION') > 0, open('CMakeLists.txt', 'r').read().split('\n')))[0:3]; set_regex = r'set\(OpenVDB_([A-Z]+)_VERSION\s([0-9])\)'; vers = dict(list(map(lambda setline: (re.search(set_regex, setline).group(1), re.search(set_regex, setline).group(2)), cmakelines))); version_major = vers['MAJOR']; version_minor = vers['MINOR']; version_patch = vers['PATCH']; print(f'{version_major}.{version_minor}.{version_patch}')")
+  printf "${VERSION}.${GITREVISION}"
+}
+
+build() {
+  cd ${srcdir}/${_pkgname}
+  mkdir -p cmake-build-release && cd cmake-build-release
+  cmake .. \
+    -DUSE_NUMPY=ON \
+    -DUSE_LOG4CPLUS=ON \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DOPENVDB_INSTALL_CMAKE_MODULES=ON \
+    -DOPENVDB_BUILD_PYTHON_MODULE=ON \
+    -DOPENVDB_BUILD_DOCS=ON \
+    -DOPENVDB_BUILD_UNITTESTS=OFF
+  make
+}
+
+package() {
+  cd ${srcdir}/${_pkgname}/cmake-build-release
+  make DESTDIR="${pkgdir}" install
+}
+
+# vim:set sw=2 sts=2 et:

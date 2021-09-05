@@ -2,14 +2,14 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.0.20210710.r4927.g8736bbf2ad4
+pkgver=9.0.20210904.r5651.gf0e121c8568
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization'
 arch=('i686' 'x86_64')
 url='http://www.vtk.org'
 license=('BSD')
 depends=('cuda' 'double-conversion' 'embree' 'gdal' 'glew' 'hdf5' 'jsoncpp' 'libarchive' 'libharu' 'libxt' 'openslide' 
-    'openturns' 'openvkl' 'openvr' 'ospray>=2.1.0' 'pdal' 'pegtl' 'proj' 'python' 'cli11' 'qt6-base' 'qt6-quick3d')
+    'openturns' 'openvkl' 'openvr' 'ospray>=2.1.0' 'pdal' 'pegtl' 'proj' 'python' 'cli11' 'qt6-base' 'qt6-quick3d' 'openvdb')
 makedepends=('git' 'cmake' 'doxygen' 'boost' 'java-environment' 'utf8cpp')
 provides=("vtk")
 conflicts=("vtk")
@@ -296,6 +296,7 @@ build() {
     -DVTK_MODULE_USE_EXTERNAL_VTK_eigen=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_expat=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_freetype=ON \
+    -DVTK_MODULE_USE_EXTERNAL_VTK_fmt=OFF \
     -DVTK_MODULE_USE_EXTERNAL_VTK_gl2ps=OFF \
     -DVTK_MODULE_USE_EXTERNAL_VTK_glew=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_hdf5=ON \
