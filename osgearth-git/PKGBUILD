@@ -8,7 +8,7 @@ pkgdesc="A terrain rendering toolkit for OpenSceneGraph"
 arch=('i686' 'x86_64')
 url='http://www.osgearth.org'
 license=('LGPL')
-depends=('openscenegraph' 'gdal' 'expat' 'curl' 'gdal' 'rocksdb')
+depends=('openscenegraph' 'gdal' 'expat' 'curl' 'gdal' 'rocksdb' 'leveldb' 'blend2d' 'protobuf' 'arrow' 'netcdf' 'podofo' 'cfitsio')
 optdepends=('geos: Improved vector support'
             'sqlite: Flat file cache'
             'libzip: Archive support'
