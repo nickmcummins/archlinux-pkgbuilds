@@ -1,6 +1,6 @@
 pkgname=gta-git
 _pkgname=gta
-pkgver=1.2.1.r633.6a2de6c
+pkgver=1.2.1.r634.1eb8b60
 pkgrel=1
 pkgdesc="A library that reads and writes Generic Tagged Arrays (GTA) files, with interfaces in C and C++."
 arch=(i686 x86_64)
