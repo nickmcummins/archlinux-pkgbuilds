@@ -1,0 +1,34 @@
+# Maintainer: Nick Cummins <nickmcummins@linuxmail.org>
+
+pkgname=memkind-git
+_pkgname=memkind
+pkgver=r3122.9643777c
+pkgrel=1
+pkgdesc="Memkind is an easy-to-use, general-purpose allocator which helps to fully utilize various kinds of memory available in the system, including DRAM, NVDIMM, and HBM."
+url="https://pmem.io/memkind/"
+license=("GPL3")
+arch=('i686' 'x86_64')
+depends=('numactl')
+optdepends=()
+source=("git+https://github.com/memkind/memkind.git")
+md5sums=('SKIP')
+
+pkgver() {
+	cd ${srcdir}/${_pkgname}
+	# Use the tag of the last commit
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+  cd ${srcdir}/${_pkgname}
+
+  ./autogen.sh 
+  ./configure --prefix=/usr
+  make
+}
+
+package () {
+  cd ${srcdir}/${_pkgname}
+
+  make DESTDIR="${pkgdir}" install
+}
