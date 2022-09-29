@@ -2,14 +2,15 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.0.20210904.r5651.gf0e121c8568
+pkgver=9.2.20220928.r1026.gbfa3e4c7621
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization'
 arch=('i686' 'x86_64')
 url='http://www.vtk.org'
 license=('BSD')
 depends=('cuda' 'double-conversion' 'embree' 'gdal' 'glew' 'hdf5' 'jsoncpp' 'libarchive' 'libharu' 'libxt' 'openslide' 
-    'openturns' 'openvkl' 'openvr' 'ospray>=2.1.0' 'pdal' 'pegtl' 'proj' 'python' 'cli11' 'qt6-base' 'qt6-quick3d' 'openvdb')
+    'openturns' 'openvkl' 'openvr' 'ospray>=2.1.0' 'pdal' 'pegtl' 'proj' 'python' 'cli11' 'qt6-base' 'qt6-quick3d' 'openvdb'
+	'exprtk' 'openxr' 'seacas')
 makedepends=('git' 'cmake' 'doxygen' 'boost' 'java-environment' 'utf8cpp')
 provides=("vtk")
 conflicts=("vtk")
@@ -27,7 +28,7 @@ pkgver() {
 
 build() {
   cd ${srcdir}/vtk
-  patch -Np0 -i $srcdir/PoissonReconstruction-repo.patch
+  #patch -Np0 -i $srcdir/PoissonReconstruction-repo.patch
   
   mkdir -p cmake-build-release && cd cmake-build-release
   cmake $srcdir/$_pkgname \
@@ -331,7 +332,7 @@ build() {
     -DOpenVR_INCLUDE_DIR=/usr/include/openvr \
       ..
   
-  make
+  make -j10
 }
 
 package() {
