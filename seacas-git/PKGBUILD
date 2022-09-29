@@ -1,0 +1,46 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+
+pkgname=seacas-git
+_pkgname=seacas
+_cmake_version_file=Version.cmake
+pkgver=2.0.r6551.261559d373
+pkgrel=1
+pkgdesc="A suite of preprocessing, postprocessing, translation, and utility applications supporting finite element analysis software using the Exodus database file format.  (git version)"
+arch=(x86_64)
+url="https://github.com/sandialabs/seacas"
+license=(NA0003525)
+depends=()
+makedepends=(cmake)
+provides=(seacas)
+conflicts=()
+source=("git+https://github.com/sandialabs/seacas")
+sha256sums=('SKIP')
+
+pkgver() {
+    cd ${srcdir}/${_pkgname}
+    VERSION=$(python3 -c "import sys; import re; cmake_filename = sys.argv[1]; cmake_file = open(cmake_filename, 'r'); setvar_regex = r'(SET\s*\()([^\s]+)\s([^)]+)'; vars = dict(list(map(lambda varline: (re.search(setvar_regex, varline).group(2), re.search(setvar_regex, varline).group(3)), filter(lambda line: line.startswith('SET') and line.endswith(')'), cmake_file.read().split('\n'))))); cmake_package = list(filter(lambda var: var.endswith('_VERSION'), vars.keys()))[0].split('_')[0]; version = vars[f'{cmake_package}_VERSION']; print(version)" ${_cmake_version_file})
+    printf "$VERSION.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+    cd ${srcdir}/${_pkgname}
+
+    mkdir -p cmake-build-release && cd cmake-build-release
+
+    cmake .. \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_BUILD_TYPE=Release \
+		-DBUILD_SHARED_LIBS=ON \
+		-DSeacas_ENABLE_ALL_PACKAGES=ON
+    make -j12
+}
+
+package() {
+    cd ${srcdir}/${_pkgname}/cmake-build-release
+    make DESTDIR="${pkgdir}" install
+	rm "${pkgdir}/usr/include/mpi.h"
+	PYVERSION=$(python -c "import os; pver = os.popen('python --version').read().strip().split(' ')[1][:-2]; print(pver)")
+	mkdir -p "${pkgdir}/usr/lib/python$PYVERSION/site-packages/seacas"
+	mv ${pkgdir}/usr/lib/*.py "${pkgdir}/usr/lib/python$PYVERSION/site-packages/seacas"
+    install -Dm 644 "${srcdir}/${_pkgname}/LICENSE" -t "${pkgdir}/usr/share/licenses/${_pkgname}"
+}
