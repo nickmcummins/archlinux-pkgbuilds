@@ -10,14 +10,13 @@ url='http://www.vtk.org'
 license=('BSD')
 depends=('cuda' 'double-conversion' 'embree' 'gdal' 'glew' 'hdf5' 'jsoncpp' 'libarchive' 'libharu' 'libxt' 'openslide' 
     'openturns' 'openvkl' 'openvr' 'ospray>=2.1.0' 'pdal' 'pegtl' 'proj' 'python' 'cli11' 'qt6-base' 'qt6-quick3d' 'openvdb'
-	'exprtk' 'openxr' 'seacas')
+	'exprtk' 'openxr' 'seacas' 'verdict')
 makedepends=('git' 'cmake' 'doxygen' 'boost' 'java-environment' 'utf8cpp')
 provides=("vtk")
 conflicts=("vtk")
 source=("git+https://gitlab.kitware.com/vtk/vtk.git"
-    "PoissonReconstruction-repo.patch")
-sha256sums=("SKIP"
-    "SKIP")
+    "vtkOpenXRManager-include-memory.patch")
+sha256sums=("SKIP" "SKIP")
 
 pkgver() {
   cd ${srcdir}/vtk
@@ -28,7 +27,7 @@ pkgver() {
 
 build() {
   cd ${srcdir}/vtk
-  #patch -Np0 -i $srcdir/PoissonReconstruction-repo.patch
+  patch -Np0 -i $srcdir/vtkOpenXRManager-include-memory.patch
   
   mkdir -p cmake-build-release && cd cmake-build-release
   cmake $srcdir/$_pkgname \
@@ -63,6 +62,7 @@ build() {
     -DVTK_GROUP_ENABLE_Qt=YES \
     -DVTK_GROUP_ENABLE_Rendering=YES \
     -DVTK_GROUP_ENABLE_StandAlone=YES \
+    -DVTK_GROUP_ENABLE_Tk=YES \
     -DVTK_GROUP_ENABLE_Views=YES \
     -DVTK_GROUP_ENABLE_Web=YES \
     -DVTK_MODULE_ENABLE_VTK_AcceleratorsVTKm=NO \
@@ -84,7 +84,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_DomainsChemistry=YES \
     -DVTK_MODULE_ENABLE_VTK_DomainsChemistryOpenGL2=YES \
     -DVTK_MODULE_ENABLE_VTK_DomainsMicroscopy=YES \
-    -DVTK_MODULE_ENABLE_VTK_DomainsParallelChemistry=YES \
+    -DVTK_MODULE_ENABLE_VTK_DomainsParallelChemistry=NO \
     -DVTK_MODULE_ENABLE_VTK_FiltersAMR=YES \
     -DVTK_MODULE_ENABLE_VTK_FiltersCore=YES \
     -DVTK_MODULE_ENABLE_VTK_FiltersExtraction=YES \
@@ -98,14 +98,14 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_FiltersModeling=YES \
     -DVTK_MODULE_ENABLE_VTK_FiltersOpenTURNS=YES \
     -DVTK_MODULE_ENABLE_VTK_FiltersParallel=YES \
-    -DVTK_MODULE_ENABLE_VTK_FiltersParallelDIY2=YES \
-    -DVTK_MODULE_ENABLE_VTK_FiltersParallelFlowPaths=YES \
-    -DVTK_MODULE_ENABLE_VTK_FiltersParallelGeometry=YES \
-    -DVTK_MODULE_ENABLE_VTK_FiltersParallelImaging=YES \
-    -DVTK_MODULE_ENABLE_VTK_FiltersParallelMPI=YES \
+    -DVTK_MODULE_ENABLE_VTK_FiltersParallelDIY2=NO \
+    -DVTK_MODULE_ENABLE_VTK_FiltersParallelFlowPaths=NO \
+    -DVTK_MODULE_ENABLE_VTK_FiltersParallelGeometry=NO \
+    -DVTK_MODULE_ENABLE_VTK_FiltersParallelImaging=NO \
+    -DVTK_MODULE_ENABLE_VTK_FiltersParallelMPI=NO \
     -DVTK_MODULE_ENABLE_VTK_ParallelMomentInvariants=YES \
-    -DVTK_MODULE_ENABLE_VTK_FiltersParallelStatistics=YES \
-    -DVTK_MODULE_ENABLE_VTK_FiltersParallelVerdict=YES \
+    -DVTK_MODULE_ENABLE_VTK_FiltersParallelStatistics=NO \
+    -DVTK_MODULE_ENABLE_VTK_FiltersParallelVerdict=NO \
     -DVTK_MODULE_ENABLE_VTK_FiltersPoints=YES \
     -DVTK_MODULE_ENABLE_VTK_FiltersProgrammable=YES \
     -DVTK_MODULE_ENABLE_VTK_FiltersPython=YES \
@@ -123,9 +123,10 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_GeovisCore=YES \
     -DVTK_MODULE_ENABLE_VTK_GeovisGDAL=YES \
     -DVTK_MODULE_ENABLE_VTK_IOADIOS2=NO \
-    -DVTK_MODULE_ENABLE_VTK_IOAMR=YES \
+    -DVTK_MODULE_ENABLE_VTK_IOAMR=NO \
     -DVTK_MODULE_ENABLE_VTK_IOAsynchronous=YES \
     -DVTK_MODULE_ENABLE_VTK_IOCONVERGECFD=YES \
+	-DVTK_MODULE_ENABLE_VTK_IOCGNSReader=NO \
     -DVTK_MODULE_ENABLE_VTK_IOCityGML=YES \
     -DVTK_MODULE_ENABLE_VTK_IOCore=YES \
     -DVTK_MODULE_ENABLE_VTK_IOEnSight=YES \
@@ -138,16 +139,17 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_IOGeoJSON=YES \
     -DVTK_MODULE_ENABLE_VTK_IOGeometry=YES \
     -DVTK_MODULE_ENABLE_VTK_IOH5part=YES \
+	-DVTK_MODULE_ENABLE_VTK_IOH5Rage=NO \
     -DVTK_MODULE_ENABLE_VTK_IOImage=YES \
     -DVTK_MODULE_ENABLE_VTK_IOImport=YES \
     -DVTK_MODULE_ENABLE_VTK_IOInfovis=YES \
-    -DVTK_MODULE_ENABLE_VTK_IOIoss=YES \
+    -DVTK_MODULE_ENABLE_VTK_IOIOSS=YES \
     -DVTK_MODULE_ENABLE_VTK_IOLAS=NO \
     -DVTK_MODULE_ENABLE_VTK_IOLSDyna=YES \
     -DVTK_MODULE_ENABLE_VTK_IOLegacy=YES \
     -DVTK_MODULE_ENABLE_VTK_IOMINC=YES \
-    -DVTK_MODULE_ENABLE_VTK_IOMPIImage=YES \
-    -DVTK_MODULE_ENABLE_VTK_IOMPIParallel=YES \
+    -DVTK_MODULE_ENABLE_VTK_IOMPIImage=NO \
+    -DVTK_MODULE_ENABLE_VTK_IOMPIParallel=NO \
     -DVTK_MODULE_ENABLE_VTK_IOMotionFX=YES \
     -DVTK_MODULE_ENABLE_VTK_IOMovie=YES \
     -DVTK_MODULE_ENABLE_VTK_IOMySQL=YES \
@@ -155,10 +157,10 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_IOODBC=YES \
     -DVTK_MODULE_ENABLE_VTK_IOOggTheora=YES \
     -DVTK_MODULE_ENABLE_VTK_IOPDAL=YES \
-    -DVTK_MODULE_ENABLE_VTK_IOPIO=YES \
+    -DVTK_MODULE_ENABLE_VTK_IOPIO=NO \
     -DVTK_MODULE_ENABLE_VTK_IOPLY=YES \
-    -DVTK_MODULE_ENABLE_VTK_IOParallel=YES \
-    -DVTK_MODULE_ENABLE_VTK_IOParallelExodus=YES \
+    -DVTK_MODULE_ENABLE_VTK_IOParallel=NO \
+    -DVTK_MODULE_ENABLE_VTK_IOParallelExodus=NO \
     -DVTK_MODULE_ENABLE_VTK_IOParallelLSDyna=YES \
     -DVTK_MODULE_ENABLE_VTK_IOParallelNetCDF=YES \
     -DVTK_MODULE_ENABLE_VTK_IOParallelXML=YES \
@@ -168,6 +170,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_IOSegY=YES \
     -DVTK_MODULE_ENABLE_VTK_IOTRUCHAS=YES \
     -DVTK_MODULE_ENABLE_VTK_IOTecplotTable=YES \
+    -DVTK_MODULE_ENABLE_VTK_IOOCCT=NO \
     -DVTK_MODULE_ENABLE_VTK_IOVPIC=YES \
     -DVTK_MODULE_ENABLE_VTK_IOVeraOut=YES \
     -DVTK_MODULE_ENABLE_VTK_IOVideo=YES \
@@ -175,6 +178,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_IOXMLParser=YES \
     -DVTK_MODULE_ENABLE_VTK_IOXdmf2=YES \
     -DVTK_MODULE_ENABLE_VTK_IOXdmf3=YES \
+	-DVTK_MODULE_ENABLE_VTK_IOOpenVDB=NO \
     -DVTK_MODULE_ENABLE_VTK_ImagingColor=YES \
     -DVTK_MODULE_ENABLE_VTK_ImagingCore=YES \
     -DVTK_MODULE_ENABLE_VTK_ImagingFourier=YES \
@@ -301,6 +305,7 @@ build() {
     -DVTK_MODULE_USE_EXTERNAL_VTK_gl2ps=OFF \
     -DVTK_MODULE_USE_EXTERNAL_VTK_glew=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_hdf5=ON \
+    -DVTK_MODULE_USE_EXTERNAL_VTK_ioss=OFF \
     -DVTK_MODULE_USE_EXTERNAL_VTK_jpeg=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_jsoncpp=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_libharu=ON \
@@ -327,12 +332,12 @@ build() {
     -DVTK_USE_CUDA=ON \
     -DVTK_USE_MPI=ON \
     -DVTK_USE_SDL2=ON \
-    -DVTK_USE_TK=ON \
+    -DVTK_USE_TK=OFF \
     -DVTK_USE_X=ON \
     -DOpenVR_INCLUDE_DIR=/usr/include/openvr \
       ..
   
-  make -j10
+  make
 }
 
 package() {

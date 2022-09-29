@@ -1,0 +1,14 @@
+Index: Rendering/OpenXR/vtkOpenXRManager.h
+<+>UTF-8
+===================================================================
+diff --git a/Rendering/OpenXR/vtkOpenXRManager.h b/Rendering/OpenXR/vtkOpenXRManager.h
+--- Rendering/OpenXR/vtkOpenXRManager.h	(revision bfa3e4c7621ddf5826755536eb07284c86db6474)
++++ Rendering/OpenXR/vtkOpenXRManager.h	(date 1664419720706)
+@@ -34,6 +34,7 @@
+ #include "vtkSmartPointer.h"
+ 
+ #include <array>
++#include <memory>
+ #include <string>
+ #include <vector>
+ 
