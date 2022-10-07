@@ -1,8 +1,9 @@
 pkgname=lastools-git
 _pkgname=LAStools
-pkgver=r1199.b921c41
+_pkgver=2.0.2
+pkgver=2.0.2.r1264.caa3cd1
 pkgrel=1
-pkgdesc="Efficient tools for LiDAR processing. Contains LASlib, a C++ programming API for reading / writing LIDAR data stored in standard LAS format."
+pkgdesc="Efficient tools for LiDAR processing. Contains LASlib, a C++ programming API for reading / writing LIDAR data stored in standard LAS format - git checkout"
 arch=('i686' 'x86_64')
 url="http://lastools.org/"
 license=('LGPL')
@@ -14,7 +15,7 @@ md5sums=('SKIP' 'SKIP')
 
 pkgver() {
     cd "LAStools"
-    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+    printf "${_pkgver}.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 build() {
@@ -26,6 +27,7 @@ build() {
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBUILD_SHARED_LIBS=ON \
+    -DCMAKE_CXX_FLAGS=-Wno-error=format-security \
     -DCMAKE_BUILD_TYPE=Release
 
   make
