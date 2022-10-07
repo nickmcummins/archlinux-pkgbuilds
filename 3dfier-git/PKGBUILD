@@ -1,7 +1,7 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
 pkgname=3dfier-git
 _pkgname=3dfier
-pkgver=1.3.1.r1454.2ba7c7d
+pkgver=1.3.4.r1480.4b9545b
 pkgrel=1
 pkgdesc="Takes 2D GIS datasets (e.g. topographical datasets) and '3dfies' them by lifting every polygon to 3D."
 url="http://tudelft3d.github.io/3dfier"
@@ -10,9 +10,9 @@ arch=('i686' 'x86_64')
 depends=('lastools')
 makedepends=('cmake')
 optdepends=( )
-source=("git+https://github.com/tudelft3d/3dfier.git" "cxx-standard-14.patch")
+source=("git+https://github.com/tudelft3d/3dfier.git")
 provides=('3dfier')
-md5sums=('SKIP' 'SKIP')
+md5sums=('SKIP')
 
 pkgver() {
 	cd ${srcdir}/${_pkgname}
@@ -25,7 +25,6 @@ pkgver() {
 
 build() {
   cd $srcdir/$_pkgname
-  patch -Np0 -i "${srcdir}"/cxx-standard-14.patch
   mkdir -p cmake-build-release && cd cmake-build-release
 
 
