@@ -2,7 +2,7 @@
 
 pkgname=3dforest-git
 _pkgname=3dforest
-pkgver=1.0.0
+pkgver=1.0.0.r784.8019d5c9
 _pkgver=1.0.0
 pkgrel=1
 pkgdesc="Visualization, processing and analysis of Lidar point clouds, mainly focused on forest environment. New version of 3D Forest. Process files with terabytes of data."
@@ -14,9 +14,11 @@ makedepends=(cmake)
 provides=(3dforest)
 conflicts=(3dforest)
 source=('git+https://github.com/VUKOZ-OEL/3d-forest'
+    'syserrlist-to-strerror.patch'
     '3DForest.png'
     '3DForest.desktop')
 sha256sums=('SKIP'
+    'SKIP'
     'SKIP'
     'SKIP')
 
@@ -28,10 +30,13 @@ pkgver() {
 build() {
     cd ${srcdir}/3d-forest
 
+    patch -Np0 -i ${srcdir}/syserrlist-to-strerror.patch
+
     mkdir -p cmake-build-release && cd cmake-build-release
 
     cmake .. \
         -DCMAKE_INSTALL_PREFIX=/usr \
+		-DBUILD_EXAMPLES=1 \
         -DOpenGL_GL_PREFERENCE=GLVND
     make
 }
@@ -40,6 +45,18 @@ package() {
     cd ${srcdir}/3d-forest/cmake-build-release
 	
     make DESTDIR="${pkgdir}" install
-
+    mkdir ${pkgdir}/usr/lib
+    mv ${pkgdir}/usr/bin/*.so ${pkgdir}/usr/lib
+    mv ${pkgdir}/usr/bin/plugins/*.so ${pkgdir}/usr/lib
+  
+	
+    install -Dm644 ${srcdir}/3d-forest/LICENSE ${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE
+	
+    install -D -m 644 ${srcdir}/3DForest.png ${pkgdir}/usr/share/icons/hicolor/256x256/apps/${_pkgname}.png
+    for size in 16 32 64 128; do
+        convert ${srcdir}/3DForest.png -adaptive-resize ${size}x${size} ${srcdir}/3DForest_${size}x${size}.png
+        install -D -m 644 ${srcdir}/3DForest_${size}x${size}.png ${pkgdir}/usr/share/icons/hicolor/${size}x${size}/apps/${_pkgname}.png
+    done
+	
     install -D -m644 ${srcdir}/3DForest.desktop -t ${pkgdir}/usr/share/applications
 }
