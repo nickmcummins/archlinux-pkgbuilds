@@ -1,14 +1,14 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
 
 pkgname=qmapshack-git
-pkgver=1.16.0.r4832.5a128093
+pkgver=1.16.1.r4879.aaf04b6f
 pkgrel=1
 pkgdesc='Plan your next outdoor trip'
 arch=('x86_64')
 url='https://bitbucket.org/maproom/qmapshack'
 license=('GPL3')
 depends=('gdal' 'desktop-file-utils' 'quazip' 'qt5-webengine' 'routino>=3.1' 'alglib')
-makedepends=('cmake' 'mercurial' 'python')
+makedepends=('cmake' 'python')
 conflicts=('qmapshack' 'qmapshack-hg')
 provides=('qmapshack')
 source=("$pkgname::git+https://github.com/Maproom/qmapshack#branch=dev")
@@ -29,9 +29,7 @@ build() {
     mkdir -p cmake-build-release && cd cmake-build-release
     cmake .. \
      -DCMAKE_INSTALL_PREFIX=/usr \
-     -DCMAKE_BUILD_TYPE=Release \
-     -DQUAZIP_LIBRARIES=/usr/lib/libquazip1-qt5.so \
-     -DQUAZIP_INCLUDE_DIR=/usr/include/QuaZip-Qt5-1.1/quazip
+     -DCMAKE_BUILD_TYPE=Release
     make
 }
 
