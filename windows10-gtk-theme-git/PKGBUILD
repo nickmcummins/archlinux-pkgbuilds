@@ -2,31 +2,31 @@
 # Contributor: Nick M Cummins <nickmcummins@linuxmail.org>
 
 _pkgname=windows10-gtk-theme
-pkgname=${_pkgname}-git
+pkgname=windows10-gtk-theme-git
 pkgver=3.2.1.r254.71afdd6
 pkgrel=1
 pkgdesc="Windows 10 GTK theme"
 arch=('any')
 url="https://github.com/B00merang-Project/Windows-10"
 license=('GPL3')
+
 depends=('gtk-engines' 'gtk-engine-murrine')
 optdepends=('gnome-themes-standard' 'windows10-icon-theme-git' 'windows10-tint2rc')
 makedepends=('git')
 
-provides=("${_pkgname}-git")
-conflicts=("${_pkgname}-git")
+provides=("${pkgname}-git")
+conflicts=("${_pkgname}")
 
-source=("${_pkgname}::git+https://github.com/B00merang-Project/Windows-10.git")
+source=("${pkgname}::git+https://github.com/B00merang-Project/Windows-10.git")
 sha256sums=('SKIP')
 
 pkgver() {
-	cd "${srcdir}/${_pkgname}"
+	cd "${srcdir}/${pkgname}"
     printf "%s.r%s.%s" "$(git describe --long --tags | cut -c -5)" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
-	#git describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
 }
 
 package() {
-  cd "${srcdir}/${_pkgname}"
+  cd "${srcdir}/${pkgname}"
 
   # create theme dir
   install -d -m 755 "$pkgdir/usr/share/themes/Windows10"
