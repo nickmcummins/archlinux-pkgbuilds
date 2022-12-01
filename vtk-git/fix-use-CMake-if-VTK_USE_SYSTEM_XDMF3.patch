@@ -1,0 +1,15 @@
+Index: ThirdParty/xdmf3/vtk_xdmf3.h.in
+<+>UTF-8
+===================================================================
+diff --git a/ThirdParty/xdmf3/vtk_xdmf3.h.in b/ThirdParty/xdmf3/vtk_xdmf3.h.in
+--- ThirdParty/xdmf3/vtk_xdmf3.h.in	(revision f2b91f9e2a6358d081482081e6397d4be60b6b0b)
++++ ThirdParty/xdmf3/vtk_xdmf3.h.in	(date 1668901603953)
+@@ -18,7 +18,7 @@
+ /* Use the xdmf3 library configured for VTK.  */
+ #cmakedefine01 VTK_MODULE_USE_EXTERNAL_vtkxdmf3
+ 
+-#ifdef VTK_USE_SYSTEM_XDMF3
++#ifdef VTK_MODULE_USE_EXTERNAL_vtkxdmf3
+ #else
+ #define VTKXDMF3_HEADER(x)  <vtkxdmf3/x>
+ #endif

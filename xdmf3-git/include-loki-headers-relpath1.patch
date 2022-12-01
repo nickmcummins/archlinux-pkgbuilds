@@ -1,0 +1,36 @@
+Subject: [PATCH] include-loki-headers-relpath
+---
+Index: core/XdmfItem.hpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/core/XdmfItem.hpp b/core/XdmfItem.hpp
+--- a/core/XdmfItem.hpp	(revision 04a84bab0eb1568e0f1a27c8fb60c6931efda003)
++++ b/core/XdmfItem.hpp	(date 1668918478854)
+@@ -36,7 +36,7 @@
+ class XdmfVisitor;
+ 
+ // Includes
+-#include <loki/Visitor.h>
++#include "Visitor.h"
+ #include <libxml/xmlexports.h>
+ #include <libxml/tree.h>
+ #include <libxml/uri.h>
+Index: core/XdmfVisitor.hpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/core/XdmfVisitor.hpp b/core/XdmfVisitor.hpp
+--- a/core/XdmfVisitor.hpp	(revision 04a84bab0eb1568e0f1a27c8fb60c6931efda003)
++++ b/core/XdmfVisitor.hpp	(date 1668918478874)
+@@ -33,7 +33,7 @@
+ class XdmfItem;
+ 
+ // Includes
+-#include <loki/Visitor.h>
++#include "Visitor.h"
+ 
+ /**
+  * @brief Perform an operation on an Xdmf tree structure.

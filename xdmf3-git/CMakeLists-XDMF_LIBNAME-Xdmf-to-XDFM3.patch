@@ -1,0 +1,34 @@
+diff --git a/CMake/XdmfFunctions.cmake b/CMake/XdmfFunctions.cmake
+index a22ffd02..ff35ba42 100644
+--- CMake/XdmfFunctions.cmake
++++ CMake/XdmfFunctions.cmake
+@@ -11,6 +11,6 @@ function(xdmf_create_config_file name)
+       endif()
+     endif()
+   endforeach()
+-  configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/${name}Config.cmake.in
+-    ${CMAKE_CURRENT_BINARY_DIR}/${name}Config.cmake @ONLY)
++  configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/XdmfConfig.cmake.in
++    ${CMAKE_CURRENT_BINARY_DIR}/XdmfConfig.cmake @ONLY)
+ endfunction()
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 8085f121..d3619dee 100644
+--- CMakeLists.txt
++++ CMakeLists.txt
+@@ -1,6 +1,6 @@
+ cmake_minimum_required(VERSION 2.8.5)
+ 
+-project(Xdmf)
++project(XDMF3)
+ 
+ 
+ if(WIN32)
+@@ -8,7 +8,7 @@ if(WIN32)
+   ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS)
+ endif()
+ 
+-set(XDMF_LIBNAME "Xdmf" CACHE STRING "Name for this xdmf library to avoid collision")
++set(XDMF_LIBNAME "XDMF3" CACHE STRING "Name for this xdmf library to avoid collision")
+ 
+ set(XDMF_MAJOR_VERSION 3)
+ set(XDMF_MINOR_VERSION 0)

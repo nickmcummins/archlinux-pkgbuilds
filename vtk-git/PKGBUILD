@@ -2,7 +2,7 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.2.20221105.r1366.g9674ee42feb
+pkgver=9.2.20221119.r1447.gf2b91f9e2a6
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization'
 arch=('i686' 'x86_64')
@@ -10,13 +10,18 @@ url='http://www.vtk.org'
 license=('BSD')
 depends=('cuda' 'double-conversion' 'embree' 'gdal' 'glew' 'hdf5' 'jsoncpp' 'libarchive' 'libharu' 'libxt' 'openslide' 
     'openturns' 'openvkl' 'openvr' 'ospray>=2.1.0' 'pdal' 'pegtl' 'proj' 'python' 'cli11' 'qt6-base' 'qt6-quick3d' 'openvdb'
-	'exprtk' 'openxr' 'seacas' 'verdict')
+	'exprtk' 'openxr' 'seacas' 'verdict' 'xdmf')
 makedepends=('git' 'cmake' 'doxygen' 'boost' 'java-environment' 'utf8cpp')
 provides=("vtk")
 conflicts=("vtk")
-source=("git+https://gitlab.kitware.com/vtk/vtk.git"
-    "vtkOpenXRManager-include-memory.patch")
-sha256sums=("SKIP" "SKIP")
+source=('git+https://gitlab.kitware.com/vtk/vtk.git'
+    'vtkOpenXRManager-include-memory.patch'
+    'fix-use-CMake-if-VTK_USE_SYSTEM_XDMF3.patch'
+    'CMakeLists-XDMF_LIBNAME-Xdmf-to-XDFM3.patch')
+sha256sums=('SKIP'
+    'SKIP'
+    'SKIP'
+    'SKIP')
 
 pkgver() {
   cd ${srcdir}/vtk
@@ -27,8 +32,10 @@ pkgver() {
 
 build() {
   cd ${srcdir}/vtk
-  patch -Np0 -i $srcdir/vtkOpenXRManager-include-memory.patch
-  
+  patch -Np0 -i ${srcdir}/vtkOpenXRManager-include-memory.patch
+  patch -Np0 -i ${srcdir}/fix-use-CMake-if-VTK_USE_SYSTEM_XDMF3.patch
+  patch -Np0 -i ${srcdir}/CMakeLists-XDMF_LIBNAME-Xdmf-to-XDFM3.patch
+
   mkdir -p cmake-build-release && cd cmake-build-release
   cmake $srcdir/$_pkgname \
     -DCMAKE_INSTALL_PREFIX=/usr \
@@ -60,6 +67,7 @@ build() {
     -DVTK_GROUP_ENABLE_Imaging=YES \
     -DVTK_GROUP_ENABLE_MPI=YES \
     -DVTK_GROUP_ENABLE_Qt=YES \
+    -DVTKm_ENABLE_OPENMP=ON \
     -DVTK_GROUP_ENABLE_Rendering=YES \
     -DVTK_GROUP_ENABLE_StandAlone=YES \
     -DVTK_GROUP_ENABLE_Tk=YES \
@@ -164,7 +172,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_IOParallelLSDyna=YES \
     -DVTK_MODULE_ENABLE_VTK_IOParallelNetCDF=YES \
     -DVTK_MODULE_ENABLE_VTK_IOParallelXML=YES \
-    -DVTK_MODULE_ENABLE_VTK_IOParallelXdmf3=YES \
+    -DVTK_MODULE_ENABLE_VTK_IOParallelXdmf3=NO \
     -DVTK_MODULE_ENABLE_VTK_IOPostgreSQL=YES \
     -DVTK_MODULE_ENABLE_VTK_IOSQL=YES \
     -DVTK_MODULE_ENABLE_VTK_IOSegY=YES \
@@ -324,20 +332,22 @@ build() {
     -DVTK_MODULE_USE_EXTERNAL_VTK_tiff=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_utf8=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_zlib=ON \
+    -DVTK_MODULE_USE_EXTERNAL_vtkxdmf3=ON \
     -DVTK_OPENGL_HAS_EGL=TRUE \
     -DVTK_OPENGL_USE_GLES=OFF \
     -DVTK_PYTHON_OPTIONAL_LINK=OFF \
+	-DVTK_SMP_ENABLE_OPENMP=ON \
     -DVTK_SMP_IMPLEMENTATION_TYPE=TBB \
     -DVTK_USE_64BIT_IDS=ON \
     -DVTK_USE_CUDA=ON \
     -DVTK_USE_MPI=ON \
     -DVTK_USE_SDL2=ON \
-    -DVTK_USE_TK=OFF \
+    -DVTK_USE_TK=ON \
     -DVTK_USE_X=ON \
     -DOpenVR_INCLUDE_DIR=/usr/include/openvr \
       ..
   
-  make
+  make -j12
 }
 
 package() {
