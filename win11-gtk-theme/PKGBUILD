@@ -1,0 +1,26 @@
+# Maintainer: Yamada Hayao <hayao@fascode.net>
+# Contributor: Nick M Cummins <nickmcummins@linuxmail.org>
+
+pkgname=win11-gtk-theme
+_themename=Windows-11
+pkgver=r10.62225c3
+pkgrel=1
+pkgdesc="GTK theme like Windows 11"
+arch=('any')
+url='https://github.com/zayronxio/windows11-GTKtheme'
+license=('GPL')
+depends=()
+optdepends=()
+source=("${_themename}::git+https://github.com/zayronxio/windows11-GTKtheme.git")
+conflicts=('win11-gtk-theme-git')
+md5sums=('SKIP')
+
+pkgver() {
+    cd "${_themename}"
+    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+package() {
+    install -dm755 "${pkgdir}/usr/share/themes"
+    cp -r "${srcdir}/${_themename}" "${pkgdir}/usr/share/themes"
+}
