@@ -1,0 +1,63 @@
+# Maintainer: Carlos Aznarán <caznaranl@uni.pe>
+# Contributor: Antonio Rojas <arojas@archlinux.org>
+# Contributor: Ronald van Haren <ronald.archlinux.org>
+# Contributor: Damir Perisa <damir.perisa@bluewin.ch>
+# Maintainer: Nick M Cummins <nickmcummins@linuxmail.org>
+
+
+pkgname=celestia-git
+_pkgname=celestia
+pkgver=1.6.2.r6541.a96966287
+_pkgver=1.6.2
+pkgrel=1
+pkgdesc="Real-time space simulation (git checkout)"
+arch=(x86_64)
+license=(GPL)
+url="https://celestia.space"
+provides=('celestia')
+conflicts=('celestia')
+depends=('gtk2' 'libtheora' 'lua53' 'gtkglext' 'freeglut' 'libxmu' 'glu' 'libjpeg-turbo' 'mesa' 'qt6-5compat' 'meshoptimizer')
+source=("${_pkgname}::git+https://github.com/CelestiaProject/Celestia")
+md5sums=('SKIP')
+sha256sums=('SKIP')
+
+prepare() {
+   cd ${srcdir}/${_pkgname}
+   git submodule update --init --recursive
+}
+
+pkgver() {
+  cd ${srcdir}/${_pkgname}
+  printf "${_pkgver}.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+  cd ${srcdir}/${_pkgname}
+
+  mkdir -p cmake-build-release && cd cmake-build-release
+
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DENABLE_CELX=ON \
+    -DENABLE_FFMPEG=ON \
+    -DENABLE_GLUT=ON \
+    -DENABLE_GTK=ON \
+    -DENABLE_NLS=ON \
+    -DENABLE_QT=ON \
+    -DENABLE_SDL=ON \
+    -DENABLE_SPICE=ON \
+    -DENABLE_TOOLS=ON \
+    -DENABLE_WIN=OFF \
+    -DUSE_GTK3=ON \
+    -DUSE_GTKGLEXT=ON \
+    -DUSE_QT6=ON \
+    -DSPICE_BUILD_SHARED_LIBRARY=ON
+  make -j14
+}
+
+package() {
+  cd ${srcdir}/${_pkgname}/cmake-build-release
+
+  make DESTDIR=${pkgdir} install
+}
