@@ -1,0 +1,35 @@
+Index: plugins/TelescopeControl/src/INDI/INDIConnection.hpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/plugins/TelescopeControl/src/INDI/INDIConnection.hpp b/plugins/TelescopeControl/src/INDI/INDIConnection.hpp
+--- plugins/TelescopeControl/src/INDI/INDIConnection.hpp	(revision 3364be7797b22210fe0632b0729926abeab5e8b0)
++++ plugins/TelescopeControl/src/INDI/INDIConnection.hpp	(date 1675550235444)
+@@ -69,16 +69,16 @@
+ 	QStringList mDevices;
+ 
+ public: // from INDI::BaseClient
+-	void newDevice(INDI::BaseDevice *dp) override;
+-	void removeDevice(INDI::BaseDevice *dp) override;
+-	void newProperty(INDI::Property *property) override;
+-	void removeProperty(INDI::Property *property) override;
+-	void newBLOB(IBLOB *bp) override;
+-	void newSwitch(ISwitchVectorProperty *svp) override;
+-	void newNumber(INumberVectorProperty *nvp) override;
+-	void newText(ITextVectorProperty *tvp) override;
+-	void newLight(ILightVectorProperty *lvp) override;
+-	void newMessage(INDI::BaseDevice *dp, int messageID) override;
++	void newDevice(INDI::BaseDevice *dp);
++	void removeDevice(INDI::BaseDevice *dp);
++	void newProperty(INDI::Property *property);
++	void removeProperty(INDI::Property *property);
++	void newBLOB(IBLOB *bp);
++	void newSwitch(ISwitchVectorProperty *svp);
++	void newNumber(INumberVectorProperty *nvp);
++	void newText(ITextVectorProperty *tvp);
++	void newLight(ILightVectorProperty *lvp);
++	void newMessage(INDI::BaseDevice *dp, int messageID);
+ 	void serverConnected() override;
+ 	void serverDisconnected(int exit_code) override;
+ 	void unParkTelescope();
