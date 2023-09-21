@@ -1,0 +1,80 @@
+Index: simgear/scene/util/SGImageUtils.cxx
+<+>UTF-8
+===================================================================
+--- simgear/scene/util/SGImageUtils.cxx	(revision 44bcd047ff5ff81970d64486ce53b528eec22bae)
++++ simgear/scene/util/SGImageUtils.cxx	(date 1695322620807)
+@@ -1030,74 +1030,6 @@
+     return true;
+ }
+ 
+-bool
+-ImageUtils::computeTextureCompressionMode(const osg::Image*                 image,
+-    osg::Texture::InternalFormatMode& out_mode)
+-{
+-    if (!image)
+-        return false;
+-
+-//    const Capabilities& caps = Registry::capabilities();
+-
+-#if !defined(OSG_GLES2_AVAILABLE) && !defined(OSG_GLES3_AVAILABLE)
+-
+-    if (image->getPixelFormat() == GL_RGBA && image->getPixelSizeInBits() == 32)
+-    {
+-        //if (caps.supportsTextureCompression(osg::Texture::USE_S3TC_DXT5_COMPRESSION))
+-        //{
+-            out_mode = osg::Texture::USE_S3TC_DXT5_COMPRESSION;
+-            return true;
+-        //}
+-        ////todo: add ETC2
+-        //else if (caps.supportsTextureCompression(osg::Texture::USE_ARB_COMPRESSION))
+-        //{
+-        //    out_mode = osg::Texture::USE_ARB_COMPRESSION;
+-        //    return true;
+-        //}
+-    }
+-    else if (image->getPixelFormat() == GL_RGB && image->getPixelSizeInBits() == 24)
+-    {
+-        //if (caps.supportsTextureCompression(osg::Texture::USE_S3TC_DXT1_COMPRESSION))
+-        //{
+-            out_mode = osg::Texture::USE_S3TC_DXT1_COMPRESSION;
+-            return true;
+-        //}
+-        //else if (caps.supportsTextureCompression(osg::Texture::USE_ETC_COMPRESSION))
+-        //{
+-        //    // ETC1 is RGB only
+-        //    out_mode = osg::Texture::USE_ETC_COMPRESSION;
+-        //    return true;
+-        //}
+-        //else if (caps.supportsTextureCompression(osg::Texture::USE_ARB_COMPRESSION))
+-        //{
+-        //    out_mode = osg::Texture::USE_ARB_COMPRESSION;
+-        //    return true;
+-        //}
+-    }
+-
+-#else // OSG_GLES2_AVAILABLE
+-
+-    if (caps.supportsTextureCompression(osg::Texture::USE_PVRTC_4BPP_COMPRESSION))
+-    {
+-        out_mode = osg::Texture::USE_PVRTC_4BPP_COMPRESSION;
+-        return true;
+-    }
+-    else if (caps.supportsTextureCompression(osg::Texture::USE_PVRTC_2BPP_COMPRESSION))
+-    {
+-        out_mode = osg::Texture::USE_PVRTC_2BPP_COMPRESSION;
+-        return true;
+-    }
+-    else if (caps.supportsTextureCompression(osg::Texture::USE_ETC_COMPRESSION))
+-    {
+-        out_mode = osg::Texture::USE_ETC_COMPRESSION;
+-        return true;
+-    }
+-
+-#endif
+-
+-    return false;
+-}
+-
+ //bool
+ //ImageUtils::replaceNoDataValues(osg::Image*       target,
+ //    const Bounds&     targetBounds,
