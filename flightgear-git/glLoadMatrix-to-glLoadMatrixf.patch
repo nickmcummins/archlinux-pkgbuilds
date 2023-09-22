@@ -1,0 +1,34 @@
+
+Index: src/Instrumentation/HUD/HUD.cxx
+<+>UTF-8
+===================================================================
+diff --git a/src/Instrumentation/HUD/HUD.cxx b/src/Instrumentation/HUD/HUD.cxx
+--- src/Instrumentation/HUD/HUD.cxx	(revision 459242b9db0a793d9853440991bb0d29f3f3771c)
++++ src/Instrumentation/HUD/HUD.cxx	(date 1695353933184)
+@@ -223,7 +223,7 @@
+     Matrixf proj
+         = Matrixf::perspective(view->get_v_fov(), 1/view->get_aspect_ratio(),
+                                0.1, 10);
+-    glLoadMatrix(proj.ptr());
++    glLoadMatrixf(proj.ptr());
+ 
+     glMatrixMode(GL_MODELVIEW);
+     glPushMatrix();
+@@ -237,7 +237,7 @@
+         lookat[1] = 9999; // FPU sanity
+     Matrixf mv = Matrixf::lookAt(Vec3f(0.0, 0.0, 0.0), lookat,
+                                  Vec3f(0.0, 1.0, 0.0));
+-    glLoadMatrix(mv.ptr());
++    glLoadMatrixf(mv.ptr());
+ 
+     // Map the -1:1 square to a 55.0x41.25 degree wide patch at z=1.
+     // This is the default fgfs field of view, which the HUD files are
+@@ -271,7 +271,7 @@
+     glMatrixMode(GL_PROJECTION);
+     glPushMatrix();
+     Matrixf proj = Matrixf::ortho2D(x_start, x_end, y_start, y_end);
+-    glLoadMatrix(proj.ptr());
++    glLoadMatrixf(proj.ptr());
+ 
+     glMatrixMode(GL_MODELVIEW);
+     glPushMatrix();
