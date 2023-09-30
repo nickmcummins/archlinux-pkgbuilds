@@ -7,7 +7,7 @@
 
 pkgname=celestia-git
 _pkgname=celestia
-pkgver=1.6.2.r6541.a96966287
+pkgver=1.6.2.r6872.bd3a7b961
 _pkgver=1.6.2
 pkgrel=1
 pkgdesc="Real-time space simulation (git checkout)"
@@ -33,7 +33,7 @@ pkgver() {
 
 build() {
   cd ${srcdir}/${_pkgname}
-
+  
   mkdir -p cmake-build-release && cd cmake-build-release
 
   cmake .. \
@@ -42,7 +42,7 @@ build() {
     -DENABLE_CELX=ON \
     -DENABLE_FFMPEG=ON \
     -DENABLE_GLUT=ON \
-    -DENABLE_GTK=ON \
+    -DENABLE_GTK=OFF \
     -DENABLE_NLS=ON \
     -DENABLE_QT=ON \
     -DENABLE_SDL=ON \
@@ -52,7 +52,12 @@ build() {
     -DUSE_GTK3=ON \
     -DUSE_GTKGLEXT=ON \
     -DUSE_QT6=ON \
-    -DSPICE_BUILD_SHARED_LIBRARY=ON
+    -DSPICE_BUILD_SHARED_LIBRARY=ON \
+    -DIntl_LIBRARY=/usr/lib/preloadable_libintl.so
+  mkdir -p cmake-build-release/src/celengine/celengine_autogen
+  mkdir -p cmake-build-release/src/celephem/celephem_autogen
+  mkdir -p cmake-build-release/src/celscript/legacy/cellegacyscript_autogen
+
   make -j14
 }
 
