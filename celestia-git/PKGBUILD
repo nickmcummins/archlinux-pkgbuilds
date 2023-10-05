@@ -1,3 +1,4 @@
+
 # Maintainer: Carlos Aznarán <caznaranl@uni.pe>
 # Contributor: Antonio Rojas <arojas@archlinux.org>
 # Contributor: Ronald van Haren <ronald.archlinux.org>
@@ -7,7 +8,7 @@
 
 pkgname=celestia-git
 _pkgname=celestia
-pkgver=1.6.2.r6872.bd3a7b961
+pkgver=1.6.2.r6880.5674baa91
 _pkgver=1.6.2
 pkgrel=1
 pkgdesc="Real-time space simulation (git checkout)"
@@ -16,7 +17,7 @@ license=(GPL)
 url="https://celestia.space"
 provides=('celestia')
 conflicts=('celestia')
-depends=('gtk2' 'libtheora' 'lua53' 'gtkglext' 'freeglut' 'libxmu' 'glu' 'libjpeg-turbo' 'mesa' 'qt6-5compat' 'meshoptimizer')
+depends=('gtk2' 'libtheora' 'lua53' 'gtkglext' 'freeglut' 'libxmu' 'glu' 'libjpeg-turbo' 'mesa' 'qt6-5compat' 'meshoptimizer' 'spice')
 source=("${_pkgname}::git+https://github.com/CelestiaProject/Celestia")
 md5sums=('SKIP')
 sha256sums=('SKIP')
@@ -33,30 +34,29 @@ pkgver() {
 
 build() {
   cd ${srcdir}/${_pkgname}
-  
+
   mkdir -p cmake-build-release && cd cmake-build-release
 
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_DATADIR=/usr/share \
     -DENABLE_CELX=ON \
     -DENABLE_FFMPEG=ON \
     -DENABLE_GLUT=ON \
-    -DENABLE_GTK=OFF \
-    -DENABLE_NLS=ON \
-    -DENABLE_QT=ON \
+    -DENABLE_GTK=ON \
+    -DENABLE_NLS=OFF \
+    -DENABLE_QT5=OFF \
+    -DENABLE_QT6=OFF \
     -DENABLE_SDL=ON \
-    -DENABLE_SPICE=ON \
+    -DENABLE_SPICE=OFF \
     -DENABLE_TOOLS=ON \
     -DENABLE_WIN=OFF \
     -DUSE_GTK3=ON \
     -DUSE_GTKGLEXT=ON \
-    -DUSE_QT6=ON \
+    -DUSE_QT6=OFF \
     -DSPICE_BUILD_SHARED_LIBRARY=ON \
     -DIntl_LIBRARY=/usr/lib/preloadable_libintl.so
-  mkdir -p cmake-build-release/src/celengine/celengine_autogen
-  mkdir -p cmake-build-release/src/celephem/celephem_autogen
-  mkdir -p cmake-build-release/src/celscript/legacy/cellegacyscript_autogen
 
   make -j14
 }
