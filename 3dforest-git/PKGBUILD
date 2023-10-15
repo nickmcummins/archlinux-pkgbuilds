@@ -2,7 +2,7 @@
 
 pkgname=3dforest-git
 _pkgname=3dforest
-pkgver=1.0.0.r784.8019d5c9
+pkgver=1.0.0.r1200.26bf5322
 _pkgver=1.0.0
 pkgrel=1
 pkgdesc="Visualization, processing and analysis of Lidar point clouds, mainly focused on forest environment. New version of 3D Forest. Process files with terabytes of data."
@@ -14,11 +14,9 @@ makedepends=(cmake)
 provides=(3dforest)
 conflicts=(3dforest)
 source=('git+https://github.com/VUKOZ-OEL/3d-forest'
-    'syserrlist-to-strerror.patch'
     '3DForest.png'
     '3DForest.desktop')
 sha256sums=('SKIP'
-    'SKIP'
     'SKIP'
     'SKIP')
 
@@ -29,8 +27,6 @@ pkgver() {
 
 build() {
     cd ${srcdir}/3d-forest
-
-    patch -Np0 -i ${srcdir}/syserrlist-to-strerror.patch
 
     mkdir -p cmake-build-release && cd cmake-build-release
 
