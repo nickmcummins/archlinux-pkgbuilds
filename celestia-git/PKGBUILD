@@ -1,14 +1,11 @@
-
 # Maintainer: Carlos Aznarán <caznaranl@uni.pe>
 # Contributor: Antonio Rojas <arojas@archlinux.org>
 # Contributor: Ronald van Haren <ronald.archlinux.org>
 # Contributor: Damir Perisa <damir.perisa@bluewin.ch>
 # Maintainer: Nick M Cummins <nickmcummins@linuxmail.org>
-
-
 pkgname=celestia-git
 _pkgname=celestia
-pkgver=1.6.2.r6880.5674baa91
+pkgver=1.6.2.r6885.f019191bd
 _pkgver=1.6.2
 pkgrel=1
 pkgdesc="Real-time space simulation (git checkout)"
@@ -18,9 +15,9 @@ url="https://celestia.space"
 provides=('celestia')
 conflicts=('celestia')
 depends=('gtk2' 'libtheora' 'lua53' 'gtkglext' 'freeglut' 'libxmu' 'glu' 'libjpeg-turbo' 'mesa' 'qt6-5compat' 'meshoptimizer' 'spice')
-source=("${_pkgname}::git+https://github.com/CelestiaProject/Celestia")
-md5sums=('SKIP')
-sha256sums=('SKIP')
+source=("${_pkgname}::git+https://github.com/CelestiaProject/Celestia" 'git+https://github.com/CelestiaProject/CelestiaContent')
+md5sums=('SKIP' 'SKIP')
+sha256sums=('SKIP' 'SKIP')
 
 prepare() {
    cd ${srcdir}/${_pkgname}
@@ -41,6 +38,7 @@ build() {
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_DATADIR=/usr/share \
+    -DCMAKE_SKIP_RPATH=ON \
     -DENABLE_CELX=ON \
     -DENABLE_FFMPEG=ON \
     -DENABLE_GLUT=ON \
@@ -48,7 +46,7 @@ build() {
     -DENABLE_NLS=OFF \
     -DENABLE_QT5=OFF \
     -DENABLE_QT6=OFF \
-    -DENABLE_SDL=ON \
+    -DENABLE_SDL=OFF \
     -DENABLE_SPICE=OFF \
     -DENABLE_TOOLS=ON \
     -DENABLE_WIN=OFF \
@@ -59,10 +57,21 @@ build() {
     -DIntl_LIBRARY=/usr/lib/preloadable_libintl.so
 
   make -j14
+
+  cd ${srcdir}/CelestiaContent
+  mkdir -p cmake-build-release && cd cmake-build-release
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_DATADIR=/usr/share
+  make
+
 }
 
 package() {
   cd ${srcdir}/${_pkgname}/cmake-build-release
+  make DESTDIR=${pkgdir} install
 
+  cd ${srcdir}/CelestiaContent/cmake-build-release
   make DESTDIR=${pkgdir} install
 }
