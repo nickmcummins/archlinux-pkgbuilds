@@ -6,7 +6,7 @@
 
 pkgname=flightgear-git
 _pkgname=flightgear
-pkgver=2020.4.0.r16069.4cd9f9094
+pkgver=2020.4.0.r16072.96d7762c7
 pkgrel=1
 pkgdesc="An open-source, multi-platform flight simulator"
 arch=('x86_64')
@@ -43,7 +43,7 @@ build() {
     -DFG_DATA_DIR:STRING="/usr/share/flightgear/data" \
     -DCMAKE_BUILD_TYPE=Release \
     -DFG_BUILD_TYPE=Release
-  make
+  make -j14
 }
 
 package() {
