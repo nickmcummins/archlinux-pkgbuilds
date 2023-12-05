@@ -1,0 +1,44 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+
+pkgname=token-git
+_pkgname=token
+pkgver=23.09.0.r9.2003066
+_pkgver=23.09.0
+pkgrel=1
+pkgdesc='Utilities for string tokenization'
+arch=('i686' 'x86_64')
+url='http://www.vtk.org'
+license=('BSD')
+depends=()
+makedepends=('git' 'cmake')
+provides=('token')
+source=('git+https://gitlab.kitware.com/dcthomp/token.git')
+sha256sums=('SKIP')
+
+pkgver() {
+  cd ${srcdir}/${_pkgname}
+  printf "$(cat version.txt).r$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
+
+build() {
+  cd ${srcdir}/${_pkgname}
+
+  mkdir -p cmake-build-release && cd cmake-build-release
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_BUILD_TYPE=Release
+  make
+}
+
+package() {
+  cd ${srcdir}/${_pkgname}/cmake-build-release
+  make DESTDIR="$pkgdir" install
+  # Pack license
+  install -D -m644 ${srcdir}/${_pkgname}/license.md $pkgdir/usr/share/licenses/${_pkgname}/LICENSE
+
+  mv ${pkgdir}/usr/include/token/${_pkgver}/token/*.h ${pkgdir}/usr/include/token
+  rm -rf ${pkgdir}/usr/include/token/${_pkgver}
+
+  mv ${pkgdir}/usr/lib/cmake/token-${_pkgver} ${pkgdir}/usr/lib/cmake/token
+}
