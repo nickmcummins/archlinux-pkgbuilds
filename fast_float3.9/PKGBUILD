@@ -1,0 +1,33 @@
+# Maintainer: endlesseden <eden@rose.place>
+# Contributor: Nick M Cummins <nickmcummins at linuxmail dot org>
+
+_pkgbase=fast_float
+pkgname=${_pkgbase}3.9
+pkgver=3.9.0
+pkgrel=1
+arch=(x86_64)
+url="https://github.com/fastfloat/fast_float/"
+license=('MIT' 'Apache-2.0')
+pkgdesc='Fast and exact implementation of the C++ from_chars functions:4x faster than strtod'
+makedepends=(cmake git)
+conflicts=($_pkgbase)
+provides=($_pkgbase)
+source=('https://github.com/fastfloat/fast_float/archive/refs/tags/v3.9.0.zip')
+sha256sums=('SKIP')
+
+build() {
+  cd ${_pkgbase}-${pkgver}
+
+  mkdir -p cmake-build-release && cd cmake-build-release
+
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX="/usr" 
+
+  make
+}
+
+package() {
+  cd ${_pkgbase}-${pkgver}/cmake-build-release
+  make DESTDIR="$pkgdir" install
+}
