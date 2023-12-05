@@ -2,7 +2,7 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.2.20221201.r1557.g432d9e5ea3e
+pkgver=9.3.20231204.r1438.g3b33d3b62de
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization'
 arch=('i686' 'x86_64')
@@ -10,7 +10,7 @@ url='http://www.vtk.org'
 license=('BSD')
 depends=('cuda' 'double-conversion' 'embree' 'gdal' 'glew' 'hdf5' 'jsoncpp' 'libarchive' 'libharu' 'libxt' 'openslide' 
     'openturns' 'openvkl' 'openvr' 'ospray>=2.1.0' 'pdal' 'pegtl' 'proj' 'python' 'cli11' 'qt6-base' 'qt6-quick3d' 'openvdb'
-	'exprtk' 'openxr' 'seacas' 'verdict')
+	'exprtk' 'openxr' 'seacas' 'verdict' 'token' 'fast_float3.9')
 makedepends=('git' 'cmake' 'doxygen' 'boost' 'java-environment' 'utf8cpp')
 provides=("vtk")
 conflicts=("vtk")
@@ -27,7 +27,7 @@ pkgver() {
 
 build() {
   cd ${srcdir}/vtk
-  patch -Np0 -i $srcdir/vtkOpenXRManager-include-memory.patch
+  git submodule update --init --recursive
   
   mkdir -p cmake-build-release && cd cmake-build-release
   cmake $srcdir/$_pkgname \
@@ -122,9 +122,11 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_GeovisGDAL=YES \
     -DVTK_MODULE_ENABLE_VTK_IOADIOS2=NO \
     -DVTK_MODULE_ENABLE_VTK_IOAMR=NO \
+    -DVTK_MODULE_ENABLE_VTK_IOAlembic=NO \
     -DVTK_MODULE_ENABLE_VTK_IOAsynchronous=YES \
     -DVTK_MODULE_ENABLE_VTK_IOCONVERGECFD=YES \
 	-DVTK_MODULE_ENABLE_VTK_IOCGNSReader=NO \
+	-DVTK_MODULE_ENABLE_VTK_IOCesium3DTiles=YES \
     -DVTK_MODULE_ENABLE_VTK_IOCityGML=YES \
     -DVTK_MODULE_ENABLE_VTK_IOCore=YES \
     -DVTK_MODULE_ENABLE_VTK_IOEnSight=YES \
@@ -205,6 +207,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_PythonContext2D=YES \
     -DVTK_MODULE_ENABLE_VTK_PythonInterpreter=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingAnnotation=YES \
+    -DVTK_MODULE_ENABLE_VTK_RenderingAnari=NO \
     -DVTK_MODULE_ENABLE_VTK_RenderingContext2D=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingCore=YES \
@@ -316,9 +319,10 @@ build() {
     -DVTK_MODULE_USE_EXTERNAL_VTK_utf8=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_zlib=ON \
     -DVTK_OPENGL_HAS_EGL=TRUE \
-    -DVTK_OPENGL_USE_GLES=OFF \
+    -DVTK_OPENGL_USE_GLES=ON \
     -DVTK_PYTHON_OPTIONAL_LINK=OFF \
     -DVTK_SMP_IMPLEMENTATION_TYPE=TBB \
+    -DVTK_ENABLE_OSPRAY=OFF \
     -DVTK_USE_64BIT_IDS=ON \
     -DVTK_USE_CUDA=ON \
     -DVTK_USE_MPI=ON \
@@ -326,6 +330,9 @@ build() {
     -DVTK_USE_TK=OFF \
     -DVTK_USE_X=ON \
     -DOpenVR_INCLUDE_DIR=/usr/include/openvr \
+    -DPython3_EXECUTABLE=/usr/sbin/python3.11 \
+    -DPython3_INCLUDE_DIR=/usr/include/python3.11 \
+    -DPython3_LIBRARY=/usr/lib/libpython3.11.so \
       ..
   
   make
