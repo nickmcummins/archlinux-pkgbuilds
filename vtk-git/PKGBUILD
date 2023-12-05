@@ -2,7 +2,7 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.3.20231204.r1438.g3b33d3b62de
+pkgver=9.3.20231204.r88363.3b33d3b62de
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization'
 arch=('i686' 'x86_64')
@@ -20,9 +20,8 @@ sha256sums=("SKIP" "SKIP")
 
 pkgver() {
   cd ${srcdir}/vtk
-  GITVERSION=$(git describe --long | sed 's/\([^-]*-g\)/r\1/;s/-/./g' | cut -b 8-)
   VERSION=$(python -c "import sys; import re; cmake_filename = 'CMake/vtkVersion.cmake'; cmake_file = open(cmake_filename, 'r'); cmake_vars_regex = r'(set\s*\()([^\s]+)\s*([^)]+)'; vars = dict(list(map(lambda varline: (re.search(cmake_vars_regex, varline).group(2), re.search(cmake_vars_regex, varline).group(3)), filter(lambda line: line.startswith('set('), cmake_file.read().split('\n'))))); major_version = vars['VTK_MAJOR_VERSION']; minor_version = vars['VTK_MINOR_VERSION']; build_version = vars['VTK_BUILD_VERSION']; print(f'{major_version}.{minor_version}.{build_version}')")
-  printf "${VERSION}.${GITVERSION}"
+  printf "${VERSION}.r$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
 }
 
 build() {
