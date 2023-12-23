@@ -5,7 +5,7 @@
 # Maintainer: Nick M Cummins <nickmcummins@linuxmail.org>
 pkgname=celestia-git
 _pkgname=celestia
-pkgver=1.6.2.r6956.0a360a487
+pkgver=1.6.2.r6968.61c75a163
 _pkgver=1.6.2
 pkgrel=1
 pkgdesc="Real-time space simulation (git checkout)"
@@ -56,7 +56,7 @@ build() {
     -DSPICE_BUILD_SHARED_LIBRARY=ON \
     -DIntl_LIBRARY=/usr/lib/preloadable_libintl.so
 
-  make -j14
+  make
 
   cd ${srcdir}/CelestiaContent
   mkdir -p cmake-build-release && cd cmake-build-release
