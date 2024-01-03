@@ -1,7 +1,7 @@
 # Maintainer: Nick M Cummins <nickmcummins dot linuxmail.org>
 
 pkgname=fgt-git
-pkgver=r256.d0559fd
+pkgver=r290.0a5c83d
 pkgrel=1
 _pkgname="fgt"
 pkgdesc="C++ library for fast Gauss transforms."
