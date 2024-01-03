@@ -1,7 +1,7 @@
 # Maintainer: Nick M Cummins <nickmcummins dot linuxmail.org>
 
 pkgname=displaz-git
-pkgver=r796.b190ffb
+pkgver=r859.1b1a2e4
 pkgrel=1
 _pkgname="displaz"
 pkgdesc="A hackable lidar viewer"
