@@ -6,7 +6,7 @@
 
 pkgname=simgear-git
 _pkgname=simgear
-pkgver=2020.4.0.r6266.a5af7601
+pkgver=2020.4.0.r6281.e589dcec
 pkgrel=1
 pkgdesc="A set of open-source libraries designed to be used as building blocks for quickly assembling 3d simulations, games, and visualization applications."
 arch=('x86_64')
