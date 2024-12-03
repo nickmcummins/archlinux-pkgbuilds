@@ -6,13 +6,13 @@
 
 pkgname=simgear-git
 _pkgname=simgear
-pkgver=2020.4.0.r6339.0d41a2f7
+pkgver=2024.2.0.r6490.89f938b3
 pkgrel=1
 pkgdesc="A set of open-source libraries designed to be used as building blocks for quickly assembling 3d simulations, games, and visualization applications."
 arch=('x86_64')
 url="http://home.flightgear.org/"
 license=('GPL')
-depends=('glu' 'glut' 'freealut' 'plib' 'openscenegraph')
+depends=('glu' 'glut' 'freealut' 'plib' 'openscenegraph-flightgear')
 makedepends=('boost' 'cmake' 'git' 'mesa')
 provides=("simgear=${pkgver}")
 conflicts=('simgear')
@@ -32,12 +32,16 @@ build() {
   mkdir -p cmake-build-release && cd cmake-build-release
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_MODULE_PATH=/usr/share/cmake/Modules \
+    -DOPENTHREADS_INCLUDE_DIR=/opt/openscenegraph-flightgear/include \
+    -DOPENTHREADS_LIBRARY_RELEASE=/opt/openscenegraph-flightgear/lib/libOpenThreads.so \
+    -DOSG_INCLUDE_DIR=/opt/openscenegraph-flightgear/include \
+    -DOSG_LIBRARY_RELEASE=/opt/openscenegraph-flightgear/lib/libosg.so \
+    -DBoost_DIR=/usr/lib64/cmake/Boost-1.86.0 \
+    -Dboost_headers_DIR=/usr/lib64/cmake/boost_headers-1.86.0 \
     -DENABLE_TESTS=off \
     -DSIMGEAR_SHARED=ON
-  make -j12
+  make
 }
 
 package() {
