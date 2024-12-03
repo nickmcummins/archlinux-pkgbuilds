@@ -1,0 +1,48 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+
+
+pkgname=openscenegraph-flightgear-git
+_pkgname=openscenegraph
+pkgver=3.6.5.r16214.b30276276
+_pkgver=3.6.5
+pkgrel=1
+pkgdesc="An open source, high performance real-time graphics toolkit - fork for the FlightGear project"
+arch=('x86_64')
+url="https://gitlab.com/flightgear/openscenegraph"
+license=('custom:OSGPL')
+depends=('giflib' 'jasper' 'librsvg' 'xine-lib' 'curl' 'collada-dom' 'fbx-sdk' 'gta' 'dcmtk' 'asio' 'liblas' 'coin' 'gtkglext' 'fltk' 'wxwidgets-common' 'gnuplot' 'wget' 'sdl')
+makedepends=('cmake' 'libvncserver' 'qt5-base' 'ffmpeg' 'mesa' 'opencascade')
+optdepends=('libvncserver' 'gdal' 'openexr' 'poppler-glib' 'qt5-base' 'ffmpeg')
+provides=('openscenegraph-flightgear')
+conflicts=()
+source=("openscenegraph::git+https://gitlab.com/flightgear/openscenegraph.git")
+md5sums=('SKIP')
+
+pkgver() {
+	cd ${srcdir}/${_pkgname}
+    printf "%s.r%s.%s" "${_pkgver}" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+prepare() {
+  mkdir -p "${srcdir}/${_pkgname}/cmake-build-release"
+}
+
+build() {
+  cd "${srcdir}/${_pkgname}"
+
+
+  mkdir -p cmake-build-release && cd cmake-build-release
+
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/opt/openscenegraph-flightgear \
+    -DLIBRARY_OUTPUT_PATH=/opt/openscenegraph-flightgear/lib \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DOpenGL_GL_PREFERENCE=LEGACY
+  make
+}
+
+package(){
+  cd "${srcdir}/${_pkgname}/cmake-build-release"
+  make DESTDIR="$pkgdir" install
+  install -Dm 644 "../LICENSE.txt" -t "${pkgdir}/opt/openscenegraph-flightgear/licenses/${pkgname}"
+}
+
