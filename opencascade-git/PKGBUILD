@@ -45,7 +45,7 @@ build() {
     -DUSE_FREEIMAGE=ON \
     -DUSE_RAPIDJSON=ON \
     -DUSE_TBB=ON \
-    -DUSEOPENVR=ON \
+    -DUSE_OPENVR=ON \
     -DUSE_GLES2=OFF \
     -DUSE_DRACO=ON \
     -DUSE_VTK=ON \
