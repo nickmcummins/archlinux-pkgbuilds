@@ -1,11 +1,7 @@
-Subject: [PATCH] Patch-for-OpenCASCADE-7.8
 ---
 Index: CMakeModules/FindOpenCascade.cmake
-IDEA additional info:
-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
-diff --git a/CMakeModules/FindOpenCascade.cmake b/CMakeModules/FindOpenCascade.cmake
 --- CMakeModules/FindOpenCascade.cmake	(revision 2e4ae2ea94595995c1fc56860051410b0c0be605)
 +++ CMakeModules/FindOpenCascade.cmake	(date 1734494762517)
 @@ -71,7 +71,6 @@
@@ -72,3 +68,17 @@ diff --git a/CMakeModules/FindOpenCascade.cmake b/CMakeModules/FindOpenCascade.c
      ${OPENCASCADE_TKXSBase}
  )
  endif ("${OPENCASCADE_LIBRARY_TYPE}" STREQUAL "Shared")
+Index: src/osgPlugins/OpenCASCADE/ReaderWriterOpenCASCADE.cpp
+<+>UTF-8
+===================================================================
+--- src/osgPlugins/OpenCASCADE/ReaderWriterOpenCASCADE.cpp	(revision 2e4ae2ea94595995c1fc56860051410b0c0be605)
++++ src/osgPlugins/OpenCASCADE/ReaderWriterOpenCASCADE.cpp	(date 1734497730898)
+@@ -211,7 +211,7 @@
+                 {
+                     // populate vertex list
+                     // Ref: http://www.opencascade.org/org/forum/thread_16694/?forum=3
+-                    gp_Pnt pt = (triangulation->Nodes())(j).Transformed(transformation * location.Transformation());
++                    gp_Pnt pt = (triangulation->Node)(j).Transformed(transformation * location.Transformation());
+                     vertexList->push_back(osg::Vec3(pt.X(), pt.Y(), pt.Z()));
+ 
+                     // populate color list
