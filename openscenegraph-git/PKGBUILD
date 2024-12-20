@@ -3,7 +3,7 @@
 
 pkgname=openscenegraph-git
 _pkgname=openscenegraph
-pkgver=3.7.0.r16328.683403244
+pkgver=3.7.0.r16331.2e4ae2ea9
 _pkgver=3.7.0
 pkgrel=1
 pkgdesc="An open source, high performance real-time graphics toolkit"
@@ -16,8 +16,9 @@ optdepends=('libvncserver' 'gdal' 'openexr' 'poppler-glib' 'qt5-base' 'ffmpeg')
 provides=('openscenegraph' 'openthreads')
 conflicts=('openscenegraph' 'openthreads')
 source=("openscenegraph::git+https://github.com/openscenegraph/OpenSceneGraph.git#branch=master"
-    'exclude-RestHttpDevice-plugin.patch')
-md5sums=('SKIP' 'SKIP')
+    'exclude-RestHttpDevice-plugin.patch'
+    'OpenCASCADE-library-version-7.8.patch')
+md5sums=('SKIP' 'SKIP' 'SKIP')
 
 pkgver() {
 	cd ${srcdir}/${_pkgname}
@@ -32,6 +33,7 @@ build() {
   cd "${srcdir}/${pkgname%-git}"
 
   patch -Np0 -i "${srcdir}"/exclude-RestHttpDevice-plugin.patch
+  patch -Np0 -i "${srcdir}"/OpenCASCADE-library-version-7.8.patch
 
   mkdir -p cmake-build-release && cd cmake-build-release
 
