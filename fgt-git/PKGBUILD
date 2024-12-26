@@ -1,7 +1,7 @@
 # Maintainer: Nick M Cummins <nickmcummins dot linuxmail.org>
 
 pkgname=fgt-git
-pkgver=r290.0a5c83d
+pkgver=r293.fea4510
 pkgrel=1
 _pkgname="fgt"
 pkgdesc="C++ library for fast Gauss transforms."
@@ -26,7 +26,6 @@ build() {
 	
 	cmake .. \
 		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DCMAKE_INSTALL_LIBDIR=lib \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DBUILD_SHARED_LIBS=ON \
 		-DWITH_OPENMP=ON
