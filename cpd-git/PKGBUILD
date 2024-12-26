@@ -1,7 +1,7 @@
 # Maintainer: Nick M Cummins <nickmcummins dot linuxmail.org>
 
 pkgname=cpd-git
-pkgver=r431.bf98bf0
+pkgver=r481.6baff76
 pkgrel=1
 _pkgname="cpd"
 pkgdesc="C++ implementation of the Coherent Point Drift point set registration algorithm."
