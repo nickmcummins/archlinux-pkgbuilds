@@ -2,7 +2,7 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.3.20231204.r88363.3b33d3b62de
+pkgver=9.4.20241228.r92665.4f9869708b
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization'
 arch=('i686' 'x86_64')
@@ -61,7 +61,6 @@ build() {
     -DVTK_GROUP_ENABLE_Qt=YES \
     -DVTK_GROUP_ENABLE_Rendering=YES \
     -DVTK_GROUP_ENABLE_StandAlone=YES \
-    -DVTK_GROUP_ENABLE_Tk=YES \
     -DVTK_GROUP_ENABLE_Views=YES \
     -DVTK_GROUP_ENABLE_Web=YES \
     -DVTK_MODULE_ENABLE_VTK_ChartsCore=YES \
@@ -131,7 +130,6 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_IOEnSight=YES \
     -DVTK_MODULE_ENABLE_VTK_IOExodus=YES \
     -DVTK_MODULE_ENABLE_VTK_IOExport=YES \
-    -DVTK_MODULE_ENABLE_VTK_IOExportGL2PS=YES \
     -DVTK_MODULE_ENABLE_VTK_IOExportPDF=NO \
     -DVTK_MODULE_ENABLE_VTK_IOFFMPEG=YES \
     -DVTK_MODULE_ENABLE_VTK_IOGDAL=YES \
@@ -213,7 +211,6 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_RenderingExternal=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingFreeType=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingFreeTypeFontConfig=YES \
-    -DVTK_MODULE_ENABLE_VTK_RenderingGL2PSOpenGL2=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingImage=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingLICOpenGL2=NO \
     -DVTK_MODULE_ENABLE_VTK_RenderingLOD=YES \
@@ -252,8 +249,6 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_exodusII=YES \
     -DVTK_MODULE_ENABLE_VTK_expat=YES \
     -DVTK_MODULE_ENABLE_VTK_freetype=YES \
-    -DVTK_MODULE_ENABLE_VTK_gl2ps=YES \
-    -DVTK_MODULE_ENABLE_VTK_glew=YES \
     -DVTK_MODULE_ENABLE_VTK_h5part=YES \
     -DVTK_MODULE_ENABLE_VTK_hdf5=YES \
     -DVTK_MODULE_ENABLE_VTK_ioss=YES \
@@ -273,7 +268,6 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_netcdf=YES \
     -DVTK_MODULE_ENABLE_VTK_octree=YES \
     -DVTK_MODULE_ENABLE_VTK_ogg=YES \
-    -DVTK_MODULE_ENABLE_VTK_opengl=YES \
     -DVTK_MODULE_ENABLE_VTK_pegtl=YES \
     -DVTK_MODULE_ENABLE_VTK_png=YES \
     -DVTK_MODULE_ENABLE_VTK_pugixml=YES \
@@ -284,19 +278,15 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_verdict=YES \
     -DVTK_MODULE_ENABLE_VTK_vpic=YES \
     -DVTK_MODULE_ENABLE_VTK_vtkDICOM=YES \
-    -DVTK_MODULE_ENABLE_VTK_vtkm=NO \
     -DVTK_MODULE_ENABLE_VTK_vtksys=YES \
     -DVTK_MODULE_ENABLE_VTK_xdmf2=YES \
     -DVTK_MODULE_ENABLE_VTK_xdmf3=YES \
-    -DVTK_MODULE_ENABLE_VTK_zfp=YES \
     -DVTK_MODULE_ENABLE_VTK_zlib=YES \
     -DVTK_MODULE_USE_EXTERNAL_VTK_doubleconversion=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_eigen=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_expat=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_freetype=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_fmt=OFF \
-    -DVTK_MODULE_USE_EXTERNAL_VTK_gl2ps=OFF \
-    -DVTK_MODULE_USE_EXTERNAL_VTK_glew=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_hdf5=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_ioss=OFF \
     -DVTK_MODULE_USE_EXTERNAL_VTK_jpeg=ON \
@@ -329,9 +319,9 @@ build() {
     -DVTK_USE_TK=OFF \
     -DVTK_USE_X=ON \
     -DOpenVR_INCLUDE_DIR=/usr/include/openvr \
-    -DPython3_EXECUTABLE=/usr/sbin/python3.11 \
-    -DPython3_INCLUDE_DIR=/usr/include/python3.11 \
-    -DPython3_LIBRARY=/usr/lib/libpython3.11.so \
+    -DPython3_EXECUTABLE=/usr/sbin/python3.13 \
+    -DPython3_INCLUDE_DIR=/usr/include/python3.13 \
+    -DPython3_LIBRARY=/usr/lib/libpython3.13.so \
       ..
   
   make
