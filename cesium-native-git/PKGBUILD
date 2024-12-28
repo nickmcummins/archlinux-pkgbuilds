@@ -1,0 +1,56 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+
+pkgname=cesium-native-git
+_pkgname=cesium-native
+pkgver=0.42.0.r5800.3f1ea2687
+_pkgver=0.42.0
+pkgrel=1
+pkgdesc="A set of C++ libraries for 3D geospatial, including 3D tiles runtime streaming, lightweight glTF serialization/deserialization, high-precision 3D geospatial math types and functions, and support for draping raster overlays from WMS, TMS, WMTS, and other sources over 3D tilesets."
+arch=('x86_64')
+url="http://www.openscenegraph.org"
+license=('custom:OSGPL')
+depends=('git' 'fmt' 'libwebp' 'uriparser' 's2geometry')
+makedepends=('cmake' 'python')
+provides=('cesium-native')
+conflicts=('cesium-native')
+source=('git+https://github.com/CesiumGS/cesium-native.git' 'generate_portoverlays.py')
+md5sums=('SKIP' 'SKIP')
+
+pkgver() {
+	cd ${srcdir}/${_pkgname}
+    printf "%s.r%s.%s" "${_pkgver}" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+
+build() {
+  cd ${srcdir}/${_pkgname}
+
+  python ${srcdir}/generate_portoverlays.py ${srcdir}/${_pkgname}
+
+  mkdir -p cmake-build-release && cd cmake-build-release
+
+
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_TESTING:BOOL=OFF \
+    -DBUILD_SHARED_LIBS:BOOL=ON \
+    -DCESIUM_INSTALL_HEADERS=OFF \
+    -DCESIUM_INSTALL_STATIC_LIBS=ON \
+    -DCESIUM_TESTS_ENABLED=OFF \
+    -DVCPKG_APPLOCAL_DEPS=OFF \
+    -DVCPKG_PREFER_SYSTEM_LIBS=ON \
+    -DVCPKG_MANIFEST_MODE=OFF \
+    -DVCPKG_TRACE_FIND_PACKAGE=ON \
+    -DVCPKG_VERBOSE=ON \
+    -DVCPKG_OVERLAY_PORTS:PATH=${srcdir}/${_pkgname}/overlays \
+    -DCMAKE_FIND_DEBUG_MODE:BOOL=OFF
+  make -j14
+}
+
+package(){
+  cd ${srcdir}/${_pkgname}/cmake-build-release
+  make DESTDIR="$pkgdir" install
+  install -Dm 644 "../LICENSE" -t "${pkgdir}/usr/share/licenses/${_pkgname}"
+}
+
