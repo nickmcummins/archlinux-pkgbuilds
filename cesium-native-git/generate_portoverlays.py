@@ -5,10 +5,6 @@ import sys
 working_dir = sys.argv[1]
 overlays_dir = f'{working_dir}/overlays'
 
-with open(f'{working_dir}/ThirdParty.json', 'r') as depsjson:
-    dependencies = json.loads(depsjson.read())
-
-
 def run(cmd):
     output = os.popen(cmd).read()
     return output
