@@ -33,6 +33,7 @@ build() {
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_CXX_FLAGS=-Wno-error=attributes \
     -DBUILD_SHARED_LIBS:BOOL=ON \
     -DCESIUM_INSTALL_HEADERS=OFF \
     -DCESIUM_INSTALL_STATIC_LIBS=ON \
@@ -50,6 +51,9 @@ build() {
 package(){
   cd ${srcdir}/${_pkgname}/cmake-build-release
   make DESTDIR="$pkgdir" install
+
+  rm ${pkgdir}/usr/lib/lib*.a
+  rm -rf ${pkgdir}/usr/lib/pkgconfig/*
   install -Dm 644 "../LICENSE" -t "${pkgdir}/usr/share/licenses/${_pkgname}"
 }
 
