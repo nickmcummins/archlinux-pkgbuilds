@@ -2,8 +2,8 @@
 
 pkgname=token-git
 _pkgname=token
-pkgver=23.09.0.r9.2003066
-_pkgver=23.09.0
+pkgver=24.08.0.r19.9e3fa05
+_pkgver=24.08.0
 pkgrel=1
 pkgdesc='Utilities for string tokenization'
 arch=('i686' 'x86_64')
