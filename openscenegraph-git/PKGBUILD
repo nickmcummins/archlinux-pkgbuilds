@@ -10,8 +10,8 @@ pkgdesc="An open source, high performance real-time graphics toolkit"
 arch=('x86_64')
 url="http://www.openscenegraph.org"
 license=('custom:OSGPL')
-depends=('giflib' 'jasper' 'librsvg' 'xine-lib' 'curl' 'collada-dom' 'fbx-sdk' 'gta' 'dcmtk' 'asio' 'liblas' 'coin' 'gtkglext' 'fltk' 'wxwidgets-common' 'gnuplot' 'wget' 'sdl')
-makedepends=('cmake' 'libvncserver' 'qt5-base' 'ffmpeg' 'mesa' 'opencascade')
+depends=('giflib' 'jasper' 'librsvg' 'xine-lib' 'curl' 'collada-dom' 'fbx-sdk' 'gta' 'dcmtk' 'asio' 'liblas' 'coin' 'gtkglext' 'fltk' 'wxwidgets-common' 'gnuplot' 'wget' 'sdl' 'opencascade')
+makedepends=('cmake' 'libvncserver' 'qt5-base' 'ffmpeg' 'mesa')
 optdepends=('libvncserver' 'gdal' 'openexr' 'poppler-glib' 'qt5-base' 'ffmpeg')
 provides=('openscenegraph' 'openthreads')
 conflicts=('openscenegraph' 'openthreads')
@@ -67,4 +67,3 @@ package(){
   install -Dm 644 "../LICENSE.txt" -t "${pkgdir}/usr/share/licenses/${pkgname}"
   #mv "${pkgdir}/usr/lib64" "${pkgdir}/usr/lib"
 }
-
