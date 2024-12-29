@@ -3,7 +3,7 @@
 
 pkgname=opencascade-git
 _pkgname=opencascade
-pkgver=7.8.2.r6417.d5afabec90
+pkgver=7.8.2.r6434.f7dea47c33
 pkgrel=1
 pkgdesc="An object-oriented C++ class library designed for rapid production of sophisticated domain-specific CAD/CAM/CAE applications."
 arch=('x86_64')
