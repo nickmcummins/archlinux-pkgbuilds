@@ -1,0 +1,14 @@
+---
+Index: token/Type.h
+<+>UTF-8
+===================================================================
+--- token/Type.h	(revision 9e3fa05ef9fb345b0e876689fe9ed752ae3084f8)
++++ token/Type.h	(date 1735434525050)
+@@ -5,7 +5,6 @@
+ #define token_Type_h
+ 
+ #include "token/Compiler.h" // For compiler ID.
+-#include "token/CxxABIConfigure.h" // For demangling.
+ #include "token/Token.h" // For tokenized type-name.
+ 
+ #include <cstring>  // For std::strlen.
