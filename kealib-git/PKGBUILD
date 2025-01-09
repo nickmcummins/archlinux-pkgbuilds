@@ -1,7 +1,7 @@
 # Contributor: Nick M Cummins <nickmcummins at linuxmail dot org>
 pkgname=kealib-git
 _pkgname=kealib
-pkgver=1.4.14.r400.0cdd195
+pkgver=1.6.1.r453.18a0de5
 pkgrel=1
 pkgdesc="An HDF5 Based Raster File Format and its GDAL plugin (Git version)"
 arch=('i686' 'x86_64')
@@ -29,7 +29,7 @@ build() {
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_SKIP_RPATH=ON \
-    -DCMAKE_CXX_STANDARD=11 \
+    -DCMAKE_CXX_STANDARD=20 \
     -DHDF5_INCLUDE_DIR=/usr/include \
     -DGDAL_INCLUDE_DIR=/usr/include \
     -DLIBKEA_WITH_GDAL=TRUE
