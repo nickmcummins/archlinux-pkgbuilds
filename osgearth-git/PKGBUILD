@@ -2,7 +2,7 @@
 
 pkgname=osgearth-git
 _gitname=osgearth
-pkgver=3.1.0.r1070.ga66036660
+pkgver=3.7.1.r15430.6fa787cff
 pkgrel=1
 pkgdesc="A terrain rendering toolkit for OpenSceneGraph"
 arch=('i686' 'x86_64')
@@ -21,9 +21,8 @@ md5sums=('SKIP')
 
 pkgver() {
 	cd "${srcdir}/${_gitname}"
-	VERSION=$(python -c "import re; cmake_file = open('src/osgEarth/Version', 'r'); defines_regex = r'#define\s([^\s]+)\s+([^\s]+)'; vars = dict(list(map(lambda defineline: (re.search(defines_regex, defineline).group(1), re.search(defines_regex, defineline).group(2)), filter(lambda line: line.startswith('#define'), cmake_file.read().split('\n'))))); version_major = vars['OSGEARTH_MAJOR_VERSION']; version_minor = vars['OSGEARTH_MINOR_VERSION']; version_patch = vars['OSGEARTH_PATCH_VERSION']; print(f'{version_major}.{version_minor}.{version_patch}')")
-    GITREVISION=$(git describe --long | sed 's/\([^-]*-g\)/r\1/;s/-/./g' | cut -b 26-)
-    printf "${VERSION}.${GITREVISION}"
+    VERSION=$(python -c "import sys; import re; cmake_filename = 'CMakeLists.txt'; cmake_file = open(cmake_filename, 'r'); cmake_vars_regex = r'(set\s*\()([^\s]+)\s*([^)]+)'; vars = dict(list(map(lambda varline: (re.search(cmake_vars_regex, varline).group(2), re.search(cmake_vars_regex, varline).group(3)), filter(lambda line: line.startswith('set('), cmake_file.read().split('\n'))))); major_version = vars['OSGEARTH_MAJOR_VERSION']; minor_version = vars['OSGEARTH_MINOR_VERSION']; build_version = vars['OSGEARTH_PATCH_VERSION']; version = f'{major_version}.{minor_version}.{build_version}'; print(version)")
+    printf "${VERSION}.r$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
 }
 
 build() {
@@ -38,7 +37,7 @@ build() {
         -DOSGEARTH_BUILD_LEGACY_MP_TERRAIN_ENGINE=OFF \
         -DOSGEARTH_INSTALL_SHADERS=ON \
         -DOSGEARTH_ENABLE_NVTT_CPU_MIPMAPS=ON \
-        -DROCKSDB_LIBRARY=/usr/lib/librocksdb.so
+         -DROCKSDB_LIBRARY=/usr/lib/librocksdb.so
     make
 }
 
