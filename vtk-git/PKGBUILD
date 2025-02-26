@@ -2,7 +2,7 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.4.20241228.r92665.4f9869708b
+pkgver=9.4.20250226.r93381.f23baf9b01
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization'
 arch=('i686' 'x86_64')
@@ -10,12 +10,12 @@ url='http://www.vtk.org'
 license=('BSD')
 depends=('cuda' 'double-conversion' 'embree' 'gdal' 'glew' 'hdf5' 'jsoncpp' 'libarchive' 'libharu' 'libxt' 'openslide' 
     'openturns' 'openvkl' 'openvr' 'ospray>=2.1.0' 'pdal' 'pegtl' 'proj' 'python' 'cli11' 'qt6-base' 'qt6-quick3d' 'openvdb'
-	'exprtk' 'openxr' 'seacas' 'verdict' 'token' 'fast_float3.9')
+	'exprtk' 'openxr' 'seacas' 'verdict' 'token' 'fast_float3.9' 'adios2')
 makedepends=('git' 'cmake' 'doxygen' 'boost' 'java-environment' 'utf8cpp')
 provides=("vtk")
 conflicts=("vtk")
 source=("git+https://gitlab.kitware.com/vtk/vtk.git"
-    "vtkOpenXRManager-include-memory.patch")
+    "Fix-NC-FillValue.patch")
 sha256sums=("SKIP" "SKIP")
 
 pkgver() {
@@ -27,7 +27,9 @@ pkgver() {
 build() {
   cd ${srcdir}/vtk
   git submodule update --init --recursive
-  
+
+  patch -Np0 -i ${srcdir}/Fix-NC-FillValue.patch
+
   mkdir -p cmake-build-release && cd cmake-build-release
   cmake $srcdir/$_pkgname \
     -DCMAKE_INSTALL_PREFIX=/usr \
@@ -99,7 +101,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_FiltersParallelGeometry=NO \
     -DVTK_MODULE_ENABLE_VTK_FiltersParallelImaging=NO \
     -DVTK_MODULE_ENABLE_VTK_FiltersParallelMPI=NO \
-    -DVTK_MODULE_ENABLE_VTK_ParallelMomentInvariants=YES \
+    -DVTK_MODULE_ENABLE_VTK_ParallelMomentInvariants=NO \
     -DVTK_MODULE_ENABLE_VTK_FiltersParallelStatistics=NO \
     -DVTK_MODULE_ENABLE_VTK_FiltersParallelVerdict=NO \
     -DVTK_MODULE_ENABLE_VTK_FiltersPoints=YES \
@@ -113,6 +115,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_FiltersTexture=YES \
     -DVTK_MODULE_ENABLE_VTK_FiltersTopology=YES \
     -DVTK_MODULE_ENABLE_VTK_FiltersVerdict=YES \
+    -DVTK_MODULE_ENABLE_VTK_glad=YES \
     -DVTK_MODULE_ENABLE_VTK_GUISupportQt=YES \
     -DVTK_MODULE_ENABLE_VTK_GUISupportQtSQL=YES \
     -DVTK_MODULE_ENABLE_VTK_GUISupportQtQuick=NO \
@@ -195,6 +198,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_InteractionStyle=YES \
     -DVTK_MODULE_ENABLE_VTK_InteractionWidgets=YES \
     -DVTK_MODULE_ENABLE_VTK_Java=NO \
+    -DVTK_MODULE_ENABLE_VTK_MomentInvariants=NO \
     -DVTK_MODULE_ENABLE_VTK_ParallelCore=YES \
     -DVTK_MODULE_ENABLE_VTK_ParallelDIY=YES \
     -DVTK_MODULE_ENABLE_VTK_ParallelMPI=YES \
@@ -208,7 +212,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_RenderingContext2D=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingCore=YES \
-    -DVTK_MODULE_ENABLE_VTK_RenderingExternal=YES \
+    -DVTK_MODULE_ENABLE_VTK_RenderingExternal=NO \
     -DVTK_MODULE_ENABLE_VTK_RenderingFreeType=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingFreeTypeFontConfig=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingImage=YES \
@@ -217,7 +221,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_RenderingLabel=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingMatplotlib=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingOpenGL2=YES \
-    -DVTK_MODULE_ENABLE_VTK_RenderingOpenVR=YES \
+    -DVTK_MODULE_ENABLE_VTK_RenderingOpenVR=NO \
     -DVTK_MODULE_ENABLE_VTK_RenderingParallel=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingParallelLIC=NO \
     -DVTK_MODULE_ENABLE_VTK_RenderingQt=YES \
@@ -228,6 +232,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_RenderingVolumeAMR=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingVolumeOpenGL2=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingVtkJS=YES \
+    -DVTK_MODULE_ENABLE_VTK_RenderingVR=NO \
     -DVTK_MODULE_ENABLE_VTK_TestingCore=NO \
     -DVTK_MODULE_ENABLE_VTK_TestingGenericBridge=NO \
     -DVTK_MODULE_ENABLE_VTK_TestingIOSQL=NO \
