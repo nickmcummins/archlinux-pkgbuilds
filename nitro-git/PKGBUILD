@@ -1,7 +1,7 @@
 # Maintainer: Nick M Cummins <nickmcummins dot linuxmail.org>
 
 pkgname=nitro-git
-pkgver=2.7.r938.763182c
+pkgver=2.7.r942.2e7f61a
 pkgvern=2.7
 pkgrel=1
 _pkgname="nitro"
