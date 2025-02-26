@@ -2,7 +2,7 @@
 
 _name=PDAL
 pkgname=pdal-git
-pkgver=2.3RC1.r9384.ec1bb5caa
+pkgver=2.8.4.r10135.84f13adea
 pkgrel=1
 pkgdesc="A C++ library for translating and manipulating point cloud data."
 arch=('x86_64')
@@ -21,7 +21,6 @@ optdepends=('python-numpy: for the Python plugin'
             'mrsid-sdk: for the MrSID plugin'
             'cpd: for the Coherent Point Drift plugin'
             'hdf5: for HDF support'
-            'mbsystem: for the MBIO plugin'
             'openscenegraph: for the OpenSceneGraph plugin'
             'tiledb: for the TileDB plugin'
             'nitro: for the NITF plugin')
@@ -41,16 +40,13 @@ pkgver() {
 
 build() {
     cd ${srcdir}/${_name}
-    patch -Np0 -i $srcdir/osgreader.patch
 
-
-    #rm -rf build
-    mkdir -p build && cd build
+    mkdir -p cmake-build-release && cd cmake-build-release
 
     cmake .. \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DBUILD_SHARED_LIBS=ON \
-        -DBUILD_PLUGIN_CPD=ON \
+        -DBUILD_PLUGIN_CPD=OFF \
         -DBUILD_PLUGIN_E57=ON \
         -DBUILD_PLUGIN_FBX=ON \
         -DBUILD_PLUGIN_GEOWAVE=OFF \
@@ -59,15 +55,15 @@ build() {
         -DBUILD_PLUGIN_ICEBRIDGE=ON \
         -DBUILD_PLUGIN_MATLAB=OFF \
         -DBUILD_PLUGIN_MBIO=ON \
-        -DBUILD_PLUGIN_NITF=ON \
+        -DBUILD_PLUGIN_NITF=OFF \
        	-DBUILD_PLUGIN_OPENSCENEGRAPH=ON \
         -DBUILD_PLUGIN_PGPOINTCLOUD=ON \
         -DBUILD_PLUGIN_TILEDB=ON \
-        -DBUILD_TOOLS_NITFWRAP=ON \
+        -DBUILD_TOOLS_NITFWRAP=OFF \
         -DWITH_LAZPERF=ON \
         -DWITH_LASZIP=ON \
         -DWITH_COMPLETION=ON \
-        -DWITH_TESTS=ON \
+        -DWITH_TESTS=OFF \
         -DFBX_INCLUDE_DIR=/usr \
         -DFBX_LIB=/usr/lib/libfbxsdk.so \
         -DLASZIP_INCLUDE_DIR=/usr/include \
@@ -77,7 +73,7 @@ build() {
 }
 
 package() {
-    cd ${srcdir}/${_name}/build
+    cd ${srcdir}/${_name}/cmake-build-release
 
     make DESTDIR="$pkgdir/" install
     install -Dm644 ../LICENSE.txt "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
