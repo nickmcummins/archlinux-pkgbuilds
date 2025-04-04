@@ -2,7 +2,7 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.4.20250226.r93381.f23baf9b01
+pkgver=9.4.20250403.r93828.152bb516ba
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization'
 arch=('i686' 'x86_64')
@@ -14,9 +14,8 @@ depends=('cuda' 'double-conversion' 'embree' 'gdal' 'glew' 'hdf5' 'jsoncpp' 'lib
 makedepends=('git' 'cmake' 'doxygen' 'boost' 'java-environment' 'utf8cpp')
 provides=("vtk")
 conflicts=("vtk")
-source=("git+https://gitlab.kitware.com/vtk/vtk.git"
-    "Fix-NC-FillValue.patch")
-sha256sums=("SKIP" "SKIP")
+source=("git+https://gitlab.kitware.com/vtk/vtk.git")
+sha256sums=("SKIP")
 
 pkgver() {
   cd ${srcdir}/vtk
@@ -28,7 +27,7 @@ build() {
   cd ${srcdir}/vtk
   git submodule update --init --recursive
 
-  patch -Np0 -i ${srcdir}/Fix-NC-FillValue.patch
+  #patch -Np0 -i ${srcdir}/Fix-NC-FillValue.patch
 
   mkdir -p cmake-build-release && cd cmake-build-release
   cmake $srcdir/$_pkgname \
