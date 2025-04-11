@@ -10,7 +10,7 @@ url='http://www.vtk.org'
 license=('BSD')
 depends=('cuda' 'double-conversion' 'embree' 'gdal' 'glew' 'hdf5' 'jsoncpp' 'libarchive' 'libharu' 'libxt' 'openslide' 
     'openturns' 'openvkl' 'openvr' 'ospray>=2.1.0' 'pdal' 'pegtl' 'proj' 'python' 'cli11' 'qt6-base' 'qt6-quick3d' 'openvdb'
-	'exprtk' 'openxr' 'seacas' 'verdict' 'token' 'fast_float-vtk' 'adios2')
+	'exprtk' 'openxr' 'seacas' 'verdict' 'token' 'fast_float-vtk' 'adios2' 'scnlib')
 makedepends=('git' 'cmake' 'doxygen' 'boost' 'java-environment' 'utf8cpp')
 provides=("vtk")
 conflicts=("vtk")
