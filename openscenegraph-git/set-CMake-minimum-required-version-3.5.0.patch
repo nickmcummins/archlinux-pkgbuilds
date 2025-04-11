@@ -1,0 +1,16 @@
+Subject: [PATCH] Set-CMake-minimum-required-version-3.5.0
+---
+Index: CMakeLists.txt
+<+>UTF-8
+===================================================================
+--- CMakeLists.txt	(revision 2e4ae2ea94595995c1fc56860051410b0c0be605)
++++ CMakeLists.txt	(date 1744406543587)
+@@ -13,7 +13,7 @@
+ set(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS TRUE)
+ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+ 
+-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.0 FATAL_ERROR)
++CMAKE_MINIMUM_REQUIRED(VERSION 3.5.0 FATAL_ERROR)
+ 
+ if(COMMAND cmake_policy)
+     # Works around warnings libraries linked against that don't
