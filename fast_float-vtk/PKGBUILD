@@ -2,17 +2,17 @@
 # Contributor: Nick M Cummins <nickmcummins at linuxmail dot org>
 
 _pkgbase=fast_float
-pkgname=${_pkgbase}3.9
-pkgver=3.9.0
+pkgname=${_pkgbase}-vtk
+pkgver=7.0.0
 pkgrel=1
 arch=(x86_64)
 url="https://github.com/fastfloat/fast_float/"
 license=('MIT' 'Apache-2.0')
-pkgdesc='Fast and exact implementation of the C++ from_chars functions:4x faster than strtod'
+pkgdesc='Fast and exact implementation of the C++ from_chars functions:4x faster than strtod (VTK dependency version)'
 makedepends=(cmake git)
 conflicts=($_pkgbase)
 provides=($_pkgbase)
-source=('https://github.com/fastfloat/fast_float/archive/refs/tags/v3.9.0.zip')
+source=('https://github.com/fastfloat/fast_float/archive/refs/tags/v7.0.0.zip')
 sha256sums=('SKIP')
 
 build() {
