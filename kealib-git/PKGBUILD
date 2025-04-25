@@ -32,7 +32,7 @@ build() {
     -DCMAKE_CXX_STANDARD=20 \
     -DHDF5_INCLUDE_DIR=/usr/include \
     -DGDAL_INCLUDE_DIR=/usr/include \
-    -DLIBKEA_WITH_GDAL=TRUE
+    -DLIBKEA_WITH_GDAL=FALSE
   make
 }
 
