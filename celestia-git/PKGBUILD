@@ -5,7 +5,7 @@
 # Maintainer: Nick M Cummins <nickmcummins@linuxmail.org>
 pkgname=celestia-git
 _pkgname=celestia
-pkgver=1.6.2.r7192.e13024d72
+pkgver=1.6.2.r7217.fab96ccee
 _pkgver=1.6.2
 pkgrel=1
 pkgdesc="Real-time space simulation (git checkout)"
@@ -64,7 +64,7 @@ build() {
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_DATADIR=/usr/share
-  make 
+  make
 
 }
 
