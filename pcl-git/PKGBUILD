@@ -22,6 +22,8 @@ depends=(
 	openmpi
   librealsense
   ensenso-sdk
+    qt5-webkit
+    qhull
 )
 makedepends=(cmake git gcc9)
 source=(git+https://github.com/nickmcummins/pcl#branch=pointpicking)
