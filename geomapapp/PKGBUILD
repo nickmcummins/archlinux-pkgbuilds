@@ -1,7 +1,7 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail.org>
 
 pkgname=GeoMapApp
-pkgver=3.6.12
+pkgver=3.7.5
 pkgrel=1
 pkgdesc="Map-based application for browsing, visualizing and analyzing a diverse suite of curated global and regional geoscience data sets."
 PKGEXT='.pkg.tar.lzo'
@@ -10,10 +10,10 @@ url="http://www.geomapapp.org/"
 depends=()
 makedepends=('libicns')
 provides=('GeoMapApp')
-source=("http://www.geomapapp.org/MapApp/GeoMapApp.jar"
+source=("http://app.geomapapp.org/MapApp/GeoMapApp.jar"
         'GeoMapApp.desktop'
         'GeoMapApp.icns')
-sha1sums=('b1962d6c2671c16da4c0e2909c9fb76e84702b82'
+sha1sums=('4096a685cf24b4194a5c6a098968b42f1f0e64c1'
         'SKIP'
         'SKIP')
 
