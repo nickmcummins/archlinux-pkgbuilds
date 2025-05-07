@@ -2,25 +2,34 @@
 
 pkgname=cartotype-maps
 _pkgname=CartoTypeMaps
-pkgver=5.12.57
+pkgver=8.12.78.g43ad18a0e
+_pkgver=8.12-78-g43ad18a0e
 pkgrel=1
 pkgdesc="Multi-platform desktop application for viewing maps, calculating routes, finding places, creating map images, and adding your own map data."
 arch=('x86_64')
 url="https://www.cartotype.com/the-maps-app"
-depends=()
+depends=('libcurl3-gnutls')
 makedepends=('libicns' 'pngout' 'optipng' 'advancecomp')
 optdepends=('cartotype-maps-sample-data' 'cartotype-maps-sample-data-extra')
 provides=('cartotype-maps')
-source=("https://www.cartotype.com/assets/downloads/cartotype-maps-app-linux-r${pkgver}.zip"
+source=("https://www.cartotype.com/assets/downloads/cartotype-maps-app-linux-r${_pkgver}.zip"
     "https://www.cartotype.com/assets/downloads/makemap_linux"
-    "CartoTypeMaps.desktop"
+    "CartoTypeMaps.desktop.orig"
     "CartoTypeMaps.icns")
 sha1sums=('SKIP'
     'SKIP'
     'SKIP'
     'SKIP')
+PKGEXT='.pkg.tar.lzo'
 
 package() {
+    # Update desktop launcher with Exec line containing shared libraries loaded via LD_PRELOAD env variable.
+    cd ${srcdir}/${pkgname}-app-linux/${_pkgname}-Linux-x64
+    libsPreload=$(ls *.so | sed ':a;N;$!ba;s/\n/:\/opt\/CartoTypeMaps\//g')
+    libsPreload="Exec=env LD_PRELOAD=/opt/CartoTypeMaps/$libsPreload /opt/CartoTypeMaps/CartoTypeMaps" 
+    cp -a ${srcdir}/CartoTypeMaps.desktop.orig ${srcdir}/CartoTypeMaps.desktop
+    echo $libsPreload >> ${srcdir}/CartoTypeMaps.desktop
+
     cd ${srcdir}/${pkgname}-app-linux
     rm ${_pkgname}-Linux-x64/${_pkgname}.sh
 
@@ -37,6 +46,8 @@ package() {
         advpng -z4 ${_pkgname}_${size}x${size}x32.png
         install -D -m 644 ${_pkgname}_${size}x${size}x32.png ${pkgdir}/usr/share/icons/hicolor/${size}x${size}/apps/${_pkgname}.png
     done
-    install -D -m644 ${srcdir}/*.desktop -t ${pkgdir}/usr/share/applications
 
+    cp -a ${srcdir}/${pkgname}-app-linux/sample-maps ${pkgdir}/opt/${_pkgname}
+
+    install -D -m644 ${srcdir}/*.desktop -t ${pkgdir}/usr/share/applications
 }

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.1
+Type=Application
+Name=CartoTypeMaps
+Comment=Multi-platform desktop application for viewing maps, calculating routes, finding places, creating map images, and adding your own map data.
+Icon=CartoTypeMaps
+Path=/opt/CartoTypeMaps
+Actions=
+Categories=GIS;
