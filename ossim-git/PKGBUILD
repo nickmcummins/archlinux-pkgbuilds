@@ -1,37 +1,35 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+
 pkgname=ossim-git
 _pkgname=ossim
-pkgver=2.11.r2239.1af3774c
+pkgver=2.12.0.r2377.a69ac49c
+_pkgver=2.12.0
 pkgrel=1
-pkgdesc="OSSIM is a powerful suite of geospatial libraries and applications used to process imagery, maps, terrain, and vector data."
+pkgdesc="OSSIM is a powerful suite of geospatial libraries and applications used to process imagery, maps, terrain, and vector data (git checkout)"
 url="http://www.ossim.org"
 license=('LGPL')
 arch=('i686' 'x86_64')
-depends=('freetype2' 'gdal' 'libgeotiff' 'libjpeg' 'libtiff' 'openthreads' 'openjpeg'  'doxygen' 
-'hdf5-cpp-fortran' 'minizip' 'expat' 'ffmpeg' 'qt4' 'podofo' 'bzip2' 'freetype2' 'pdal')
+depends=('freetype2' 'gdal' 'libgeotiff' 'libjpeg' 'libtiff' 'openthreads' 'openjpeg'  'doxygen' 'minizip' 'expat' 'ffmpeg' 'podofo' 'bzip2' 'freetype2' 'pdal')
 makedepends=('cmake')
 optdepends=( 'java-environment-common' 'openmpi' 'gpstk-bin' )
-provides=(ossim)
-source=("git+https://github.com/ossimlabs/ossim.git")
+provides=('ossim')
+conflicts=('ossim')
+source=('git+https://github.com/ossimlabs/ossim.git')
 md5sums=('SKIP')
 
 pkgver() {
-	cd ${srcdir}/${_pkgname}
-	# Use the tag of the last commit
-	REVISION=$(printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)")
-	GITVERSION=$(git describe --long --tags | sed -r 's/^v//;s/([^-]*-g)/r\1/;s/-/./g')
-	VERSION=$(python -c "import sys; print('.'.join(sys.argv[1].split('.')[1:3]))" ${GITVERSION})
-	printf "${VERSION}.${REVISION}"
+    cd ${srcdir}/${_pkgname}
+    REVISION=$(printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)")
+    printf "${_pkgver}.${REVISION}"
 }
 
 build() {
-  cd $srcdir/$_pkgname
+    cd $srcdir/$_pkgname
+    mkdir -p cmake-build-release && cd cmake-build-release
 
-  mkdir -p build && cd build
-
-
-  cmake .. \
+    cmake .. \
         -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DCMAKE_INSTALL_LIBDIR=lib \
         -DCMAKE_CXX_FLAGS='' \
@@ -39,27 +37,19 @@ build() {
         -DCMAKE_SHARED_LINKER_FLAGS='' \
         -DCMAKE_EXE_LINKER_FLAGS='' \
         -DCMAKE_MODULE_LINKER_FLAGS='' \
-  		-DBUILD_OSSIM_PLANET=ON \
-  		-DBUILD_OSSIM_VIDEO=ON \
-  		-DBUILD_OSSIM_MPI_SUPPORT=ON \
-  		-DGEOS_C_LIB=/usr/lib/libgeos_c.so \
-  		-DGEOS_LIB=/usr/lib/libgeos_c.so \
-  		-DGEOS_LIBRARY=/usr/lib/libgeos_c.so \
-  		-DUSE_OSSIM_JSONCPP=OFF
-  make
+        -DBUILD_OSSIM_PLANET=ON \
+        -DBUILD_OSSIM_VIDEO=ON \
+        -DBUILD_OSSIM_MPI_SUPPORT=ON \
+        -DGEOS_C_LIB=/usr/lib/libgeos_c.so \
+        -DGEOS_LIB=/usr/lib/libgeos_c.so \
+        -DGEOS_LIBRARY=/usr/lib/libgeos_c.so \
+        -DUSE_OSSIM_JSONCPP=OFF
+    make
 }
 
 
 package() {
-	cd ${srcdir}/${_pkgname}/build
-	make DESTDIR="${pkgdir}/" install
-
-    mv $pkgdir/usr/lib64 $pkgdir/usr/lib
-
-    for cmakefilepath in ../cmake/CMakeModules/*.cmake; do
-        cmakefile=`basename $cmakefilepath`
-        install -Dm 644 $cmakefilepath $pkgdir/usr/share/cmake/Modules/$cmakefile
-    done
-
+    cd ${srcdir}/${_pkgname}/cmake-build-release
+    make DESTDIR="${pkgdir}/" install
 }
 
