@@ -1,0 +1,14 @@
+---
+Index: CMakeLists.txt
+<+>UTF-8
+===================================================================
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- CMakeLists.txt	(revision fb6d1f34bcb1f71918805c9b3a7ed9fcd7ae2505)
++++ CMakeLists.txt	(date 1746826665760)
+@@ -20,6 +20,4 @@
+ endif()
+ 
+ add_subdirectory(LASlib/src)
+-if (NOT BUILD_SHARED_LIBS)
+ add_subdirectory(src)
+-endif()

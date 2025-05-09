@@ -1,7 +1,7 @@
 pkgname=lastools-git
 _pkgname=LAStools
-_pkgver=2.0.2
-pkgver=2.0.2.r1264.caa3cd1
+pkgver=2.0.3.r1583.fb6d1f34
+_pkgver=2.0.3
 pkgrel=1
 pkgdesc="Efficient tools for LiDAR processing. Contains LASlib, a C++ programming API for reading / writing LIDAR data stored in standard LAS format - git checkout"
 arch=('i686' 'x86_64')
@@ -9,8 +9,7 @@ url="http://lastools.org/"
 license=('LGPL')
 provides=('laslib' 'lastools')
 conflicts=('laslib' 'lastools')
-source=("git+https://github.com/LAStools/LAStools.git"
- "set-lib-directory.patch")
+source=('git+https://github.com/LAStools/LAStools.git' 'cmake-add-src-subdirectory-with_BUILD_SHARED_LIBS.patch')
 md5sums=('SKIP' 'SKIP')
 
 pkgver() {
@@ -19,10 +18,10 @@ pkgver() {
 }
 
 build() {
-  cd "$srcdir/$_pkgname"
-  patch -Np1 -i ../../set-lib-directory.patch
+  cd ${srcdir}/${_pkgname}
+  patch -Np0 -i ${srcdir}/cmake-add-src-subdirectory-with_BUILD_SHARED_LIBS.patch
     
-  mkdir -p build && cd build
+  mkdir -p cmake-build-release && cd cmake-build-release
 
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
@@ -35,6 +34,7 @@ build() {
 
 package() {
     cd $srcdir/$_pkgname/build
+    cd ${srcdir}/${_pkgname}/cmake-build-release
 
-    make DESTDIR="$pkgdir/" install
+    make DESTDIR="${pkgdir}" install
 }
