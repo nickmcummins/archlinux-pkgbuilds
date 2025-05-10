@@ -3,7 +3,7 @@
 
 pkgname=openscenegraph-flightgear-git
 _pkgname=openscenegraph
-pkgver=3.6.5.r16214.b30276276
+pkgver=3.6.5.r16234.94cf6995c
 _pkgver=3.6.5
 pkgrel=1
 pkgdesc="An open source, high performance real-time graphics toolkit - fork for the FlightGear project"
@@ -34,6 +34,7 @@ build() {
 
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/opt/openscenegraph-flightgear \
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
     -DLIBRARY_OUTPUT_PATH=/opt/openscenegraph-flightgear/lib \
     -DCMAKE_BUILD_TYPE=Release \
     -DOpenGL_GL_PREFERENCE=LEGACY
