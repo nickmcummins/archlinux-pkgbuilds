@@ -6,9 +6,9 @@
 
 pkgname=flightgear-git
 _pkgname=flightgear
-pkgver=2020.4.0.r16160.cc6906eb6
+pkgver=2024.2.0.r16452.3845009de
 pkgrel=1
-pkgdesc="An open-source, multi-platform flight simulator"
+pkgdesc='An open-source, multi-platform flight simulator (git version)'
 arch=('x86_64')
 url="https://home.flightgear.org"
 license=('GPL')
@@ -27,23 +27,22 @@ pkgver() {
   printf "%s.r%s.%s" "$(tr -d '\n' < flightgear-version)" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
-prepare() {
-  cd "$srcdir"/flightgear
-  sed -i 's|Exec=.*|Exec=fgfs --fg-root=/usr/share/flightgear/data|' package/org.flightgear.FlightGear.desktop
-}
-
 build() {
   cd ${srcdir}/${_pkgname}
-  patch -Np0 -i ${srcdir}/glLoadMatrix-to-glLoadMatrixf.patch
-  
+
   mkdir -p cmake-build-release && cd cmake-build-release
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DFG_DATA_DIR:STRING="/usr/share/flightgear/data" \
     -DCMAKE_BUILD_TYPE=Release \
-    -DFG_BUILD_TYPE=Release
-  make -j14
+    -DFG_BUILD_TYPE=Release \
+    -DOSG_INCLUDE_DIR=/opt/openscenegraph-flightgear/include \
+    -DOSG_LIBRARY_RELEASE=/opt/openscenegraph-flightgear/lib/libosg.so \
+    -DOSGDB_INCLUDE_DIR=/opt/openscenegraph-flightgear/include \
+    -DOSGDB_LIBRARY_RELEASE=/opt/openscenegraph-flightgear/lib/libosgDB.so \
+    -DOPENTHREADS_LIBRARY_RELEASE=/opt/openscenegraph-flightgear/lib/libOpenThreads.so
+  make
 }
 
 package() {
