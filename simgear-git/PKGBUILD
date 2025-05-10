@@ -40,6 +40,7 @@ build() {
     -DOSG_LIBRARY_RELEASE=/opt/openscenegraph-flightgear/lib/libosg.so \
     -DBoost_DIR=/usr/lib64/cmake/Boost-1.86.0 \
     -Dboost_headers_DIR=/usr/lib64/cmake/boost_headers-1.86.0 \
+    -DENABLE_GDAL=ON \
     -DENABLE_TESTS=off \
     -DSIMGEAR_SHARED=ON
   make
