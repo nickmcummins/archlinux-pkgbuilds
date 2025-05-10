@@ -7,43 +7,51 @@
 
 name=cloudcompare
 pkgname=${name}-git
-pkgver=2.10.2.r722.g70c553da
+_pkgname=CloudCompare
+pkgver=2.13.1.r5060.ff7926cd9
 pkgrel=1
-pkgdesc="A 3D point cloud (and triangular mesh) processing software"
+pkgdesc="A 3D point cloud (and triangular mesh) processing software (git version)"
 arch=('i686' 'x86_64')
 url="http://www.danielgm.net/cc/"
 license=('GPL2')
-depends=('qt5-base' 'qt5-tools' 'qt5-svg' 'glu' 'glew' 'mesa' 'vxl' 'ffmpeg' 'cgal' 'pdal' 'fbx-sdk' 'gdal' 'ffmpeg' 'eigen')
+depends=('qt5-base' 'qt5-tools' 'qt5-svg' 'glu' 'glew' 'mesa' 'ffmpeg' 'cgal' 'lastools' 'fbx-sdk' 'gdal' 'ffmpeg' 'eigen')
 makedepends=('git' 'cmake' 'ninja' 'pcl' 'libharu' 'proj' 'python' 'doxygen' 'laz-perf')
 optdepends=('pcl')
 conflicts=('cloudcompare')
 provides=('cloudcompare')
-source=("${name}::git+https://github.com/CloudCompare/CloudCompare.git"
+source=("git+https://github.com/CloudCompare/CloudCompare.git"
         CloudCompare.desktop
         ccViewer.desktop
-        include-boost.patch)
+        'gitmodules-fix-qVosFall-submodule-url.patch')
 md5sums=('SKIP'
          '379e09f6996b2b397429c0661c409bd0'
          'b6dcb0dee15cc67011166a2fc774c5ef'
          'SKIP')
 prepare() {
-  git -C "${name}" submodule update --init --recursive
+    cd ${srcdir}/${_pkgname}
+
+    patch -Np0 -i ${srcdir}/gitmodules-fix-qVosFall-submodule-url.patch
+
+    git submodule update --init --recursive
 }
 
 pkgver() {
-  git -C "${name}" describe --long --tags | sed -r 's/^v//;s/([^-]*-g)/r\1/;s/-/./g'
+    cd ${srcdir}/${_pkgname}
+
+    GIT_TAG=$(git describe --long --tag)
+    VERSION=$(python -c "import sys; print(sys.argv[1].split('-')[0][1:])" "${GIT_TAG}")
+    printf "${VERSION}.r$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
 }
 
 build() {
-  cd $srcdir/$name
-  patch -Np0 -i ${srcdir}/include-boost.patch
+  cd ${srcdir}/${_pkgname}
 
-  mkdir -p build && cd build
+  mkdir -p cmake-build-release && cd cmake-build-release
 
-  cmake $srcdir/$name \
+  cmake .. \
         -Wno-dev \
         -DCMAKE_CXX_FLAGS=-fpermissive \
-        -DOPTION_PDAL_LAS=ON \
+        -DOPTION_PDAL_LAS=OFF \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DCMAKE_INSTALL_LIBDIR=lib \
         -DCMAKE_CXX_STANDARD=14 \
@@ -65,9 +73,10 @@ build() {
         -DPLUGIN_IO_QCSV_MATRIX=ON \
         -DPLUGIN_IO_QE57=OFF \
         -DPLUGIN_IO_QFBX=ON \
-        -DPLUGIN_IO_QPDAL=ON \
+        -DPLUGIN_IO_QPDAL=OFF \
         -DPLUGIN_IO_QPHOTOSCAN=ON \
         -DPLUGIN_IO_QRDB=OFF \
+        -DPLUGIN_IO_QLAS=ON \
         -DPLUGIN_STANDARD_QANIMATION=ON \
         -DPLUGIN_STANDARD_QBROOM=ON \
         -DPLUGIN_STANDARD_QCANUPO=ON \
@@ -78,7 +87,7 @@ build() {
         -DPLUGIN_STANDARD_QHOUGH_NORMALS=ON \
         -DPLUGIN_STANDARD_QHPR=ON \
         -DPLUGIN_STANDARD_QM3C2=OFF \
-        -DPLUGIN_STANDARD_QPCL=ON \
+        -DPLUGIN_STANDARD_QPCL=OFF \
         -DPLUGIN_STANDARD_QPCV=ON \
         -DPLUGIN_STANDARD_QPOISSON_RECON=OFF \
         -DPLUGIN_STANDARD_QRANSAC_SD=ON \
@@ -92,15 +101,13 @@ build() {
         -DFFMPEG_LIBRARY_DIR=/usr/lib/ \
         -DINSTALL_QFACETS_PLUGIN=ON \
         -DOPTION_USE_SHAPE_LIB=ON \
-        -DEIGEN_ROOT_DIR=/usr/include/eigen3 \
-        ..
+        -DEIGEN_ROOT_DIR=/usr/include/eigen3
   make
 }
 
 package() {
-  #DESTDIR="$pkgdir" ninja -C build install
-  cd $srcdir/$name/build
-  make DESTDIR=$pkgdir install
+  cd ${srcdir}/${_pkgname}/cmake-build-release
+  make DESTDIR=${pkgdir} install
 
   # install *.desktop files
   install -D -m 644 "${srcdir}"/*.desktop -t "${pkgdir}"/usr/share/applications/
