@@ -2,22 +2,21 @@
 
 pkgname=jgpstrackedit-git
 _pkgname=JGPSTrackEdit
-pkgver=1.7.0.RC4
+pkgver=1.7.2.r52.e9431cb
 pkgrel=1
-pkgdesc="GPS track editor for editing tracks and planning (multiple) day tours."
+pkgdesc="GPS track editor for editing tracks and planning (multiple) day tours. (git version)"
 arch=('any')
 url="https://sourceforge.net/projects/jgpstrackedit"
-depends=('jre8-openjdk')
-makedepends=('libicns' 'python' 'maven' 'imagemagick')
+depends=('jre17-openjdk')
+makedepends=('libicns' 'python' 'maven' 'imagemagick' 'jdk17-openjdk')
 provides=('jgpstrackedit')
-source=("${_pkgname}::git+https://git.code.sf.net/p/jgpstrackedit/code"
-    "JGPSTrackEdit.desktop")
-sha1sums=('SKIP'
-    'SKIP')
+source=("${_pkgname}::git+https://git.code.sf.net/p/jgpstrackedit/code" 'JGPSTrackEdit.desktop')
+sha1sums=('SKIP' 'SKIP')
 
 pkgver() {
     cd ${srcdir}/${_pkgname}
-    printf "$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-/./g')"
+    MVN_VERSION="$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/.SNAPSHOT//g')"
+    printf "%s.r%s.%s" "${MVN_VERSION}" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 build() {
@@ -28,9 +27,10 @@ build() {
 
 package() {
     cd ${srcdir}/${_pkgname}
-	VERSION=$(python -c "import sys; parts = sys.argv[1].split('.'); print('.'.join(parts[0:-1]) + '-' + parts[-1])" ${pkgver})
+    MVN_VERSION="$(echo ${pkgver} | cut -c 1-5)"
+
     mkdir -p ${pkgdir}/opt/${_pkgname}
-    install -Dm644 "target/${_pkgname}-${VERSION}-bundle.jar" "${pkgdir}/opt/${_pkgname}/${_pkgname}.jar"
+    install -Dm644 "target/${_pkgname}-${MVN_VERSION}-SNAPSHOT-bundle.jar" "${pkgdir}/opt/${_pkgname}/${_pkgname}.jar"
 
     mkdir -p ${pkgdir}/usr/share/${_pkgname}
     chmod -R 777 ${pkgdir}/usr/share/${_pkgname}
