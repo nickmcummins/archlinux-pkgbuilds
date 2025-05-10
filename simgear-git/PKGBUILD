@@ -6,9 +6,9 @@
 
 pkgname=simgear-git
 _pkgname=simgear
-pkgver=2024.2.0.r6490.89f938b3
+pkgver=2024.2.0.r6573.36ec5d60
 pkgrel=1
-pkgdesc="A set of open-source libraries designed to be used as building blocks for quickly assembling 3d simulations, games, and visualization applications."
+pkgdesc="A set of open-source libraries designed to be used as building blocks for quickly assembling 3d simulations, games, and visualization applications. (git version)"
 arch=('x86_64')
 url="http://home.flightgear.org/"
 license=('GPL')
@@ -17,8 +17,8 @@ makedepends=('boost' 'cmake' 'git' 'mesa')
 provides=("simgear=${pkgver}")
 conflicts=('simgear')
 options=('staticlibs')
-source=("simgear::git+https://git.code.sf.net/p/flightgear/simgear" 'remove-unused-computeTextureCompressionMode.patch')
-md5sums=('SKIP' 'SKIP')
+source=('simgear::git+https://git.code.sf.net/p/flightgear/simgear' '0001-remove_boost_lexical.patch' '0002-remove_boost_containers.patch')
+md5sums=('SKIP' 'SKIP' 'SKIP')
 
 pkgver() {
   cd ${srcdir}/${_pkgname}
@@ -27,7 +27,8 @@ pkgver() {
 
 build() {
   cd ${srcdir}/${_pkgname}
-  patch -Np0 -i ${srcdir}/remove-unused-computeTextureCompressionMode.patch
+  patch -Np0 -i ${srcdir}/0001-remove_boost_lexical.patch
+  patch -Np0 -i ${srcdir}/0002-remove_boost_containers.patch
 
   mkdir -p cmake-build-release && cd cmake-build-release
   cmake .. \
