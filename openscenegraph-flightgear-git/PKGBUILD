@@ -29,7 +29,6 @@ prepare() {
 build() {
   cd "${srcdir}/${_pkgname}"
 
-
   mkdir -p cmake-build-release && cd cmake-build-release
 
   cmake .. \
