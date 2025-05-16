@@ -1,8 +1,8 @@
 pkgname=saga-gis-git
 _pkgname=saga-gis
-pkgver=7.7.0.r4355.95038b874
+pkgver=9.9.0.r6561.d61b5397f
 pkgrel=1
-pkgdesc="A Geographic Information System (GIS) software with immense capabilities for geodata processing and analysis."
+pkgdesc="A Geographic Information System (GIS) software with immense capabilities for geodata processing and analysis. (git version)"
 url="http://www.saga-gis.org"
 license=("GPL3")
 arch=('i686' 'x86_64')
@@ -13,36 +13,30 @@ depends=('wxgtk'
          'unixodbc'
          'jasper'
          'swig'
-         'opencv2-opt'
+         'opencv2'
          'kealib'
          'pdal')
 optdepends=('opencv'
             'vigra'
             'liblas'
             'libharu')
-source=("${_pkgname}::git+git://git.code.sf.net/p/saga-gis/code" "includes-cmakelists-wxLanguage-patches.patch")
-md5sums=('SKIP' 'SKIP')
-
+source=("${_pkgname}::git+git://git.code.sf.net/p/saga-gis/code")
+md5sums=('SKIP')
+provides=('saga-gis')
+conflicts=('saga-gis')
 pkgver() {
-	cd "${srcdir}/${_pkgname}/${_pkgname}"
-	VERSION=$(python -c "from ilio import read; lines = list(map(lambda version_line: version_line[-2], filter(lambda line: line.startswith('set (SAGA_VERSION_'), read('version.cmake').split('\n')))); print('.'.join(lines))")
-	printf "%s.r%s" "$VERSION" "$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
-
+  cd ${srcdir}/${_pkgname}/${_pkgname}
+  cmake_version=$(python ${srcdir}/../../read_cmake_version.py version.cmake SAGA_VERSION_MAJOR SAGA_VERSION_MINOR SAGA_VERSION_PATCH)
+  printf "${cmake_version}.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 
 build() {
-  cd "${srcdir}"/${_pkgname}/${_pkgname}
-  dos2unix src/tools/grid/grid_gridding/nn/delaunay.c
-  patch -Np0 -i "${srcdir}"/includes-cmakelists-wxLanguage-patches.patch
+  cd ${srcdir}/${_pkgname}/${_pkgname}
 
-  # Build
-  mkdir -p build
-  cd build
+  mkdir -p cmake-build-release && cd cmake-build-release
 
-  export CPATH=/opt/opencv2/include
-
-  cmake ../ \
+  cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_SHARED_LIBS=ON \
@@ -140,7 +134,7 @@ build() {
 }
 
 package () {
-  cd ${srcdir}/${_pkgname}/${_pkgname}/build
+  cd ${srcdir}/${_pkgname}/${_pkgname}/cmake-build-release
   
   make DESTDIR="${pkgdir}" install
   install -D -m644 "${srcdir}/${_pkgname}/${_pkgname}/src/lgpl.txt" "${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE"
