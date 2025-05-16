@@ -1,0 +1,32 @@
+---
+Index: src/classner/specialvals.h
+<+>UTF-8
+===================================================================
+diff --git a/src/classner/specialvals.h b/src/classner/specialvals.h
+--- classner/specialvals.h	(revision 4c3e5d0ca5d23715c82220fb34a6352133f864ca)
++++ classner/specialvals.h	(date 1747428239910)
+@@ -6,6 +6,6 @@
+ 
+ #include <thread>
+ 
+-uint processorCount();
++unsigned int processorCount();
+ 
+ #endif // SPECIALVALS_H
+Index: src/classner/specialvals.cpp
+<+>UTF-8
+===================================================================
+diff --git a/src/classner/specialvals.cpp b/src/classner/specialvals.cpp
+--- classner/specialvals.cpp	(revision 4c3e5d0ca5d23715c82220fb34a6352133f864ca)
++++ classner/specialvals.cpp	(date 1747428276320)
+@@ -1,8 +1,8 @@
+ #include "specialvals.h"
+ 
+-uint processorCount()
++unsigned int processorCount()
+ {
+-  uint processor_count = std::thread::hardware_concurrency();
++  unsigned int processor_count = std::thread::hardware_concurrency();
+ 
+   processor_count *= 0.75;
+   if (processor_count <= 0)

@@ -1,0 +1,42 @@
+# Original Maintainer: Maxime Arthaud <maxime@arthaud.me>
+# Maintainer: Nick M Cummins <nickmcummins.at.linuxmail.dot.org>
+
+pkgname=snowman-git
+_pkgname=snowman
+pkgver=r761.4c3e5d0
+pkgrel=1
+pkgdesc="Native code to C/C++ decompiler (supporting x86, amd64 and arm)"
+arch=('any')
+url="http://derevenets.com/"
+license=('GPL3')
+depends=('qt5-base')
+makedepends=('git' 'cmake' 'boost')
+source=("$_pkgname::git+https://github.com/djaessel/snowman.git" 'uint-to-unsigned-int.patch')
+sha512sums=('SKIP' 'SKIP')
+
+pkgver() {
+    cd "$srcdir/${_pkgname}"
+    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+    cd ${srcdir}/${_pkgname}/src
+    patch -Np0 -i ${srcdir}/uint-to-unsigned-int.patch
+
+    mkdir -p cmake-build-release && cd cmake-build-release
+    cmake .. \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+        -DCAPSTONE_BUILD_SHARED=ON \
+        -DCAPSTONE_BUILD_STATIC=ON \
+        -DCAPSTONE_X86_SUPPORT=ON
+
+    make
+}
+
+package() {
+    cd "$srcdir/${_pkgname}/src/cmake-build-release"
+    make DESTDIR="$pkgdir" install
+    install -Dm644 "$srcdir"/$_pkgname/doc/licenses.asciidoc ${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE
+}
