@@ -1,8 +1,9 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail.org>
 
 pkgname=idv
-pkgver=5.7.0
-_pkgver=5_7
+pkgver=6.3.0
+_pkgver=6_3
+_pkgver_major_minor=6.3
 pkgrel=1
 pkgdesc="Integrated Data Viewer. A software framework for analyzing and visualizing geoscience data."
 PKGEXT='.pkg.tar.lzo'
@@ -11,8 +12,7 @@ url="https://www.unidata.ucar.edu/software/idv/index.html"
 depends=('bash')
 makedepends=('imagemagick')
 provides=("idv")
-source=("https://www.unidata.ucar.edu/downloads/idv/current/ftp/idv_${_pkgver}_linux64_installer.sh"
-    'IDV.desktop')
+source=("https://downloads.unidata.ucar.edu/idv/${_pkgver_major_minor}/idv_${_pkgver}_linux64_installer.sh" 'IDV.desktop')
 sha1sums=('SKIP' 'SKIP')
 package() {
     cd $srcdir
