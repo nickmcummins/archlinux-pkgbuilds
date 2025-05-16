@@ -9,7 +9,7 @@ version_patch_var = sys.argv[4]     # e.g. VTK_BUILD_VERSION
 cmake_vars_regex = r'(set\s*\()([^\s]+)[\s"]*([^)^"]+)'
 
 with open(cmake_filename, 'r') as cmake_file:
-    vars = dict(list(map(lambda varline: (re.search(cmake_vars_regex, varline).group(2), re.search(cmake_vars_regex, varline).group(3)), filter(lambda line: line.startswith('set('), cmake_file.read().split('\n')))))
+    vars = dict(list(map(lambda varline: (re.search(cmake_vars_regex, varline).group(2), re.search(cmake_vars_regex, varline).group(3)), filter(lambda line: line.startswith('set'), cmake_file.read().split('\n')))))
 
     major_version = vars[version_major_var]
     minor_version = vars[version_minor_var]
