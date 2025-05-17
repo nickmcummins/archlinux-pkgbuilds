@@ -1,0 +1,17 @@
+---
+Index: code/City3D/CMakeLists.txt
+<+>UTF-8
+===================================================================
+diff --git a/code/City3D/CMakeLists.txt b/code/City3D/CMakeLists.txt
+--- code/City3D/CMakeLists.txt	(revision c9299efe61625f03a78245683eaa155a9670df0e)
++++ code/City3D/CMakeLists.txt	(date 1746913900462)
+@@ -79,4 +79,6 @@
+ target_include_directories(${PROJECT_NAME} PRIVATE ${CITY3D_ROOT})
+ 
+ target_link_libraries(${PROJECT_NAME} ${QtLibs})
+-target_link_libraries(${PROJECT_NAME} basic math model method renderer 3rd_glew 3rd_QGLViewer)
+\ No newline at end of file
++target_link_libraries(${PROJECT_NAME} basic math model method renderer 3rd_glew 3rd_QGLViewer)
++
++install(TARGETS ${PROJECT_NAME})
+\ No newline at end of file
