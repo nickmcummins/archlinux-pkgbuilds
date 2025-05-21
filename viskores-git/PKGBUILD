@@ -28,7 +28,8 @@ build() {
 
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_BUILD_TYPE=Release \
+    -DViskores_MODULE_ENABLE_viskores_diy=YES
 
   make
 }
