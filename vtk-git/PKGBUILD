@@ -2,7 +2,7 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.4.20250509.r94173.f0751a0799
+pkgver=9.5.20250520.r94284.88e97f300d
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization'
 arch=('i686' 'x86_64')
@@ -280,6 +280,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_tiff=YES \
     -DVTK_MODULE_ENABLE_VTK_utf8=YES \
     -DVTK_MODULE_ENABLE_VTK_verdict=YES \
+    -DVTK_MODULE_ENABLE_VTK_viskores=YES \
     -DVTK_MODULE_ENABLE_VTK_vpic=YES \
     -DVTK_MODULE_ENABLE_VTK_vtkDICOM=YES \
     -DVTK_MODULE_ENABLE_VTK_vtksys=YES \
@@ -311,6 +312,7 @@ build() {
     -DVTK_MODULE_USE_EXTERNAL_VTK_tiff=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_utf8=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_zlib=ON \
+    -DVTK_MODULE_USE_EXTERNAL_VTK_vtkviskores=OFF \
     -DVTK_OPENGL_HAS_EGL=TRUE \
     -DVTK_OPENGL_USE_GLES=ON \
     -DVTK_PYTHON_OPTIONAL_LINK=OFF \
