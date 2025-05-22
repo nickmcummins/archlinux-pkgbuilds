@@ -5,7 +5,7 @@
 # Maintainer: Nick M Cummins <nickmcummins@linuxmail.org>
 pkgname=celestia-git
 _pkgname=celestia
-pkgver=1.6.2.r7217.fab96ccee
+pkgver=1.6.2.r7218.cb9ede89c
 _pkgver=1.6.2
 pkgrel=1
 pkgdesc="Real-time space simulation (git checkout)"
@@ -41,20 +41,13 @@ build() {
     -DCMAKE_SKIP_RPATH=ON \
     -DENABLE_CELX=ON \
     -DENABLE_FFMPEG=ON \
-    -DENABLE_GLUT=ON \
-    -DENABLE_GTK=ON \
     -DENABLE_NLS=OFF \
     -DENABLE_QT5=OFF \
-    -DENABLE_QT6=OFF \
+    -DENABLE_QT6=ON \
     -DENABLE_SDL=OFF \
     -DENABLE_SPICE=OFF \
     -DENABLE_TOOLS=ON \
-    -DENABLE_WIN=OFF \
-    -DUSE_GTK3=ON \
-    -DUSE_GTKGLEXT=ON \
-    -DUSE_QT6=OFF \
-    -DSPICE_BUILD_SHARED_LIBRARY=ON \
-    -DIntl_LIBRARY=/usr/lib/preloadable_libintl.so
+    -DENABLE_WIN=OFF
 
   make
 
