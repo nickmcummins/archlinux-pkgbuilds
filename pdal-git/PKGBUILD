@@ -2,9 +2,10 @@
 
 _name=PDAL
 pkgname=pdal-git
-pkgver=2.8.4.r10135.84f13adea
+pkgver=2.8.4.r10169.6fbc4e615
 pkgrel=1
 pkgdesc="A C++ library for translating and manipulating point cloud data."
+pkgdesc="A C++ library for translating and manipulating point cloud data. (git version)"
 arch=('x86_64')
 url="http://www.pdal.io"
 license=('BSD')
@@ -26,7 +27,7 @@ optdepends=('python-numpy: for the Python plugin'
             'nitro: for the NITF plugin')
 provides=('pdal')
 conflicts=('pdal')
-source=("git+https://github.com/PDAL/PDAL" "osgreader.patch")
+source=("git+https://github.com/PDAL/PDAL" "include-cstdint-in-VSIIO-cpp.patch")
 sha512sums=('SKIP' 'SKIP')
 
 pkgver() {
@@ -41,10 +42,13 @@ pkgver() {
 build() {
     cd ${srcdir}/${_name}
 
+    patch -Np0 -i ${srcdir}/include-cstdint-in-VSIIO-cpp.patch
+
     mkdir -p cmake-build-release && cd cmake-build-release
 
     cmake .. \
         -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_CXX_STANDARD:STRING=20 \
         -DBUILD_SHARED_LIBS=ON \
         -DBUILD_PLUGIN_CPD=OFF \
         -DBUILD_PLUGIN_E57=ON \
@@ -56,8 +60,9 @@ build() {
         -DBUILD_PLUGIN_MATLAB=OFF \
         -DBUILD_PLUGIN_MBIO=ON \
         -DBUILD_PLUGIN_NITF=OFF \
-       	-DBUILD_PLUGIN_OPENSCENEGRAPH=ON \
+        -DBUILD_PLUGIN_OPENSCENEGRAPH=ON \
         -DBUILD_PLUGIN_PGPOINTCLOUD=ON \
+        -DBUILD_PLUGIN_TEASER=OFF \
         -DBUILD_PLUGIN_TILEDB=ON \
         -DBUILD_TOOLS_NITFWRAP=OFF \
         -DWITH_LAZPERF=ON \

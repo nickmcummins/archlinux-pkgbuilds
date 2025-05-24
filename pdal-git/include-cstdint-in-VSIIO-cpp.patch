@@ -1,0 +1,15 @@
+---
+Index: pdal/util/VSIIO.cpp
+<+>UTF-8
+===================================================================
+diff --git a/pdal/util/VSIIO.cpp b/pdal/util/VSIIO.cpp
+--- pdal/util/VSIIO.cpp	(revision 6fbc4e615a5a3ff129ee4dba3c6db1266c4c2852)
++++ pdal/util/VSIIO.cpp	(date 1748056526029)
+@@ -35,6 +35,7 @@
+ #include <memory>
+ #include <sstream>
+ #include <streambuf>
++#include <cstdint>
+ 
+ #include <cpl_vsi.h>
+ #include <cpl_vsi_virtual.h>
