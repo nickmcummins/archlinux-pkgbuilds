@@ -5,7 +5,7 @@
 
 pkgbase=gdal
 pkgname=(gdal python-gdal)
-pkgver=3.10.2
+pkgver=3.11.0
 pkgrel=4
 pkgdesc="A translator library for raster and vector geospatial data formats"
 arch=(x86_64)
@@ -20,8 +20,8 @@ makedepends=(cmake opencl-headers python-setuptools python-numpy
 # armadillo basisu brunsli lerc libkml qb3 rasterlite2 sfcgal tiledb
 # ogdi
 changelog=$pkgbase.changelog
-source=(https://download.osgeo.org/${pkgbase}/${pkgver}/${pkgbase}-${pkgver}.tar.xz)
-b2sums=('d37fc6c41c8111ddf50c0650eb51e04012bf30976493bbd6dd363ddd8f4a21168b908faf8ef2cab733653107e1ab3c7a1b4fdeb7818157f3d171ec92478bc4e5')
+source=(https://github.com/OSGeo/gdal/releases/download/v${pkgver}/gdal-${pkgver}.tar.gz)
+md5sums=('dbc8e9395b8859fed3baf08e7d8e9ed3')
 
 build() {
   cmake -B build -S $pkgbase-$pkgver \
@@ -37,6 +37,7 @@ build() {
     -DGDAL_USE_CRYPTOPP=ON \
     -DGDAL_USE_DEFLATE=ON \
     -DGDAL_USE_EXPAT=ON \
+    -DGDAL_USE_EXPRTK=OFF \
     -DGDAL_USE_FREEXL=ON \
     -DGDAL_USE_GEOTIFF=ON \
     -DGDAL_USE_GEOS=ON \
