@@ -6,10 +6,9 @@
 
 pkgname=stellarium-git
 _pkgname=stellarium
-pkgver=1.2.r22432.3364be7797
+pkgver=25.1.r32483.7da2825000
 pkgrel=1
-_pkgver=1.2
-pkgdesc="Software which renders realistic skies in real time with OpenGL"
+pkgdesc="Software which renders realistic skies in real time with OpenGL (git version)"
 arch=(x86_64)
 url="https://stellarium.org"
 license=(GPL2)
@@ -17,19 +16,22 @@ conflicts=('stellarium' 'stellarium-bin')
 provides=('stellarium')
 depends=('libpng' 'libglvnd' 'freetype2' 'openssl' 'gpsd' 'calcmysky' 'libindi' 'qt6-charts' 'qt6-serialport' 'qt6-multimedia' 'qt6-positioning' 'qt6-webengine') # 'qxlsx'
 makedepends=('cmake' 'ninja' 'mesa' 'qt6-tools')
-source=('git+https://github.com/Stellarium/stellarium' 'remove-overrides-on-virtual-INDIBase.patch')
-md5sums=('SKIP' 'SKIP')
-sha256sums=('SKIP' 'SKIP')
+source=('git+https://github.com/Stellarium/stellarium')
+md5sums=('SKIP')
+sha256sums=('SKIP')
+PKGEXT='.pkg.tar.lzo'
+
 pkgver() {
   cd ${srcdir}/${_pkgname}
-  printf "${_pkgver}.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+  cmake_version=$(python ${srcdir}/../../read_cmake_version.py CMakeLists.txt STELLARIUM_MAJOR STELLARIUM_MINOR)
+  printf "%s.r%s.%s" "$cmake_version" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 build() {
   cd ${srcdir}/${_pkgname}
   
-  patch -Np0 -i ${srcdir}/remove-overrides-on-virtual-INDIBase.patch
-  
+  jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+
   mkdir -p cmake-build-release && cd cmake-build-release
 
   cmake .. \
@@ -44,7 +46,7 @@ build() {
     -DENABLE_TESTING=OFF \
     -DENABLE_XLSX=OFF \
     -Wno-dev
-  make -j14
+  make -j$jobs
 }
 
 package() {
