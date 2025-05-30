@@ -6,7 +6,7 @@
 
 pkgname=simgear-git
 _pkgname=simgear
-pkgver=2024.2.0.r6573.36ec5d60
+pkgver=2024.2.0.r6580.28a8e39d
 pkgrel=1
 pkgdesc="A set of open-source libraries designed to be used as building blocks for quickly assembling 3d simulations, games, and visualization applications. (git version)"
 arch=('x86_64')
