@@ -6,7 +6,7 @@
 
 pkgname=flightgear-git
 _pkgname=flightgear
-pkgver=2024.2.0.r16452.3845009de
+pkgver=2024.2.0.r16480.dbd93239f
 pkgrel=1
 pkgdesc='An open-source, multi-platform flight simulator (git version)'
 arch=('x86_64')
@@ -30,6 +30,8 @@ pkgver() {
 build() {
   cd ${srcdir}/${_pkgname}
 
+  jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+
   mkdir -p cmake-build-release && cd cmake-build-release
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
@@ -42,7 +44,7 @@ build() {
     -DOSGDB_INCLUDE_DIR=/opt/openscenegraph-flightgear/include \
     -DOSGDB_LIBRARY_RELEASE=/opt/openscenegraph-flightgear/lib/libosgDB.so \
     -DOPENTHREADS_LIBRARY_RELEASE=/opt/openscenegraph-flightgear/lib/libOpenThreads.so
-  make
+  make -j$jobs
 }
 
 package() {
