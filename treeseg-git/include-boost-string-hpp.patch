@@ -1,0 +1,27 @@
+---
+Index: include/treeseg.h
+<+>UTF-8
+===================================================================
+diff --git a/include/treeseg.h b/include/treeseg.h
+--- include/treeseg.h	(revision 076ea0949a17102fcc6ce8d33cf1d915895bf180)
++++ include/treeseg.h	(date 1748667830189)
+@@ -32,6 +32,7 @@
+ #include <pcl/point_cloud.h>
+ #include <pcl/PointIndices.h>
+ #include <pcl/kdtree/kdtree_flann.h>
++#include <boost/algorithm/string.hpp>
+ 
+ struct treeparams
+ {
+Index: src/pcdPointXYZRGB2txt.cpp
+<+>UTF-8
+===================================================================
+diff --git a/src/pcdPointXYZRGB2txt.cpp b/src/pcdPointXYZRGB2txt.cpp
+--- src/pcdPointXYZRGB2txt.cpp	(revision 076ea0949a17102fcc6ce8d33cf1d915895bf180)
++++ src/pcdPointXYZRGB2txt.cpp	(date 1748667707260)
+@@ -1,4 +1,5 @@
+ #include <pcl/io/pcd_io.h>
++#include <boost/algorithm/string.hpp>
+ 
+ int main (int argc, char **argv)
+ {

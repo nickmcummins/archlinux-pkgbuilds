@@ -1,50 +1,49 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
 pkgname=treeseg-git
 _pkgname=treeseg
-pkgver=2.0.r49.7a4cdac
+pkgver=0.2.2.r86.076ea09
 pkgrel=1
-pkgdesc="Extract individual trees from lidar point clouds."
-url="https://github.com/apburt/treeseg"
+pkgdesc='Extract individual trees from lidar point clouds. (git version)'
+url='https://github.com/apburt/treeseg'
 license=('MIT')
-arch=('i686' 'x86_64')
+arch=('x86_64')
 depends=('pcl' 'armadillo')
 makedepends=('cmake')
 optdepends=( )
-source=("git+https://github.com/apburt/treeseg.git")
+source=("git+https://github.com/apburt/treeseg.git" 'include-boost-string-hpp.patch' 'CMakeLists-install-targets-for-binaries.patch')
 provides=('treeseg')
-md5sums=('SKIP')
+conflicts=('treeseg')
+md5sums=('SKIP' 'SKIP' 'SKIP')
 
 pkgver() {
-	cd ${srcdir}/${_pkgname}
-	# Use the tag of the last commit
-	REVISION=$(printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)")
-	GITVERSION=$(git describe --long --tags | sed -r 's/^v//;s/([^-]*-g)/r\1/;s/-/./g')
-	VERSION=$(python -c "import sys; print('.'.join(sys.argv[1].split('.')[1:3]))" ${GITVERSION})
-	printf "${VERSION}.${REVISION}"
+    cd ${srcdir}/${_pkgname}
+    git_tags_version=$(python ${srcdir}/../../git_tags_version.py ${srcdir}/${_pkgname})
+    printf "%s.r%s.%s" "$git_tags_version" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 build() {
-  cd $srcdir/$_pkgname
-  mkdir -p build && cd build
+  cd ${srcdir}/${_pkgname}
 
+  patch -Np0 -i ${srcdir}/include-boost-string-hpp.patch
+  patch -Np0 -i ${srcdir}/CMakeLists-install-targets-for-binaries.patch
+
+  jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+
+  mkdir -p cmake-build-release && cd cmake-build-release
 
   cmake .. \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DENSENSO_INCLUDE_DIR=/usr/include
-  make -j12
+  make -j$jobs
 }
 
 
 package() {
-	cd ${srcdir}/${_pkgname}/build
+    cd ${srcdir}/${_pkgname}/cmake-build-release
+    make DESTDIR="${pkgdir}/" install
 
-	mkdir -p ${pkgdir}/usr/lib
+    mkdir -p ${pkgdir}/usr/lib
     install -Dm 644 *.so ${pkgdir}/usr/lib
-
-    mkdir -p ${pkgdir}/usr/bin
-    for binary in downsample findstems getcrownvolume getdemslice nearestneighbour pcd2xyz plotcoords segmentcrown segmentstem sepwoodleaf thin xyz2pcd; do
-        install -Dm644 $binary ${pkgdir}/usr/bin
-    done
 }
 

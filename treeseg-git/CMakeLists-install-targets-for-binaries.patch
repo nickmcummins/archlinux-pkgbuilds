@@ -1,0 +1,61 @@
+---
+Index: CMakeLists.txt
+<+>UTF-8
+===================================================================
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- CMakeLists.txt	(revision 076ea0949a17102fcc6ce8d33cf1d915895bf180)
++++ CMakeLists.txt	(date 1748671495253)
+@@ -23,40 +23,53 @@
+ target_link_libraries(leafsep treeseg ${PCL_LIBRARIES} ${ARMADILLO_LIBRARIES})
+ 
+ add_executable(plotcoords ${CMAKE_SOURCE_DIR}/src/plotcoords.cpp)
++install(TARGETS plotcoords)
+ target_link_libraries(plotcoords)
+ 
+ add_executable(nearestneighbour ${CMAKE_SOURCE_DIR}/src/nearestneighbour.cpp)
++install(TARGETS nearestneighbour)
+ target_link_libraries(nearestneighbour treeseg ${PCL_LIBRARIES})
+ 
+ add_executable(downsample ${CMAKE_SOURCE_DIR}/src/downsample.cpp)
++install(TARGETS downsample)
+ target_link_libraries(downsample treeseg ${PCL_LIBRARIES})
+ 
+ add_executable(thin ${CMAKE_SOURCE_DIR}/src/thin.cpp)
++install(TARGETS thin)
+ target_link_libraries(thin treeseg ${PCL_LIBRARIES})
+ 
+ add_executable(getdtmslice ${CMAKE_SOURCE_DIR}/src/getdtmslice.cpp)
++install(TARGETS getdtmslice)
+ target_link_libraries(getdtmslice treeseg ${PCL_LIBRARIES})
+ 
+ add_executable(findstems ${CMAKE_SOURCE_DIR}/src/findstems.cpp)
++install(TARGETS findstems)
+ target_link_libraries(findstems treeseg ${PCL_LIBRARIES})
+ 
+ add_executable(segmentstem ${CMAKE_SOURCE_DIR}/src/segmentstem.cpp)
++install(TARGETS segmentstem)
+ target_link_libraries(segmentstem treeseg ${PCL_LIBRARIES})
+ 
+ add_executable(getcrownvolume ${CMAKE_SOURCE_DIR}/src/getcrownvolume.cpp)
++install(TARGETS getcrownvolume)
+ target_link_libraries(getcrownvolume treeseg ${PCL_LIBRARIES})
+ 
+ add_executable(segmentcrown ${CMAKE_SOURCE_DIR}/src/segmentcrown.cpp)
++install(TARGETS segmentcrown)
+ target_link_libraries(segmentcrown treeseg ${PCL_LIBRARIES})
+ 
+ add_executable(sepwoodleaf ${CMAKE_SOURCE_DIR}/src/sepwoodleaf.cpp)
++install(TARGETS sepwoodleaf)
+ target_link_libraries(sepwoodleaf treeseg leafsep ${PCL_LIBRARIES})
+ 
+ add_executable(pcdPointTreeseg2txt ${CMAKE_SOURCE_DIR}/src/pcdPointTreeseg2txt.cpp)
++install(TARGETS pcdPointTreeseg2txt)
+ target_link_libraries(pcdPointTreeseg2txt treeseg ${PCL_LIBRARIES})
+ 
+ add_executable(txtPointTreeseg2pcd ${CMAKE_SOURCE_DIR}/src/txtPointTreeseg2pcd.cpp)
++install(TARGETS txtPointTreeseg2pcd)
+ target_link_libraries(txtPointTreeseg2pcd treeseg ${PCL_LIBRARIES})
+ 
+ add_executable(pcdPointXYZRGB2txt ${CMAKE_SOURCE_DIR}/src/pcdPointXYZRGB2txt.cpp)
++install(TARGETS pcdPointXYZRGB2txt)
+ target_link_libraries(pcdPointXYZRGB2txt ${PCL_LIBRARIES})
