@@ -19,7 +19,7 @@ optdepends=('qt5-base: fgfs --launcher'
             'flightgear-data')
 provides=("flightgear=${pkgver}")
 conflicts=('flightgear')
-source=("flightgear::git+https://git.code.sf.net/p/flightgear/flightgear#branch=next" 'glLoadMatrix-to-glLoadMatrixf.patch')
+source=("flightgear::git+https://git.code.sf.net/p/flightgear/flightgear#branch=next" 'env-LD_LIBRARY_PATH-use-osg-flightgear-location-for-desktop-launcher.patch')
 sha256sums=('SKIP' 'SKIP')
 
 pkgver() {
@@ -29,6 +29,8 @@ pkgver() {
 
 build() {
   cd ${srcdir}/${_pkgname}
+
+  patch -Np0 -i ${srcdir}/env-LD_LIBRARY_PATH-use-osg-flightgear-location-for-desktop-launcher.patch
 
   jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
 
@@ -43,7 +45,22 @@ build() {
     -DOSG_LIBRARY_RELEASE=/opt/openscenegraph-flightgear/lib/libosg.so \
     -DOSGDB_INCLUDE_DIR=/opt/openscenegraph-flightgear/include \
     -DOSGDB_LIBRARY_RELEASE=/opt/openscenegraph-flightgear/lib/libosgDB.so \
-    -DOPENTHREADS_LIBRARY_RELEASE=/opt/openscenegraph-flightgear/lib/libOpenThreads.so
+    -DOSGGA_INCLUDE_DIR=/opt/openscenegraph-flightgear/include \
+    -DOSGGA_LIBRARY_RELEASE=/opt/openscenegraph-flightgear/lib/libosgGA.so \
+    -DOSGSIM_INCLUDE_DIR=/opt/openscenegraph-flightgear/include \
+    -DOSGSIM_LIBRARY_RELEASE=/opt/openscenegraph-flightgear/lib/libosgSim.so \
+    -DOSGPARTICLE_INCLUDE_DIR=/opt/openscenegraph-flightgear/include \
+    -DOSGPARTICLE_LIBRARY_RELEASE=/opt/openscenegraph-flightgear/lib/libosgParticle.so \
+    -DOSGTERRAIN_INCLUDE_DIR=/opt/openscenegraph-flightgear/include \
+    -DOSGTERRAIN_LIBRARY_RELEASE=/opt/openscenegraph-flightgear/lib/libosgTerrain.so \
+    -DOSGTEXT_INCLUDE_DIR=/opt/openscenegraph-flightgear/include \
+    -DOSGTEXT_LIBRARY_RELEASE=/opt/openscenegraph-flightgear/lib/libosgText.so \
+    -DOSGUTIL_INCLUDE_DIR=/opt/openscenegraph-flightgear/include \
+    -DOSGUTIL_LIBRARY_RELEASE=/opt/openscenegraph-flightgear/lib/libosgUtil.so \
+    -DOSGVIEWER_INCLUDE_DIR=/opt/openscenegraph-flightgear/include \
+    -DOSGVIEWER_LIBRARY_RELEASE=/opt/openscenegraph-flightgear/lib/libosgViewer.so \
+    -DOPENTHREADS_LIBRARY_RELEASE=/opt/openscenegraph-flightgear/lib/libOpenThreads.so \
+    -DosgPluginLocation=/opt/openscenegraph-flightgear/lib/osgPlugins-3.6.5
   make -j$jobs
 }
 

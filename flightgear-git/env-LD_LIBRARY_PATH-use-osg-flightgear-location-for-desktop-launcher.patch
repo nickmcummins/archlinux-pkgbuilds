@@ -1,0 +1,16 @@
+---
+Index: package/org.flightgear.FlightGear.desktop.in
+<+>UTF-8
+===================================================================
+diff --git a/package/org.flightgear.FlightGear.desktop.in b/package/org.flightgear.FlightGear.desktop.in
+--- package/org.flightgear.FlightGear.desktop.in	(revision dbd93239f4582173dcf2440df166f4a86c42831f)
++++ package/org.flightgear.FlightGear.desktop.in	(date 1748718690369)
+@@ -29,7 +29,7 @@
+ Comment[sk]=Praktikuje letový tréning (lietadlá, helikoptéry...)
+ Comment[tr]=Uçuş eğitimi alıştırması yapın (uçaklar, helikopterler...)
+ Comment[zh]=飞行训练 (固定翼飞机、直升飞机......)
+-Exec=fgfs @DESKTOP_FILE_RUN_ARGS@
++Exec=env LD_LIBRARY_PATH=/opt/openscenegraph-flightgear/lib fgfs @DESKTOP_FILE_RUN_ARGS@
+ Icon=flightgear
+ Terminal=false
+ Type=Application
