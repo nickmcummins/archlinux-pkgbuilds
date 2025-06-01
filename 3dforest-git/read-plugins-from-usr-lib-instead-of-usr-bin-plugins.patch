@@ -1,0 +1,32 @@
+---
+Index: src/gui/MainWindow.cpp
+<+>UTF-8
+===================================================================
+diff --git a/src/gui/MainWindow.cpp b/src/gui/MainWindow.cpp
+--- src/gui/MainWindow.cpp	(revision 2127cd87a44799222d84dfde2023e64b76033c1c)
++++ src/gui/MainWindow.cpp	(date 1748737979694)
+@@ -55,6 +55,8 @@
+ const int MainWindow::ICON_SIZE_TEXT = 16;
+ #endif
+ 
++const QRegularExpression forest3DLibRegEx("lib3DForest([A-Za-z]+)Plugin\.so", QRegularExpression::CaseInsensitiveOption);
++
+ MainWindow::MainWindow(QWidget *parent)
+     : QMainWindow(parent),
+       threadRender_(&editor_),
+@@ -391,13 +393,13 @@
+     LOG_DEBUG(<< "Start loading all plugins.");
+ 
+     QString pluginsDirPath =
+-        QCoreApplication::applicationDirPath() + "/plugins/";
++            "/usr/lib";
+     LOG_DEBUG(<< "Load plugins from directory <" << pluginsDirPath.toStdString()
+               << ">.");
+ 
+     // Process all files in the application "exe" directory.
+     QDir pluginsDir(pluginsDirPath);
+-    const QStringList entries = pluginsDir.entryList(QDir::Files);
++    const QStringList entries = pluginsDir.entryList(QDir::Files).filter(forest3DLibRegEx);
+ 
+     qsizetype n = entries.count();
+     LOG_DEBUG(<< "Found number of files <" << n << ">.");
