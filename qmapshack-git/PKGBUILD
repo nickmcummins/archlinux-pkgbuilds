@@ -1,11 +1,11 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
 
 pkgname=qmapshack-git
-pkgver=1.17.1.r4984.8a48038e
+pkgver=1.17.1.r4986.b810ab75
 pkgrel=1
 pkgdesc='Plan your next outdoor trip'
 arch=('x86_64')
-url='https://bitbucket.org/maproom/qmapshack'
+url='https://bitbucket.org/maproom/qmapshack (git version)'
 license=('GPL3')
 depends=('gdal' 'desktop-file-utils' 'quazip' 'qt5-webengine' 'routino>=3.1' 'alglib' 'quazip-qt6')
 makedepends=('cmake' 'python')
@@ -27,11 +27,14 @@ build() {
     cd ${srcdir}/${pkgname}
 
     mkdir -p cmake-build-release && cd cmake-build-release
+
+    jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+
     cmake .. \
      -DCMAKE_INSTALL_PREFIX=/usr \
      -DCMAKE_BUILD_TYPE=Release \
      -DCMAKE_POLICY_VERSION_MINIMUM=3.5
-    make
+    make -j$jobs
 }
 
 package() {
