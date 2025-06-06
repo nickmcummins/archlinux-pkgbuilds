@@ -19,7 +19,6 @@ if __name__ == '__main__':
             print(project_version)
 
     def read_from_cmake_variables():
-        print(os.popen('ls').read())
         try:
             version_vars = []
             argindex = 2
