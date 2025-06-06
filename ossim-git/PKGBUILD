@@ -2,8 +2,7 @@
 
 pkgname=ossim-git
 _pkgname=ossim
-pkgver=2.12.0.r2377.a69ac49c
-_pkgver=2.12.0
+pkgver=2.12.0.r2385.2ab196ba
 pkgrel=1
 pkgdesc="OSSIM is a powerful suite of geospatial libraries and applications used to process imagery, maps, terrain, and vector data (git checkout)"
 url="http://www.ossim.org"
@@ -19,19 +18,20 @@ md5sums=('SKIP')
 
 pkgver() {
     cd ${srcdir}/${_pkgname}
-    REVISION=$(printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)")
-    printf "${_pkgver}.${REVISION}"
+    cmake_version=$(python ${srcdir}/../../read_cmake_version.py cmake/CMakeModules/OssimVersion.cmake OSSIM_MAJOR_VERSION_NUMBER OSSIM_MINOR_VERSION_NUMBER OSSIM_PATCH_VERSION_NUMBER)
+    printf "%s.r%s.%s" "${cmake_version}" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 build() {
     cd $srcdir/$_pkgname
     mkdir -p cmake-build-release && cd cmake-build-release
 
+    jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+
     cmake .. \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
         -DCMAKE_INSTALL_PREFIX=/usr \
-        -DCMAKE_INSTALL_LIBDIR=lib \
         -DCMAKE_CXX_FLAGS='' \
         -DCMAKE_C_FLAGS='' \
         -DCMAKE_SHARED_LINKER_FLAGS='' \
@@ -40,11 +40,8 @@ build() {
         -DBUILD_OSSIM_PLANET=ON \
         -DBUILD_OSSIM_VIDEO=ON \
         -DBUILD_OSSIM_MPI_SUPPORT=ON \
-        -DGEOS_C_LIB=/usr/lib/libgeos_c.so \
-        -DGEOS_LIB=/usr/lib/libgeos_c.so \
-        -DGEOS_LIBRARY=/usr/lib/libgeos_c.so \
         -DUSE_OSSIM_JSONCPP=OFF
-    make
+    make -j$jobs
 }
 
 
