@@ -2,7 +2,7 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.5.20250530.r94499.508fde8275
+pkgver=9.5.20250610.r94592.a650106fb8
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization'
 arch=('i686' 'x86_64')
@@ -27,7 +27,7 @@ build() {
   cd ${srcdir}/vtk
   git submodule update --init --recursive
 
-  #patch -Np0 -i ${srcdir}/Fix-NC-FillValue.patch
+  jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
 
   mkdir -p cmake-build-release && cd cmake-build-release
   cmake $srcdir/$_pkgname \
@@ -330,7 +330,7 @@ build() {
     -DPython3_LIBRARY=/usr/lib/libpython3.13.so \
       ..
   
-  make
+  make -j$jobs
 }
 
 package() {
