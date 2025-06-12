@@ -1,0 +1,15 @@
+---
+Index: src/osgEarth/ShaderGenerator.cpp
+<+>UTF-8
+===================================================================
+diff --git a/src/osgEarth/ShaderGenerator.cpp b/src/osgEarth/ShaderGenerator.cpp
+--- src/osgEarth/ShaderGenerator.cpp	(revision 5907ce0dc8de62d217f76f6060b38a4e879e21c1)
++++ src/osgEarth/ShaderGenerator.cpp	(date 1749753491179)
+@@ -15,6 +15,7 @@
+ #include "ShaderLoader"
+ 
+ #include <osg/PagedLOD>
++#include <osg/Point>
+ #include <osg/ProxyNode>
+ #include <osg/Texture1D>
+ #include <osg/Texture3D>

@@ -2,9 +2,9 @@
 
 pkgname=osgearth-git
 _gitname=osgearth
-pkgver=3.7.1.r15430.6fa787cff
+pkgver=3.7.3.r15798.1dbd0c86b
 pkgrel=1
-pkgdesc="A terrain rendering toolkit for OpenSceneGraph"
+pkgdesc="A terrain rendering toolkit for OpenSceneGraph (git version)"
 arch=('i686' 'x86_64')
 url='http://www.osgearth.org'
 license=('LGPL')
@@ -14,23 +14,28 @@ optdepends=('geos: Improved vector support'
             'libzip: Archive support'
             'blend2d: Blend2D support')
 makedepends=('git' 'cmake')
-source=("$_gitname::git+https://github.com/gwaldron/osgearth")
+source=("$_gitname::git+https://github.com/gwaldron/osgearth" 'include-osg-Point-header.patch')
 provides=('osgearth')
 conflicts=('osgearth-qt4' 'osgearth')
-md5sums=('SKIP')
+md5sums=('SKIP' 'SKIP')
 
 pkgver() {
 	cd "${srcdir}/${_gitname}"
-    VERSION=$(python -c "import sys; import re; cmake_filename = 'CMakeLists.txt'; cmake_file = open(cmake_filename, 'r'); cmake_vars_regex = r'(set\s*\()([^\s]+)\s*([^)]+)'; vars = dict(list(map(lambda varline: (re.search(cmake_vars_regex, varline).group(2), re.search(cmake_vars_regex, varline).group(3)), filter(lambda line: line.startswith('set('), cmake_file.read().split('\n'))))); major_version = vars['OSGEARTH_MAJOR_VERSION']; minor_version = vars['OSGEARTH_MINOR_VERSION']; build_version = vars['OSGEARTH_PATCH_VERSION']; version = f'{major_version}.{minor_version}.{build_version}'; print(version)")
-    printf "${VERSION}.r$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+    cmake_version=$(python ${srcdir}/../../read_cmake_version.py CMakeLists.txt OSGEARTH_MAJOR_VERSION OSGEARTH_MINOR_VERSION OSGEARTH_PATCH_VERSION)
+    printf "${cmake_version}.r$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
 }
 
 build() {
     cd "$srcdir/$_gitname"
 
-    mkdir -p build && cd build
+    patch -Np0 -i ${srcdir}/include-osg-Point-header.patch
+
+    mkdir -p cmake-build-release && cd cmake-build-release
+
+    jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+
     cmake .. \
-    		-DLIB_POSTFIX= \
+        -DLIB_POSTFIX= \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DCMAKE_BUILD_TYPE=Release \
         -DOpenGL_GL_PREFERENCE=GLVND \
@@ -38,16 +43,15 @@ build() {
         -DOSGEARTH_INSTALL_SHADERS=ON \
         -DOSGEARTH_ENABLE_NVTT_CPU_MIPMAPS=ON \
          -DROCKSDB_LIBRARY=/usr/lib/librocksdb.so
-    make
+    make -j$jobs
 }
 
 package() {
-   cd "$srcdir/$_gitname"/build
-   make DESTDIR="$pkgdir" install
-   mkdir -p "$pkgdir"/usr/share/osgearth
-   cp -r "$srcdir"/$_gitname/tests "$pkgdir"/usr/share/osgearth
-   cp -r "$srcdir"/$_gitname/data "$pkgdir"/usr/share/osgearth
-   
-  install -Dm 644 ../CMakeModules/FindOsgEarth.cmake "$pkgdir/usr/share/cmake/Modules/FindOsgEarth.cmake"
-  install -Dm 644 ../LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+    cd "$srcdir/$_gitname"/cmake-build-release
+    make DESTDIR="$pkgdir" install
+    mkdir -p "$pkgdir"/usr/share/osgearth
+    cp -r "$srcdir"/$_gitname/tests "$pkgdir"/usr/share/osgearth
+    cp -r "$srcdir"/$_gitname/data "$pkgdir"/usr/share/osgearth
+
+    install -Dm 644 ../LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
