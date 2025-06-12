@@ -2,9 +2,9 @@
 
 pkgname=pcl-git
 _pkgname=pcl
-pkgver=1.15.0.r14550.46f15a61d
+pkgver=1.15.0.r14554.c9a17509b
 pkgrel=1
-pkgdesc="a standalone, large scale, open project for 2D/3D image and point cloud processing"
+pkgdesc="a standalone, large scale, open project for 2D/3D image and point cloud processing (git version)"
 arch=(i686 x86_64)
 url="http://pointclouds.org/"
 license=('BSD')
@@ -36,11 +36,13 @@ pkgver() {
 	printf "${VERSION}.${REVISION}"
 }
 
-prepare() {
+build() {
   cd ${srcdir}/${_pkgname}
   mkdir -p cmake-build-release && cd cmake-build-release
 
-  cmake ${srcdir}/${_pkgname} \
+  jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+
+  cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_2d=ON \
@@ -79,13 +81,8 @@ prepare() {
     -DWITH_QT=ON \
     -DWITH_RSSDK=OFF \
     -DWITH_RSSDK2=ON \
-    -DWITH_VTK=ON \
-  .. 
-}
-
-build() {
-    cd ${srcdir}/${_pkgname}/cmake-build-release
-    make
+    -DWITH_VTK=ON
+  make -j$jobs
 }
 
 package() {
