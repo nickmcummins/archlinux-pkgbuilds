@@ -8,7 +8,7 @@
 name=cloudcompare
 pkgname=${name}-git
 _pkgname=CloudCompare
-pkgver=2.13.1.r5060.ff7926cd9
+pkgver=2.13.1.r5078.8894a7568
 pkgrel=1
 pkgdesc="A 3D point cloud (and triangular mesh) processing software (git version)"
 arch=('i686' 'x86_64')
@@ -47,6 +47,8 @@ build() {
   cd ${srcdir}/${_pkgname}
 
   mkdir -p cmake-build-release && cd cmake-build-release
+
+  jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
 
   cmake .. \
         -Wno-dev \
@@ -102,7 +104,7 @@ build() {
         -DINSTALL_QFACETS_PLUGIN=ON \
         -DOPTION_USE_SHAPE_LIB=ON \
         -DEIGEN_ROOT_DIR=/usr/include/eigen3
-  make
+  make -j$jobs
 }
 
 package() {
