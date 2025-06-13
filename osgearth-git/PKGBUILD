@@ -18,6 +18,7 @@ source=("$_gitname::git+https://github.com/gwaldron/osgearth" 'include-osg-Point
 provides=('osgearth')
 conflicts=('osgearth-qt4' 'osgearth')
 md5sums=('SKIP' 'SKIP')
+PKGEXT='.pkg.tar.lzo'
 
 pkgver() {
 	cd "${srcdir}/${_gitname}"
@@ -41,6 +42,8 @@ build() {
         -DOpenGL_GL_PREFERENCE=GLVND \
         -DOSGEARTH_BUILD_LEGACY_MP_TERRAIN_ENGINE=OFF \
         -DOSGEARTH_INSTALL_SHADERS=ON \
+        -DOSGEARTH_INSTALL_PLUGINSDIR=lib/osgEarthPlugins \
+        -DOSGEARTH_ENABLE_GEOCODER=ON \
         -DOSGEARTH_ENABLE_NVTT_CPU_MIPMAPS=ON \
          -DROCKSDB_LIBRARY=/usr/lib/librocksdb.so
     make -j$jobs
