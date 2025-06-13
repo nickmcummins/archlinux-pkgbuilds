@@ -1,6 +1,6 @@
 pkgname=saga-gis-git
 _pkgname=saga-gis
-pkgver=9.9.0.r6561.d61b5397f
+pkgver=9.9.0.r6656.66325d322
 pkgrel=1
 pkgdesc="A Geographic Information System (GIS) software with immense capabilities for geodata processing and analysis. (git version)"
 url="http://www.saga-gis.org"
@@ -36,13 +36,15 @@ build() {
 
   mkdir -p cmake-build-release && cd cmake-build-release
 
+  jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_SHARED_LIBS=ON \
     -DWITH_GUI=ON \
     -DWITH_TOOLS=ON
-  make
+  make -j$jobs
 }
 
 package () {
