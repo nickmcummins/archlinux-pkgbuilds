@@ -2,7 +2,7 @@
 
 _name=PDAL
 pkgname=pdal-git
-pkgver=2.8.4.r10169.6fbc4e615
+pkgver=2.9.0.r10187.1ad7e59fc
 pkgrel=1
 pkgdesc="A C++ library for translating and manipulating point cloud data. (git version)"
 arch=('x86_64')
@@ -31,17 +31,16 @@ sha512sums=('SKIP' 'SKIP')
 
 pkgver() {
     cd ${srcdir}/${_name}
-    # Use the tag of the last commit
-	REVISION=$(printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)")
-	GITTAGS=$(git tag)
-	VERSION=$(python -c "import os; print(list(filter(lambda tag: len(tag) > 0 and tag[0].isdigit(), os.popen('git tag').read().split('\n')))[-1])")
-	printf "${VERSION}.${REVISION}"
+    cmake_version=$(python ${srcdir}/../../read_cmake_version.py CMakeLists.txt project)
+    printf "%s.r%s.%s" "$cmake_version" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 build() {
     cd ${srcdir}/${_name}
 
     patch -Np0 -i ${srcdir}/include-cstdint-in-VSIIO-cpp.patch
+
+    jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
 
     mkdir -p cmake-build-release && cd cmake-build-release
 
@@ -73,7 +72,7 @@ build() {
         -DLASZIP_INCLUDE_DIR=/usr/include \
         -DLASZIP_LIBRARY=/usr/lib/liblaszip.so
 
-    make
+  make -j$jobs
 }
 
 package() {
