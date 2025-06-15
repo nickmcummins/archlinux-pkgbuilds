@@ -3,7 +3,7 @@
 
 pkgname=snowman-git
 _pkgname=snowman
-pkgver=r761.4c3e5d0
+pkgver=r762.261ae13
 pkgrel=1
 pkgdesc="Native code to C/C++ decompiler (supporting x86, amd64 and arm)"
 arch=('any')
@@ -11,7 +11,7 @@ url="http://derevenets.com/"
 license=('GPL3')
 depends=('qt5-base')
 makedepends=('git' 'cmake' 'boost')
-source=("$_pkgname::git+https://github.com/djaessel/snowman.git" 'uint-to-unsigned-int.patch')
+source=("$_pkgname::git+https://github.com/djaessel/snowman.git#branch=classner" 'uint-to-unsigned-int.patch')
 sha512sums=('SKIP' 'SKIP')
 
 pkgver() {
@@ -23,6 +23,8 @@ build() {
     cd ${srcdir}/${_pkgname}/src
     patch -Np0 -i ${srcdir}/uint-to-unsigned-int.patch
 
+    jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+
     mkdir -p cmake-build-release && cd cmake-build-release
     cmake .. \
         -DCMAKE_INSTALL_PREFIX=/usr \
@@ -31,8 +33,7 @@ build() {
         -DCAPSTONE_BUILD_SHARED=ON \
         -DCAPSTONE_BUILD_STATIC=ON \
         -DCAPSTONE_X86_SUPPORT=ON
-
-    make
+    make -j$jobs
 }
 
 package() {
