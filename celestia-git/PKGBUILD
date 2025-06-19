@@ -5,8 +5,7 @@
 # Maintainer: Nick M Cummins <nickmcummins@linuxmail.org>
 pkgname=celestia-git
 _pkgname=celestia
-pkgver=1.6.2.r7218.cb9ede89c
-_pkgver=1.6.2
+pkgver=1.7.0.r7228.814c49354
 pkgrel=1
 pkgdesc="Real-time space simulation (git checkout)"
 arch=(x86_64)
@@ -26,13 +25,16 @@ prepare() {
 
 pkgver() {
   cd ${srcdir}/${_pkgname}
-  printf "${_pkgver}.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+  cmake_version=$(python ${srcdir}/../../read_cmake_version.py CMakeLists.txt project)
+  printf "$cmake_version.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 build() {
   cd ${srcdir}/${_pkgname}
 
   mkdir -p cmake-build-release && cd cmake-build-release
+
+  jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
 
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
@@ -49,7 +51,7 @@ build() {
     -DENABLE_TOOLS=ON \
     -DENABLE_WIN=OFF
 
-  make
+  make -j$jobs
 
   cd ${srcdir}/CelestiaContent
   mkdir -p cmake-build-release && cd cmake-build-release
@@ -57,7 +59,7 @@ build() {
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_DATADIR=/usr/share
-  make
+  make -j$jobs
 
 }
 
