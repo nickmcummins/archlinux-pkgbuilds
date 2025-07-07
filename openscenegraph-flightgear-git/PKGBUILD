@@ -3,7 +3,7 @@
 
 pkgname=openscenegraph-flightgear-git
 _pkgname=openscenegraph
-pkgver=3.6.5.r16234.94cf6995c
+pkgver=3.6.5.r16235.b58401e81
 _pkgver=3.6.5
 pkgrel=1
 pkgdesc="An open source, high performance real-time graphics toolkit - fork for the FlightGear project"
@@ -29,6 +29,8 @@ prepare() {
 build() {
   cd "${srcdir}/${_pkgname}"
 
+  jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+
   mkdir -p cmake-build-release && cd cmake-build-release
 
   cmake .. \
@@ -37,7 +39,7 @@ build() {
     -DLIBRARY_OUTPUT_PATH=/opt/openscenegraph-flightgear/lib \
     -DCMAKE_BUILD_TYPE=Release \
     -DOpenGL_GL_PREFERENCE=LEGACY
-  make
+  make -j$jobs
 }
 
 package(){
