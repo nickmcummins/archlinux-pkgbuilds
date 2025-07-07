@@ -2,7 +2,7 @@
 
 pkgname=cesium-native-git
 _pkgname=cesium-native
-pkgver=0.48.0.r6801.94fbad24b
+pkgver=0.48.0.r6964.70bd62a9f
 pkgrel=1
 pkgdesc="A set of C++ libraries for 3D geospatial, including 3D tiles runtime streaming, lightweight glTF serialization/deserialization, high-precision 3D geospatial math types and functions, and support for draping raster overlays from WMS, TMS, WMTS, and other sources over 3D tilesets. (git version)"
 arch=('x86_64')
