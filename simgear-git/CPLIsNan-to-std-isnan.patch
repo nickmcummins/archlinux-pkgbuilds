@@ -1,0 +1,16 @@
+---
+Index: simgear/scene/dem/SGDemTile_gdal.cxx
+<+>UTF-8
+===================================================================
+diff --git a/simgear/scene/dem/SGDemTile_gdal.cxx b/simgear/scene/dem/SGDemTile_gdal.cxx
+--- simgear/scene/dem/SGDemTile_gdal.cxx	(revision 00890486067bb2e9fe22f45ef1875fef398cdbca)
++++ simgear/scene/dem/SGDemTile_gdal.cxx	(date 1751929883966)
+@@ -546,7 +546,7 @@
+ 
+     if( bHaveNodata )
+     {
+-        if (CPLIsNan(dfReal))
++        if (std::isnan(dfReal))
+             printf( "Using internal nodata values (e.g. nan) for image %s.\n",
+                     pszSrcFile );
+         else

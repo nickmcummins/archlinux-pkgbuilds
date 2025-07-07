@@ -6,7 +6,7 @@
 
 pkgname=simgear-git
 _pkgname=simgear
-pkgver=2024.2.0.r6580.28a8e39d
+pkgver=2024.2.0.r6600.00890486
 pkgrel=1
 pkgdesc="A set of open-source libraries designed to be used as building blocks for quickly assembling 3d simulations, games, and visualization applications. (git version)"
 arch=('x86_64')
@@ -17,8 +17,8 @@ makedepends=('boost' 'cmake' 'git' 'mesa')
 provides=("simgear=${pkgver}")
 conflicts=('simgear')
 options=('staticlibs')
-source=('simgear::git+https://git.code.sf.net/p/flightgear/simgear' '0001-remove_boost_lexical.patch' '0002-remove_boost_containers.patch')
-md5sums=('SKIP' 'SKIP' 'SKIP')
+source=('simgear::git+https://git.code.sf.net/p/flightgear/simgear' '0001-remove_boost_lexical.patch' '0002-remove_boost_containers.patch' 'CPLIsNan-to-std-isnan.patch')
+md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
 
 pkgver() {
   cd ${srcdir}/${_pkgname}
@@ -29,6 +29,9 @@ build() {
   cd ${srcdir}/${_pkgname}
   patch -Np0 -i ${srcdir}/0001-remove_boost_lexical.patch
   patch -Np0 -i ${srcdir}/0002-remove_boost_containers.patch
+  patch -Np0 -i ${srcdir}/CPLIsNan-to-std-isnan.patch
+
+  jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
 
   mkdir -p cmake-build-release && cd cmake-build-release
   cmake .. \
@@ -43,7 +46,7 @@ build() {
     -DENABLE_GDAL=ON \
     -DENABLE_TESTS=off \
     -DSIMGEAR_SHARED=ON
-  make
+  make -j$jobs
 }
 
 package() {
