@@ -1,25 +1,23 @@
-# Maintainer: Yamada Hayao <hayao@fascode.net>
+# Original Maintainer: Yamada Hayao <hayao@fascode.net>
 # Contributor: Nick M Cummins <nickmcummins@linuxmail.org>
 
 pkgname=win11-gtk-theme-git
-_themename=Windows-11
-pkgver=r10.62225c3
+pkgver=r13.1019d72
 pkgrel=1
-pkgdesc="GTK theme like Windows 11"
+pkgdesc='Win11 like theme for all gtk based desktops (git version)'
 arch=('any')
-url='https://github.com/zayronxio/windows11-GTKtheme'
+url='https://github.com/yeyushengfan258/Win11-gtk-theme'
 license=('GPL')
-depends=()
-optdepends=()
-source=("${_themename}::git+https://github.com/zayronxio/windows11-GTKtheme.git")
+depends=('gtk-engine-murrine' 'gnome-themes-extra' 'gtk3')
+makedepends=('sassc')
+source=('git+https://github.com/yeyushengfan258/Win11-gtk-theme.git')
 md5sums=('SKIP')
-
 pkgver() {
-    cd "${_themename}"
+    cd ${srcdir}/Win11-gtk-theme
     printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 package() {
-    install -dm755 "${pkgdir}/usr/share/themes"
-    cp -r "${srcdir}/${_themename}" "${pkgdir}/usr/share/themes"
+    cd ${srcdir}/Win11-gtk-theme
+    ./install.sh -d ${pkgdir}/usr/share/themes
 }
