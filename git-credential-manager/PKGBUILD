@@ -1,0 +1,22 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail.org>
+
+pkgname=git-credential-manager
+pkgver=2.6.1
+pkgrel=1
+pkgdesc="Cross Platform Git Credential Manager command line utility. Supports authentication with a number of Git hosting providers including GitHub, BitBucket, and Azure DevOps."
+arch=('x86_64')
+url="https://aka.ms/gcm"
+provides=('git-credential-manager')
+source=("https://github.com/git-ecosystem/git-credential-manager/releases/download/v${pkgver}/gcm-linux_amd64.${pkgver}.tar.gz")
+sha1sums=('SKIP')
+options=('!strip')
+PKGEXT='.pkg.tar.lzo'
+
+package() {
+    cd ${srcdir}
+    install -d -m755 ${pkgdir}/usr/bin
+    install -d -m755 ${pkgdir}/usr/lib
+
+    install -t ${pkgdir}/usr/bin git-credential-manager
+    install -t ${pkgdir}/usr/lib *.so
+}
