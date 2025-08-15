@@ -2,7 +2,7 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.5.20250716.r94955.778a81dd2f
+pkgver=9.5.20250809.r95295.d7724e834f
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization'
 arch=('i686' 'x86_64')
@@ -93,6 +93,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_FiltersHyperTree=YES \
     -DVTK_MODULE_ENABLE_VTK_FiltersImaging=YES \
     -DVTK_MODULE_ENABLE_VTK_FiltersModeling=YES \
+    -DVTK_MODULE_ENABLE_VTK_FiltersONNX=NO \
     -DVTK_MODULE_ENABLE_VTK_FiltersOpenTURNS=YES \
     -DVTK_MODULE_ENABLE_VTK_FiltersParallel=YES \
     -DVTK_MODULE_ENABLE_VTK_FiltersParallelDIY2=NO \
