@@ -6,7 +6,7 @@
 
 pkgname=stellarium-git
 _pkgname=stellarium
-pkgver=25.1.r32483.7da2825000
+pkgver=25.2.r33332.f3d4099dbc
 pkgrel=1
 pkgdesc="Software which renders realistic skies in real time with OpenGL (git version)"
 arch=(x86_64)
