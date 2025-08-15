@@ -2,7 +2,7 @@
 
 pkgname=osgearth-git
 _gitname=osgearth
-pkgver=3.7.3.r15798.1dbd0c86b
+pkgver=3.7.3.r15836.418676cb7
 pkgrel=1
 pkgdesc="A terrain rendering toolkit for OpenSceneGraph (git version)"
 arch=('i686' 'x86_64')
@@ -39,6 +39,7 @@ build() {
         -DLIB_POSTFIX= \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_CXX_FLAGS=-Wno-error=format-security \
         -DOpenGL_GL_PREFERENCE=GLVND \
         -DOSGEARTH_BUILD_LEGACY_MP_TERRAIN_ENGINE=OFF \
         -DOSGEARTH_INSTALL_SHADERS=ON \
