@@ -2,7 +2,7 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.5.20250809.r95295.d7724e834f
+pkgver=9.5.20250828.r95421.3d54e860f1
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization'
 arch=('i686' 'x86_64')
@@ -35,6 +35,7 @@ build() {
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_CUDA_COMPILER=/opt/cuda/bin/nvcc \
+    -DCMAKE_CXX_FLAGS=-Wno-error=format-security \
     -DBUILD_SHARED_LIBS=ON \
     -DVTK_BUILD_ALL_MODULES=ON \
     -DVTK_BUILD_DOCUMENTATION=OFF \
@@ -291,6 +292,7 @@ build() {
     -DVTK_MODULE_USE_EXTERNAL_VTK_doubleconversion=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_eigen=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_expat=ON \
+    -DVTK_MODULE_USE_EXTERNAL_VTK_fast_float=OFF \
     -DVTK_MODULE_USE_EXTERNAL_VTK_freetype=ON \
     -DVTK_MODULE_USE_EXTERNAL_VTK_fmt=OFF \
     -DVTK_MODULE_USE_EXTERNAL_VTK_hdf5=OFF \
