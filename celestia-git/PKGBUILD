@@ -5,7 +5,7 @@
 # Maintainer: Nick M Cummins <nickmcummins@linuxmail.org>
 pkgname=celestia-git
 _pkgname=celestia
-pkgver=1.7.0.r7280.0d3989825
+pkgver=1.7.0.r7281.f450e5ef3
 pkgrel=1
 pkgdesc="Real-time space simulation (git checkout)"
 arch=(x86_64)
