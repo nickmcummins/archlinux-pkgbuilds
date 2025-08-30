@@ -1,18 +1,18 @@
 # Maintainer: Nick M Cummins <nickmcummins dot linuxmail.org>
 
 pkgname=displaz-git
-pkgver=0.5.0.r928.07f55d8
+pkgver=0.5.0.r929.9d0d77e
 pkgrel=1
 _pkgname=displaz
 pkgdesc='A lidar viewer for geospatial point clouds (git version)'
 arch=('any')
 url='http://c42f.github.io/displaz'
-depends=('fgt' 'laslib')
+depends=('fgt' 'laslib' 'imath')
 makedepends=('dex' 'desktop-file-utils')
 provides=('displaz')
 conflicts=('displaz')
-source=("git+https://github.com/c42f/displaz")
-sha1sums=('SKIP')
+source=("git+https://github.com/c42f/displaz" 'CMakeLists-CPack-README-rst-to-md.patch')
+sha1sums=('SKIP' 'SKIP')
 
 pkgver() {
     cd ${srcdir}/${_pkgname}
@@ -23,6 +23,8 @@ pkgver() {
 build() {
     cd ${srcdir}/${_pkgname}
 
+    patch -Np0 -i ${srcdir}/CMakeLists-CPack-README-rst-to-md.patch
+
     jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
 
     mkdir -p cmake-build-release && cd cmake-build-release
@@ -32,6 +34,7 @@ build() {
       -DCMAKE_INSTALL_LIBDIR=lib \
       -DCMAKE_BUILD_TYPE=Release \
       -DBUILD_SHARED_LIBS=ON \
+      -DIMATH_IMATH_LIBRARY=/usr/lib/libImath.so \
       -DLASLIB_INCLUDE_DIRS=/usr/include/LASlib \
       -DLASLIB_LIBRARY=/usr/lib/LASlib/libLASlib.so
     make -j$jobs
