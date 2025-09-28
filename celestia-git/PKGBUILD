@@ -18,6 +18,7 @@ depends=('gtk2' 'libtheora' 'lua53' 'gtkglext' 'freeglut' 'libxmu' 'glu' 'libjpe
 source=("${_pkgname}::git+https://github.com/CelestiaProject/Celestia" 'git+https://github.com/CelestiaProject/CelestiaContent' 'include-cassert-body.h.patch' 'std-array-render.cpp.patch')
 md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
 sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
+PKGEXT='.pkg.tar.lzo'
 
 prepare() {
    cd ${srcdir}/${_pkgname}
@@ -47,13 +48,15 @@ build() {
     -DCMAKE_SKIP_RPATH=ON \
     -DENABLE_CELX=ON \
     -DENABLE_FFMPEG=ON \
+    -DENABLE_LIBAVIF=ON \
     -DENABLE_NLS=OFF \
     -DENABLE_QT5=OFF \
     -DENABLE_QT6=ON \
     -DENABLE_SDL=OFF \
     -DENABLE_SPICE=OFF \
     -DENABLE_TOOLS=ON \
-    -DENABLE_WIN=OFF
+    -DENABLE_WIN=OFF \
+    -DUSE_MESHOPTIMIZER=ON
 
   make -j$jobs
 
