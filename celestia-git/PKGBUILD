@@ -3,9 +3,10 @@
 # Contributor: Ronald van Haren <ronald.archlinux.org>
 # Contributor: Damir Perisa <damir.perisa@bluewin.ch>
 # Maintainer: Nick M Cummins <nickmcummins@linuxmail.org>
+
 pkgname=celestia-git
 _pkgname=celestia
-pkgver=1.7.0.r7281.f450e5ef3
+pkgver=1.7.0.r7285.a5d667064
 pkgrel=1
 pkgdesc="Real-time space simulation (git checkout)"
 arch=(x86_64)
@@ -14,9 +15,9 @@ url="https://celestia.space"
 provides=('celestia')
 conflicts=('celestia')
 depends=('gtk2' 'libtheora' 'lua53' 'gtkglext' 'freeglut' 'libxmu' 'glu' 'libjpeg-turbo' 'mesa' 'qt6-5compat' 'meshoptimizer' 'spice')
-source=("${_pkgname}::git+https://github.com/CelestiaProject/Celestia" 'git+https://github.com/CelestiaProject/CelestiaContent')
-md5sums=('SKIP' 'SKIP')
-sha256sums=('SKIP' 'SKIP')
+source=("${_pkgname}::git+https://github.com/CelestiaProject/Celestia" 'git+https://github.com/CelestiaProject/CelestiaContent' 'include-cassert-body.h.patch' 'std-array-render.cpp.patch')
+md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
+sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
 
 prepare() {
    cd ${srcdir}/${_pkgname}
@@ -31,6 +32,9 @@ pkgver() {
 
 build() {
   cd ${srcdir}/${_pkgname}
+
+  patch -Np0 -i ${srcdir}/include-cassert-body.h.patch
+  patch -Np0 -i ${srcdir}/std-array-render.cpp.patch
 
   mkdir -p cmake-build-release && cd cmake-build-release
 

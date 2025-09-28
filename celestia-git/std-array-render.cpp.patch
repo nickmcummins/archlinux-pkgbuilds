@@ -1,0 +1,16 @@
+---
+Index: src/celengine/render.cpp
+<+>UTF-8
+===================================================================
+diff --git a/src/celengine/render.cpp b/src/celengine/render.cpp
+--- src/celengine/render.cpp	(revision a5d667064066b9f5a97f8a68cc4b978798b0c446)
++++ src/celengine/render.cpp	(date 1759026237736)
+@@ -4518,7 +4518,7 @@
+         uint8_t color[4]; // NOSONAR
+     };
+ 
+-    array<RectVtx, 4> vertices = {
++    std::array<RectVtx, 4> vertices = {
+         RectVtx{ r.x,       r.y,       0.0f, 1.0f, {} },
+         RectVtx{ r.x + r.w, r.y,       1.0f, 1.0f, {} },
+         RectVtx{ r.x + r.w, r.y + r.h, 1.0f, 0.0f, {} },

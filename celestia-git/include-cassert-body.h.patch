@@ -1,0 +1,15 @@
+---
+Index: src/celengine/body.h
+<+>UTF-8
+===================================================================
+diff --git a/src/celengine/body.h b/src/celengine/body.h
+--- src/celengine/body.h	(revision a5d667064066b9f5a97f8a68cc4b978798b0c446)
++++ src/celengine/body.h	(date 1759026237716)
+@@ -28,6 +28,7 @@
+ #include <celutil/utf8.h>
+ #include "multitexture.h"
+ #include "surface.h"
++#include <cassert>
+ 
+ class Atmosphere;
+ class Body;
