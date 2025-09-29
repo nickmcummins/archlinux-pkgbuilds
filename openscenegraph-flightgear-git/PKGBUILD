@@ -1,12 +1,11 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
 
-
 pkgname=openscenegraph-flightgear-git
 _pkgname=openscenegraph
-pkgver=3.6.5.r16235.b58401e81
+pkgver=3.6.5.r16238.7ee1243a1
 _pkgver=3.6.5
 pkgrel=1
-pkgdesc="An open source, high performance real-time graphics toolkit - fork for the FlightGear project"
+pkgdesc="An open source, high performance real-time graphics toolkit - fork for the FlightGear project (git version)"
 arch=('x86_64')
 url="https://gitlab.com/flightgear/openscenegraph"
 license=('custom:OSGPL')
