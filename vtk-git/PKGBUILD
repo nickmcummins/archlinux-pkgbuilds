@@ -2,7 +2,7 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.5.20250909.r95564.f365966b9f
+pkgver=9.5.20250929.r95775.493c0a5b72
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization'
 arch=('i686' 'x86_64')
@@ -35,6 +35,8 @@ build() {
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_CUDA_COMPILER=/opt/cuda/bin/nvcc \
+    -DCMAKE_CUDA_FLAGS=-std=c++17 \
+    -DCMAKE_CUDA_STANDARD=17 \
     -DCMAKE_CXX_FLAGS=-Wno-error=format-security \
     -DBUILD_SHARED_LIBS=ON \
     -DVTK_BUILD_ALL_MODULES=ON \
@@ -103,6 +105,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_FiltersParallelImaging=NO \
     -DVTK_MODULE_ENABLE_VTK_FiltersParallelMPI=NO \
     -DVTK_MODULE_ENABLE_VTK_ParallelMomentInvariants=NO \
+    -DVTK_USE_LARGE_DATA=OFF \
     -DVTK_MODULE_ENABLE_VTK_FiltersParallelStatistics=NO \
     -DVTK_MODULE_ENABLE_VTK_FiltersParallelVerdict=NO \
     -DVTK_MODULE_ENABLE_VTK_FiltersPoints=YES \
@@ -282,7 +285,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_tiff=YES \
     -DVTK_MODULE_ENABLE_VTK_utf8=YES \
     -DVTK_MODULE_ENABLE_VTK_verdict=YES \
-    -DVTK_MODULE_ENABLE_VTK_viskores=YES \
+    -DVTK_MODULE_ENABLE_VTK_vtkviskores=NO \
     -DVTK_MODULE_ENABLE_VTK_vpic=YES \
     -DVTK_MODULE_ENABLE_VTK_vtkDICOM=YES \
     -DVTK_MODULE_ENABLE_VTK_vtksys=YES \
