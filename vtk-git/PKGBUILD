@@ -4,7 +4,7 @@ pkgname=vtk-git
 _pkgname=vtk
 pkgver=9.5.20250929.r95775.493c0a5b72
 pkgrel=1
-pkgdesc='A software system for 3D computer graphics, image processing, and visualization'
+pkgdesc='A software system for 3D computer graphics, image processing, and visualization (git version)'
 arch=('i686' 'x86_64')
 url='http://www.vtk.org'
 license=('BSD')
@@ -35,7 +35,6 @@ build() {
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_CUDA_COMPILER=/opt/cuda/bin/nvcc \
-    -DCMAKE_CUDA_FLAGS=-std=c++17 \
     -DCMAKE_CUDA_STANDARD=17 \
     -DCMAKE_CXX_FLAGS=-Wno-error=format-security \
     -DBUILD_SHARED_LIBS=ON \
