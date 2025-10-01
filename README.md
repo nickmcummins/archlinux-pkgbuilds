@@ -1,5 +1,7 @@
 # archlinux-pkgbuilds
 ![archlinux-pkgbuilds dependency tree visualization](https://raw.githubusercontent.com/nickmcummins/archlinux-pkgbuilds/master/archlinux-pkgbuilds-dependency-tree.png)
+## celestia-git
+![celestia-git Screenshot](https://raw.githubusercontent.com/nickmcummins/archlinux-pkgbuilds/master/screenshots/celestia-git.png)
 ## cloudcompare-git
 ![cloudcompare-git Screenshot](https://raw.githubusercontent.com/nickmcummins/archlinux-pkgbuilds/master/screenshots/cloudcompare-git.png)
 ## displaz-git
