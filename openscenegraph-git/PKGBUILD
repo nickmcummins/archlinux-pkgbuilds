@@ -1,12 +1,11 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
 
-
 pkgname=openscenegraph-git
 _pkgname=openscenegraph
 pkgver=3.7.0.r16331.2e4ae2ea9
 _pkgver=3.7.0
 pkgrel=1
-pkgdesc="An open source, high performance real-time graphics toolkit"
+pkgdesc="An open source, high performance real-time graphics toolkit (git version)"
 arch=('x86_64')
 url="http://www.openscenegraph.org"
 license=('custom:OSGPL')
@@ -37,6 +36,8 @@ build() {
 
   mkdir -p cmake-build-release && cd cmake-build-release
 
+  jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DLIBRARY_OUTPUT_PATH=/usr/lib \
@@ -49,6 +50,7 @@ build() {
     -DBUILD_OSG_APPLICATIONS=ON \
     -DBUILD_DEPRECATED_SERIALIZERS=ON \
     -DBUILD_OSG_EXAMPLES=ON \
+    -DBUILD_OSG_PACKAGES=ON \
     -DBUILD_OSG_PLUGINS=ON \
     -DBUILD_OSG_PLUGINS_BY_DEFAULT=ON \
     -DOPENCASCADE_INCLUDE_DIR=/usr/include/opencascade \
@@ -60,7 +62,7 @@ build() {
     -DOSG_GL_CONTEXT_VERSION=2.0 \
     -DOSG_GL_DISPLAYLISTS_AVAILABLE=ON \
     -DOpenGL_GL_PREFERENCE=LEGACY
-  make
+  make -j$jobs
 }
 
 package(){
