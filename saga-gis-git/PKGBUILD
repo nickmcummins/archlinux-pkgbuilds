@@ -1,6 +1,6 @@
 pkgname=saga-gis-git
 _pkgname=saga-gis
-pkgver=9.9.0.r6656.66325d322
+pkgver=9.10.0.r6832.039b0cda1
 pkgrel=1
 pkgdesc="A Geographic Information System (GIS) software with immense capabilities for geodata processing and analysis. (git version)"
 url="http://www.saga-gis.org"
@@ -29,7 +29,6 @@ pkgver() {
   cmake_version=$(python ${srcdir}/../../read_cmake_version.py version.cmake SAGA_VERSION_MAJOR SAGA_VERSION_MINOR SAGA_VERSION_PATCH)
   printf "${cmake_version}.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
-
 
 build() {
   cd ${srcdir}/${_pkgname}/${_pkgname}
