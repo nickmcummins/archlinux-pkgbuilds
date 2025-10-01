@@ -1,0 +1,66 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+
+pkgname=3dforest-git
+_pkgname=3d-forest
+pkgver=1.0.r1575.b38dee8a
+_pkgver=1.0.0
+pkgrel=1
+_buildtype=debug
+pkgdesc="Visualization, processing and analysis of Lidar point clouds, mainly focused on forest environment. New version of 3D Forest. Process files with terabytes of data. (git version)"
+arch=(x86_64)
+url="https://www.3dforest.eu"
+license=(GPL3)
+depends=('libxkbcommon' 'libglvnd' 'qt6-base')
+makedepends=('cmake' 'advancecomp' 'optipng' 'pngout' 'dex')
+provides=('3dforest')
+conflicts=('3dforest')
+options=(debug !strip)
+source=('git+https://github.com/VUKOZ-OEL/3d-forest#branch=vb' 'include-cstdint-header-for-uint.patch' 'read-plugins-from-usr-lib-instead-of-usr-bin-plugins.patch')
+sha256sums=('SKIP' 'SKIP' 'SKIP')
+
+pkgver() {
+    cd ${srcdir}/3d-forest
+    cmake_version=$(python ${srcdir}/../../read_cmake_version.py CMakeLists.txt project)
+    printf "%s.r%s.%s" "$cmake_version" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+    cd ${srcdir}/3d-forest
+
+    patch -Np0 -i ${srcdir}/include-cstdint-header-for-uint.patch
+    patch -Np0 -i ${srcdir}/read-plugins-from-usr-lib-instead-of-usr-bin-plugins.patch
+
+    jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+    mkdir -p cmake-build-${_buildtype} && cd cmake-build-${_buildtype}
+
+    cmake_build_type=$(python -c 'import sys; print(sys.argv[1][0].upper() + sys.argv[1][1:])' ${_buildtype})
+    cmake .. \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DBUILD_EXAMPLES:BOOL=ON \
+        -DCMAKE_BUILD_TYPE=$cmake_build_type \
+        -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON \
+        -DBUILD_TESTS:BOOL=ON \
+        -DBUILD_DEVEL:BOOL=ON \
+        -DOpenGL_GL_PREFERENCE=GLVND
+    make -j$jobs
+}
+
+package() {
+    cd ${srcdir}/3d-forest/cmake-build-${_buildtype}
+    make DESTDIR="${pkgdir}" install
+
+    mkdir -p ${pkgdir}/usr/lib
+    mv ${pkgdir}/usr/bin/*.so ${pkgdir}/usr/lib
+    mv ${pkgdir}/usr/bin/plugins/*.so ${pkgdir}/usr/lib
+    rm -rf ${pkgdir}/usr/bin/plugins
+
+    install -Dm644 ${srcdir}/3d-forest/LICENSE ${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE
+
+    install -D -m 644 ${srcdir}/${_pkgname}/src/apps/3dforest/resources/3dforest.svg ${pkgdir}/usr/share/icons/hicolor/scalable/apps/3dforest.svg
+    for size in 16 24 32 48 64 128; do
+        pngout ${srcdir}/${_pkgname}/src/apps/3dforest/resources/3d-forest-${size}px.png -c3 -f3 -b128 -kbKGD -v &
+        optipng -o7 ${srcdir}/${_pkgname}/src/apps/3dforest/resources/3d-forest-${size}px.png
+        advpng -z4 ${srcdir}/${_pkgname}/src/apps/3dforest/resources/3d-forest-${size}px.png
+        install -D -m 644 ${srcdir}/${_pkgname}/src/apps/3dforest/resources/3d-forest-${size}px.png ${pkgdir}/usr/share/icons/hicolor/${size}x${size}/apps/${_pkgname}.png
+    done
+}

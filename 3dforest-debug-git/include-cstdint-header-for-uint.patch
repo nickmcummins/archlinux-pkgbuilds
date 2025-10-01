@@ -1,0 +1,28 @@
+---
+Index: src/core/ArgumentParser.hpp
+<+>UTF-8
+===================================================================
+diff --git a/src/core/ArgumentParser.hpp b/src/core/ArgumentParser.hpp
+--- src/core/ArgumentParser.hpp	(revision 7acf72a7717ef32128872bd9ffad3cc7175f32da)
++++ src/core/ArgumentParser.hpp	(date 1748729035276)
+@@ -30,6 +30,7 @@
+ #include <sstream>
+ #include <string>
+ #include <vector>
++#include <cstdint>
+ 
+ // Include 3D Forest.
+ #include <Error.hpp>
+Index: src/core/Json.hpp
+<+>UTF-8
+===================================================================
+--- src/core/Json.hpp	(revision 7acf72a7717ef32128872bd9ffad3cc7175f32da)
++++ src/core/Json.hpp	(date 1748728886556)
+@@ -30,6 +30,7 @@
+ #include <sstream>
+ #include <string>
+ #include <vector>
++#include <cstdint>
+ 
+ // Include 3D Forest.
+ #include <Error.hpp>
