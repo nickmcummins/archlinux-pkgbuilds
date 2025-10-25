@@ -6,7 +6,7 @@
 
 pkgname=stellarium-git
 _pkgname=stellarium
-pkgver=25.2.r33973.51251af066
+pkgver=25.3.r34387.82fe347100
 pkgrel=1
 pkgdesc="Software which renders realistic skies in real time with OpenGL (git version)"
 arch=(x86_64)
@@ -16,9 +16,9 @@ conflicts=('stellarium' 'stellarium-bin')
 provides=('stellarium')
 depends=('libpng' 'libglvnd' 'freetype2' 'openssl' 'gpsd' 'calcmysky' 'libindi' 'qt6-charts' 'qt6-serialport' 'qt6-multimedia' 'qt6-positioning' 'qt6-webengine') # 'qxlsx'
 makedepends=('cmake' 'ninja' 'mesa' 'qt6-tools')
-source=('git+https://github.com/Stellarium/stellarium')
-md5sums=('SKIP')
-sha256sums=('SKIP')
+source=('git+https://github.com/Stellarium/stellarium' 'include-QtQml-QJSEnginer-header.patch')
+md5sums=('SKIP' 'SKIP')
+sha256sums=('SKIP' 'SKIP')
 PKGEXT='.pkg.tar.lzo'
 
 pkgver() {
@@ -29,7 +29,9 @@ pkgver() {
 
 build() {
   cd ${srcdir}/${_pkgname}
-  
+
+  patch -Np0 -i ${srcdir}/include-QtQml-QJSEnginer-header.patch
+
   jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
 
   mkdir -p cmake-build-release && cd cmake-build-release

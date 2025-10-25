@@ -1,0 +1,31 @@
+---
+Index: src/scripting/StelMainScriptAPI.hpp
+<+>UTF-8
+===================================================================
+diff --git a/src/scripting/StelMainScriptAPI.hpp b/src/scripting/StelMainScriptAPI.hpp
+--- src/scripting/StelMainScriptAPI.hpp	(revision 82fe347100e68f57cf282f42184c1f0ad6ec9e18)
++++ src/scripting/StelMainScriptAPI.hpp	(date 1761362231287)
+@@ -25,7 +25,7 @@
+ #include <QStringList>
+ #include "V3d.hpp"
+ #ifdef ENABLE_SCRIPT_QML
+-#include <QJSEngine>
++#include <QtQml/QJSEngine>
+ #endif
+ #include "StelCore.hpp"
+ #include "VecMath.hpp"
+Index: src/scripting/StelScriptMgr.hpp
+<+>UTF-8
+===================================================================
+diff --git a/src/scripting/StelScriptMgr.hpp b/src/scripting/StelScriptMgr.hpp
+--- src/scripting/StelScriptMgr.hpp	(revision 82fe347100e68f57cf282f42184c1f0ad6ec9e18)
++++ src/scripting/StelScriptMgr.hpp	(date 1761362184373)
+@@ -31,7 +31,7 @@
+ 
+ #ifdef ENABLE_SCRIPT_QML
+ #include <QMutex>
+-#include <QJSValue>
++#include <QtQml/QJSValue>
+ #include "V3d.hpp"
+ class QJSEngine;
+ #else
