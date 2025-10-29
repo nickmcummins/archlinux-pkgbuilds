@@ -1,0 +1,16 @@
+---
+Index: common/include/pcl/pcl_macros.h
+<+>UTF-8
+===================================================================
+diff --git a/common/include/pcl/pcl_macros.h b/common/include/pcl/pcl_macros.h
+--- common/include/pcl/pcl_macros.h	(revision e5ce18fab8d4ff175eb44cc09ae24ae1a0a2e8eb)
++++ common/include/pcl/pcl_macros.h	(date 1761764815122)
+@@ -483,4 +483,6 @@
+ #endif
+ 
+ #define PCL_IF_UNLIKELY(x) if PCL_CONDITION_UNLIKELY(x)
+-#define PCL_WHILE_UNLIKELY(x) while PCL_CONDITION_UNLIKELY(x)
++#define PCL_WHILE_UNLIKELY(x) while PCL_CONDITION_UNLIKELY(x) \
++
++#define VTK_CELL_ARRAY_V2
+\ No newline at end of file

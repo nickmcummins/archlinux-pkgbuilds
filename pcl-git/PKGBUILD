@@ -2,7 +2,7 @@
 
 pkgname=pcl-git
 _pkgname=pcl
-pkgver=1.15.0.r14554.c9a17509b
+pkgver=1.15.1.r14622.e5ce18fab
 pkgrel=1
 pkgdesc="a standalone, large scale, open project for 2D/3D image and point cloud processing (git version)"
 arch=(i686 x86_64)
@@ -21,9 +21,9 @@ depends=(
     openmpi
     librealsense
 )
-makedepends=(cmake git)
-source=(git+https://github.com/PointCloudLibrary/pcl)
-sha256sums=(SKIP)
+makedepends=(cmake git python)
+source=(git+https://github.com/PointCloudLibrary/pcl 'define-use-VTK_CELL_ARRAY_V2.patch')
+sha256sums=(SKIP SKIP)
 conflicts=(pcl)
 provides=(pcl)
 PKGEXT='.pkg.tar.lzo'
@@ -38,10 +38,12 @@ pkgver() {
 
 build() {
   cd ${srcdir}/${_pkgname}
+
+  patch -Np0 -i ${srcdir}/define-use-VTK_CELL_ARRAY_V2.patch
   mkdir -p cmake-build-release && cd cmake-build-release
 
   jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
-
+  cuda_architectures=$(python ${srcdir}/../../nvcc_supported_architectures.py)
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
@@ -69,6 +71,7 @@ build() {
     -DBUILD_gpu_surface=ON \
     -DBUILD_gpu_tracking=ON \
     -DBUILD_simulation=ON \
+    -DCUDA_ARCH_BIN="${cuda_architectures}"\
     -DENSENSO_INCLUDE_DIR=/usr/include/ensenso \
     -DENSENSO_LIBRARY=/usr/lib/libNxLib64.so \
     -DBUILD_visualization=ON \
