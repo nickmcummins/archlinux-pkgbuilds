@@ -2,7 +2,7 @@
 
 _name=PDAL
 pkgname=pdal-git
-pkgver=2.9.0.r10229.18a6c3c95
+pkgver=2.9.0.r10252.a7b46ca5e
 pkgrel=1
 pkgdesc="A C++ library for translating and manipulating point cloud data. (git version)"
 arch=('x86_64')
