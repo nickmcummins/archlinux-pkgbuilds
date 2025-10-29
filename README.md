@@ -18,8 +18,10 @@
 ## mapton
 ![mapton Screenshot](https://raw.githubusercontent.com/nickmcummins/archlinux-pkgbuilds/master/screenshots/mapton.png)
 
+## qmapshack-git
+Download latest build: [qmapshack-git-latest-x86_64.pkg.tar.zst](https://www.nickmcummins.com/download/archlinux-pkgbuilds/qmapshack-git/qmapshack-git-latest-x86_64.pkg.tar.zst)
+![qmapshack-git Screenshot](https://raw.githubusercontent.com/nickmcummins/archlinux-pkgbuilds/master/screenshots/qmapshack-git.png)
+
 ## stellarium-git
-- Latest build: [stellarium-git-latest-x86_64.pkg.tar.lzo](https://www.nickmcummins.com/download/archlinux-pkgbuilds/stellarium-git/stellarium-git-latest-x86_64.pkg.tar.lzo)
+Download latest build: [stellarium-git-latest-x86_64.pkg.tar.lzo](https://www.nickmcummins.com/download/archlinux-pkgbuilds/stellarium-git/stellarium-git-latest-x86_64.pkg.tar.lzo)
 ![stellarium-git Screenshot](https://raw.githubusercontent.com/nickmcummins/archlinux-pkgbuilds/master/screenshots/stellarium-git.png)
-
-
