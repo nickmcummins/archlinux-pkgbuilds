@@ -14,7 +14,7 @@ pkgdesc="A 3D point cloud (and triangular mesh) processing software (git version
 arch=('i686' 'x86_64')
 url="http://www.danielgm.net/cc/"
 license=('GPL2')
-depends=('qt5-base' 'qt5-tools' 'qt5-svg' 'glu' 'glew' 'mesa' 'ffmpeg' 'cgal' 'lastools' 'fbx-sdk' 'gdal' 'ffmpeg' 'eigen')
+depends=('qt5-base' 'qt5-tools' 'qt5-svg' 'glu' 'glew' 'mesa' 'ffmpeg' 'cgal' 'lastools' 'fbx-sdk' 'gdal' 'ffmpeg' 'eigen' 'draco')
 makedepends=('git' 'cmake' 'ninja' 'pcl' 'libharu' 'proj' 'python' 'doxygen' 'laz-perf')
 optdepends=('pcl')
 conflicts=('cloudcompare')
@@ -73,6 +73,7 @@ build() {
         -DPLUGIN_IO_QADDITIONAL=ON \
         -DPLUGIN_IO_QCORE=ON \
         -DPLUGIN_IO_QCSV_MATRIX=ON \
+        -DPLUGIN_IO_QDRACO=ON \
         -DPLUGIN_IO_QE57=OFF \
         -DPLUGIN_IO_QFBX=ON \
         -DPLUGIN_IO_QPDAL=OFF \
