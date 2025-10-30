@@ -2,13 +2,13 @@
 
 pkgname=cesium-native-git
 _pkgname=cesium-native
-pkgver=0.48.0.r6964.70bd62a9f
+pkgver=0.52.0.r7411.afec183d5
 pkgrel=1
 pkgdesc="A set of C++ libraries for 3D geospatial, including 3D tiles runtime streaming, lightweight glTF serialization/deserialization, high-precision 3D geospatial math types and functions, and support for draping raster overlays from WMS, TMS, WMTS, and other sources over 3D tilesets. (git version)"
 arch=('x86_64')
 url='https://cesium.com/learn/cesium-native/ref-doc/index.html'
 license=('custom:OSGPL')
-depends=('git' 'fmt' 'libwebp' 'uriparser' 's2geometry' 'doctest' 'ada')
+depends=('git' 'fmt' 'libwebp' 'uriparser' 's2geometry' 'doctest' 'ada' 'asmjit' 'expected-lite' 'cpp-httplib' 'ktx-software')
 makedepends=('cmake' 'python')
 provides=('cesium-native')
 conflicts=('cesium-native')
@@ -24,16 +24,25 @@ pkgver() {
 build() {
     cd ${srcdir}/${_pkgname}
 
+    cp doc/cmake-presets/CMakePresets.json .
+
+    python ${srcdir}/../../create_empty_port_overlays.py vcpkg.json modp-base64
+
     mkdir -p cmake-build-release && cd cmake-build-release
 
     jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
 
-    cmake .. \
+    cmake --preset=vcpkg-linux .. \
+        -DBUILD_SHARED_LIBS:BOOL=ON \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_CXX_FLAGS=-Wno-error=attributes \
+        -DCMAKE_TOOLCHAIN_FILE=/home/nick/.ezvcpkg/2024.11.16/scripts/buildsystems/vcpkg.cmake \
+        -DCMAKE_C_COMPILER=/usr/sbin/cc \
+        -DCMAKE_CXX_COMPILER=/usr/sbin/c++ \
+        -DCMAKE_MAKE_PROGRAM=/usr/sbin/make \
         -DCESIUM_INSTALL_HEADERS=ON \
-        -DBUILD_SHARED_LIBS:BOOL=ON \
+        -DCESIUM_USE_EZVCPKG:BOOL=OFF \
         -DCESIUM_INSTALL_STATIC_LIBS=OFF \
         -DCESIUM_TESTS_ENABLED=OFF
     make -j$jobs
