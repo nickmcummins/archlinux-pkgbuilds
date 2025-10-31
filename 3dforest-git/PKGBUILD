@@ -2,7 +2,7 @@
 
 pkgname=3dforest-git
 _pkgname=3d-forest
-pkgver=1.0.r1575.b38dee8a
+pkgver=1.0.r1581.283641fd
 _pkgver=1.0.0
 pkgrel=1
 pkgdesc="Visualization, processing and analysis of Lidar point clouds, mainly focused on forest environment. New version of 3D Forest. Process files with terabytes of data. (git version)"
