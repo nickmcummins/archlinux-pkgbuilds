@@ -1,0 +1,45 @@
+# Maintainer: Nick M Cummins
+
+pkgname=pgmoneta-git
+_pkgname=pgmoneta
+pkgver=0.20.0.r993.65e2857
+pkgrel=1
+pkgdesc="Backup / restore solution for PostgreSQL (git version)"
+arch=('i686' 'x86_64')
+url='https://pgmoneta.github.io/'
+license=('BSD-3-Clause')
+depends=('zlib' 'systemd-libs')
+makedepends=('git' 'cmake')
+source=("git+https://github.com/pgmoneta/pgmoneta" 'CMakeLists-remove-add-subdirectory-doc.patch')
+provides=('pgmoneta')
+conflicts=('pgmoneta')
+md5sums=('SKIP' 'SKIP')
+
+pkgver() {
+	cd "${srcdir}/${_pkgname}"
+    cmake_version=$(python ${srcdir}/../../read_cmake_version.py CMakeLists.txt VERSION_MAJOR VERSION_MINOR VERSION_PATCH)
+    printf "${cmake_version}.r$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
+
+build() {
+    cd ${srcdir}/${_pkgname}
+
+    patch -Np0 -i ${srcdir}/CMakeLists-remove-add-subdirectory-doc.patch
+
+    mkdir -p cmake-build-release && cd cmake-build-release
+
+    jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+
+    cmake .. \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_BUILD_TYPE=Release
+    make -j$jobs
+}
+
+package() {
+    cd ${srcdir}/${_pkgname}/cmake-build-release
+    make DESTDIR="$pkgdir" install
+
+    mkdir -p ${pkgdir}/usr/share/licenses/${_pkgname}
+    install -Dm 644 "../LICENSE" -t ${pkgdir}/usr/share/licenses/${_pkgname}
+}

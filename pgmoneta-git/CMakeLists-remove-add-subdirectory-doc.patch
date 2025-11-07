@@ -1,0 +1,15 @@
+---
+Index: CMakeLists.txt
+<+>UTF-8
+===================================================================
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- CMakeLists.txt	(revision 65e28579a22f3a6c8e5f4c2fd38f60dac0ce3f02)
++++ CMakeLists.txt	(date 1762551708683)
+@@ -252,7 +252,6 @@
+ 
+ file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/src/")
+ 
+-add_subdirectory(doc)
+ add_subdirectory(src)
+ if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/test")
+   add_subdirectory(test)
