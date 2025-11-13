@@ -1,6 +1,6 @@
 pkgname=saga-gis-git
 _pkgname=saga-gis
-pkgver=9.10.0.r6832.039b0cda1
+pkgver=9.11.0.r6863.e5c3b959c
 pkgrel=1
 pkgdesc="A Geographic Information System (GIS) software with immense capabilities for geodata processing and analysis. (git version)"
 url="http://www.saga-gis.org"
