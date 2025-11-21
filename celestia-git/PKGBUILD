@@ -6,7 +6,7 @@
 
 pkgname=celestia-git
 _pkgname=celestia
-pkgver=1.7.0.r7286.a221a47d2
+pkgver=1.7.0.r7289.fe86de5fc
 pkgrel=1
 pkgdesc="Real-time space simulation (git checkout)"
 arch=(x86_64)
@@ -16,8 +16,8 @@ provides=('celestia')
 conflicts=('celestia')
 depends=('gtk2' 'libtheora' 'lua53' 'gtkglext' 'freeglut' 'libxmu' 'glu' 'libjpeg-turbo' 'mesa' 'qt6-5compat' 'meshoptimizer' 'spice')
 source=("${_pkgname}::git+https://github.com/CelestiaProject/Celestia" 'git+https://github.com/CelestiaProject/CelestiaContent' 'include-cassert-body.h.patch')
-md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
-sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
+md5sums=('SKIP' 'SKIP' 'SKIP')
+sha256sums=('SKIP' 'SKIP' 'SKIP')
 PKGEXT='.pkg.tar.lzo'
 
 prepare() {
