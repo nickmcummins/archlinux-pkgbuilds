@@ -3,7 +3,7 @@
 
 pkgname=snowman-git
 _pkgname=snowman
-pkgver=r762.261ae13
+pkgver=r764.c64a40b
 pkgrel=1
 pkgdesc="Native code to C/C++ decompiler (supporting x86, amd64 and arm)"
 arch=('any')
