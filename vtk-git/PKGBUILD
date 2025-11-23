@@ -2,7 +2,7 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.5.20251112.r96244.3b33756e5a
+pkgver=9.5.20251122.r96436.31fbdb639d
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization (git version)'
 arch=('i686' 'x86_64')
@@ -200,7 +200,6 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_InteractionStyle=YES \
     -DVTK_MODULE_ENABLE_VTK_InteractionWidgets=YES \
     -DVTK_MODULE_ENABLE_VTK_Java=NO \
-    -DVTK_MODULE_ENABLE_VTK_MomentInvariants=NO \
     -DVTK_MODULE_ENABLE_VTK_ParallelCore=YES \
     -DVTK_MODULE_ENABLE_VTK_ParallelDIY=YES \
     -DVTK_MODULE_ENABLE_VTK_ParallelMPI=YES \
@@ -249,9 +248,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_WebPython=YES \
     -DVTK_MODULE_ENABLE_VTK_WrappingPythonCore=YES \
     -DVTK_MODULE_ENABLE_VTK_WrappingTools=YES \
-    -DVTK_MODULE_ENABLE_VTK_dfft=YES \
     -DVTK_MODULE_ENABLE_VTK_diy2=YES \
-    -DVTK_MODULE_ENABLE_VTK_doubleconversion=YES \
     -DVTK_MODULE_ENABLE_VTK_eigen=YES \
     -DVTK_MODULE_ENABLE_VTK_exodusII=YES \
     -DVTK_MODULE_ENABLE_VTK_expat=YES \
@@ -326,10 +323,8 @@ build() {
     -DVTK_USE_CUDA=ON \
     -DVTK_USE_LARGE_DATA=ON \
     -DVTK_USE_MPI=ON \
-    -DVTK_USE_SDL2=ON \
     -DVTK_USE_TK=OFF \
     -DVTK_USE_X=ON \
-    -DOpenVR_INCLUDE_DIR=/usr/include/openvr \
     -DPython3_EXECUTABLE=/usr/sbin/python3.13 \
     -DPython3_INCLUDE_DIR=/usr/include/python3.13 \
     -DPython3_LIBRARY=/usr/lib/libpython3.13.so \
