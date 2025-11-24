@@ -1,0 +1,15 @@
+Subject: [PATCH] CMakeLists-add-install-target
+---
+Index: AdTree/CMakeLists.txt
+<+>UTF-8
+===================================================================
+diff --git a/AdTree/CMakeLists.txt b/AdTree/CMakeLists.txt
+--- AdTree/CMakeLists.txt	(revision 6fec908314c0ca58ec6c21573dfa08b6a097f78b)
++++ AdTree/CMakeLists.txt	(date 1746675655863)
+@@ -85,3 +85,5 @@
+ find_package(Boost REQUIRED) # It's "Boost", not "BOOST" or "boost". Case matters.
+ target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
+ target_include_directories(${PROJECT_NAME} PRIVATE ${Boost_INCLUDE_DIRS} ${Boost_headers_DIR})
++
++install(TARGETS ${PROJECT_NAME} DESTINATION ${BIN_INSTALL_DIR})
+\ No newline at end of file

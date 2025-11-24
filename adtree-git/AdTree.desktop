@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=AdTree
+Comment=Accurate, detailed, and automatic modelling of laser-scanned trees
+Exec=AdTree
+Icon=adtree
+Categories=Development;
+X-AppImage-Version=40ebb70
+Path=/opt/AdTree/resources

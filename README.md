@@ -1,6 +1,9 @@
 # archlinux-pkgbuilds
 ![archlinux-pkgbuilds dependency tree visualization](https://raw.githubusercontent.com/nickmcummins/archlinux-pkgbuilds/master/archlinux-pkgbuilds-dependency-tree.png)
 
+## adtree-git
+![adtree-git Screenshot](https://raw.githubusercontent.com/nickmcummins/archlinux-pkgbuilds/master/screenshots/adtree-git.png)
+
 ## celestia-git
 ![celestia-git Screenshot](https://raw.githubusercontent.com/nickmcummins/archlinux-pkgbuilds/master/screenshots/celestia-git.png)
 

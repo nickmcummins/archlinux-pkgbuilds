@@ -1,0 +1,67 @@
+# Maintainer: Nick M Cummins <nickmcummins@linuxmail.org>
+
+pkgname=adtree-git
+_pkgname=adtree
+pkgver=1.12.r176.c140430
+_pkgver=1.12
+pkgrel=1
+pkgdesc="Accurate, detailed, and automatic modelling of laser-scanned trees (git checkout)"
+arch=(x86_64)
+license=(GPL)
+url="https://github.com/tudelft3d/adtree"
+provides=('adtree')
+conflicts=('adtree')
+depends=()
+makedepends=('cmake' 'libicns' 'imagemagick')
+source=('git+https://github.com/tudelft3d/adtree' 'AdTree.desktop' 'CMakeLists-add-install-target.patch')
+md5sums=('SKIP' 'SKIP' 'SKIP')
+sha256sums=('SKIP' 'SKIP' 'SKIP')
+PKGEXT='.pkg.tar.lzo'
+
+pkgver() {
+  cd ${srcdir}/${_pkgname}
+  printf "${_pkgver}.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+  cd ${srcdir}/${_pkgname}
+  patch -Np0 -i ${srcdir}/CMakeLists-add-install-target.patch
+
+  mkdir -p cmake-build-release && cd cmake-build-release
+
+  jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_SHARED_LIBS=ON \
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+  make -j$jobs
+}
+
+package() {
+  cd ${srcdir}/${_pkgname}/cmake-build-release
+  make DESTDIR=${pkgdir} install
+
+  mkdir -p ${pkgdir}/usr/lib
+  for so in $(ls */*.so); do
+    cp -a $so ${pkgdir}/usr/lib
+  done
+  for so in $(ls */*.so.*); do
+    cp -a $so ${pkgdir}/usr/lib
+  done
+
+  install -D -m644 ${srcdir}/AdTree.desktop -t ${pkgdir}/usr/share/applications
+
+  mkdir -p ${pkgdir}/opt/AdTree
+  cp -rf ${srcdir}/${_pkgname}/data ${pkgdir}/opt/AdTree
+  cp -rf bin/resources ${pkgdir}/opt/AdTree
+
+  cd ${srcdir}/${_pkgname}/resources/icons
+  icns2png -x ${_pkgname}.icns
+
+  for size in 16 32 64 128 256; do
+      convert ${_pkgname}_512x512x32.png -adaptive-resize ${size}x${size} ${srcdir}/${_pkgname}_${size}x${size}.png
+      install -D -m 644 ${srcdir}/${_pkgname}_${size}x${size}.png ${pkgdir}/usr/share/icons/hicolor/${size}x${size}/apps/${_pkgname}.png
+  done
+}
