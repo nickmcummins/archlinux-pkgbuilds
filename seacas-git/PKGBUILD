@@ -3,14 +3,14 @@
 pkgname=seacas-git
 _pkgname=seacas
 _cmake_version_file=Version.cmake
-pkgver=2.0.r8780.fd86b71fbe
+pkgver=2.0.r9113.edacd510a8
 pkgrel=1
 pkgdesc="A suite of preprocessing, postprocessing, translation, and utility applications supporting finite element analysis software using the Exodus database file format.  (git version)"
 arch=(x86_64)
 url="https://github.com/sandialabs/seacas"
 license=(NA0003525)
-depends=()
-makedepends=(cmake)
+depends=('netcdf' 'fmt')
+makedepends=('cmake' 'gcc-fortran')
 provides=(seacas)
 conflicts=(seacas)
 source=("git+https://github.com/sandialabs/seacas")
@@ -25,6 +25,8 @@ pkgver() {
 build() {
     cd ${srcdir}/${_pkgname}
 
+    jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+  
     mkdir -p cmake-build-release && cd cmake-build-release
 
     cmake .. \
@@ -32,7 +34,7 @@ build() {
       -DCMAKE_BUILD_TYPE=Release \
       -DBUILD_SHARED_LIBS=ON \
       -DSeacas_ENABLE_ALL_PACKAGES=ON
-    make -j12
+    make -j$jobs
 }
 
 package() {
