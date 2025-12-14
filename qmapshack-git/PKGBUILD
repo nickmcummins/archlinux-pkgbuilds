@@ -1,13 +1,13 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
 
 pkgname=qmapshack-git
-pkgver=1.18.2.r5096.45dee3f1
+pkgver=1.19.0.r5115.ed9f8ccb
 pkgrel=1
 pkgdesc='Plan your next outdoor trip'
 arch=('x86_64')
 url='https://bitbucket.org/maproom/qmapshack (git version)'
 license=('GPL3')
-depends=('gdal' 'desktop-file-utils' 'quazip' 'qt5-webengine' 'routino>=3.1' 'alglib' 'quazip-qt6')
+depends=('gdal' 'desktop-file-utils' 'quazip' 'qt6-webengine' 'routino>=3.1' 'alglib' 'quazip-qt6' 'qt6-tools-desktop')
 makedepends=('cmake' 'python')
 conflicts=('qmapshack' 'qmapshack-hg')
 provides=('qmapshack')
