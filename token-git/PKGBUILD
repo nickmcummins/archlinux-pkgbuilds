@@ -5,11 +5,11 @@ _pkgname=token
 pkgver=24.08.0.r19.9e3fa05
 _pkgver=24.08.0
 pkgrel=1
-pkgdesc='Utilities for string tokenization'
+pkgdesc='Utilities for string tokenization (git version)'
 arch=('i686' 'x86_64')
 url='http://www.vtk.org'
 license=('BSD')
-depends=()
+depends=('nlohmann-json')
 makedepends=('git' 'cmake')
 provides=('token')
 source=('git+https://gitlab.kitware.com/dcthomp/token.git' 'remove-include-CxxABIConfigure_h.patch')
@@ -23,6 +23,8 @@ pkgver() {
 build() {
   cd ${srcdir}/${_pkgname}
 
+  jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+
   patch -Np0 -i ${srcdir}/remove-include-CxxABIConfigure_h.patch
 
   mkdir -p cmake-build-release && cd cmake-build-release
@@ -30,7 +32,7 @@ build() {
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_BUILD_TYPE=Release
-  make
+  make -j$jobs
 }
 
 package() {
