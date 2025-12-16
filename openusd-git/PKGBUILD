@@ -1,0 +1,46 @@
+# Maintainer: Nick M Cummins <nickmcummins@linuxmail.org>
+
+pkgname=openusd-git
+_pkgname=OpenUSD
+pkgver=0.26.2.r14635.48cb715a0
+pkgrel=1
+pkgdesc="High-performance extensible software platform for collaboratively constructing animated 3D scenes, designed to meet the needs of large-scale film and visual effects production. (git version)"
+arch=(x86_64)
+url="http://www.openusd.org/"
+license=(GPL2)
+conflicts=('openusd')
+provides=('openusd')
+depends=('opensubdiv' 'pyside6' 'pyside6-tools-wrappers' 'python-opengl')
+makedepends=('cmake' 'python-j2cli')
+source=('git+https://github.com/PixarAnimationStudios/OpenUSD')
+md5sums=('SKIP')
+sha256sums=('SKIP')
+PKGEXT='.pkg.tar.lzo'
+
+pkgver() {
+  cd ${srcdir}/${_pkgname}
+  cmake_version=$(python ${srcdir}/../../read_cmake_version.py cmake/defaults/Version.cmake PXR_MAJOR_VERSION PXR_MINOR_VERSION PXR_PATCH_VERSION)
+  printf "%s.r%s.%s" "$cmake_version" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+  cd ${srcdir}/${_pkgname}
+
+  jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+
+  mkdir -p cmake-build-release && cd cmake-build-release
+
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DPXR_BUILD_IMAGING=ON \
+    -DPXR_BUILD_TESTS=OFF \
+    -DPXR_BUILD_USD_IMAGING=ON \
+    -DOPENSUBDIV_INCLUDE_DIR=/usr/include/opensubdiv
+  make -j$jobs
+}
+
+package() {
+  cd ${srcdir}/${_pkgname}/cmake-build-release
+  make DESTDIR="$pkgdir" install
+}
