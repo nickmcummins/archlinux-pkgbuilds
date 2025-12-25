@@ -2,15 +2,15 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.5.20251122.r96436.31fbdb639d
+pkgver=9.6.20251224.r96839.414c93a4cb
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization (git version)'
 arch=('i686' 'x86_64')
 url='http://www.vtk.org'
 license=('BSD')
-depends=('cuda' 'double-conversion' 'embree' 'gdal' 'glew' 'hdf5' 'jsoncpp' 'libarchive' 'libharu' 'libxt' 'openslide' 
-    'openturns' 'openvkl' 'openvr' 'ospray>=2.1.0' 'pdal' 'pegtl' 'proj' 'python' 'cli11' 'qt6-base' 'qt6-quick3d' 'openvdb'
-	'exprtk' 'openxr' 'seacas' 'verdict' 'token' 'fast_float-vtk' 'adios2' 'scnlib')
+depends=('cuda' 'cgns' 'double-conversion' 'embree' 'gdal' 'glew' 'hdf5' 'jsoncpp' 'libarchive' 'libharu' 'libxt' 'openslide' 
+    'openturns' 'openvkl' 'openvr' 'ospray>=2.1.0' 'mariadb' 'pdal' 'pegtl' 'postgresql' 'proj' 'python' 'python-mpi4py' 'cli11' 'qt6-base' 'qt6-quick3d' 'openvdb'
+	'exprtk' 'openxr' 'seacas' 'verdict' 'token' 'fast_float' 'adios2' 'scnlib')
 makedepends=('git' 'cmake' 'doxygen' 'boost' 'java-environment' 'utf8cpp')
 provides=("vtk")
 conflicts=("vtk")
@@ -173,6 +173,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_IOTRUCHAS=YES \
     -DVTK_MODULE_ENABLE_VTK_IOTecplotTable=YES \
     -DVTK_MODULE_ENABLE_VTK_IOOCCT=NO \
+    -DVTK_MODULE_ENABLE_VTK_IOUSD=NO \
     -DVTK_MODULE_ENABLE_VTK_IOVPIC=YES \
     -DVTK_MODULE_ENABLE_VTK_IOVeraOut=YES \
     -DVTK_MODULE_ENABLE_VTK_IOVideo=YES \
@@ -229,6 +230,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_RenderingRayTracing=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingSceneGraph=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingUI=YES \
+    -DVTK_MODULE_ENABLE_VTK_RenderingUSD=NO \
     -DVTK_MODULE_ENABLE_VTK_RenderingVolume=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingVolumeAMR=YES \
     -DVTK_MODULE_ENABLE_VTK_RenderingVolumeOpenGL2=YES \
