@@ -2,7 +2,7 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.6.20251224.r96839.414c93a4cb
+pkgver=9.6.20251226.r96841.9e59fc0d9f
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization (git version)'
 arch=('i686' 'x86_64')
@@ -14,8 +14,8 @@ depends=('cuda' 'cgns' 'double-conversion' 'embree' 'gdal' 'glew' 'hdf5' 'jsoncp
 makedepends=('git' 'cmake' 'doxygen' 'boost' 'java-environment' 'utf8cpp')
 provides=("vtk")
 conflicts=("vtk")
-source=("git+https://gitlab.kitware.com/vtk/vtk.git")
-sha256sums=("SKIP")
+source=('git+https://gitlab.kitware.com/vtk/vtk.git' 'prefix-std-include-iostream-h.patch')
+sha256sums=('SKIP' 'SKIP')
 
 pkgver() {
   cd ${srcdir}/vtk
@@ -26,6 +26,8 @@ pkgver() {
 build() {
   cd ${srcdir}/vtk
   git submodule update --init --recursive
+  
+  patch -Np0 -i ${srcdir}/prefix-std-include-iostream-h.patch
 
   jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
 

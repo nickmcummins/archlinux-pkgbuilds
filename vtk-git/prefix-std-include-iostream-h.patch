@@ -1,0 +1,112 @@
+---
+Index: Remote/MomentInvariants/MomentInvariants/vtkMomentsHelper.h
+<+>UTF-8
+===================================================================
+--- Remote/MomentInvariants/MomentInvariants/vtkMomentsHelper.h	(revision 3fb4824d1f5e1f95917e67a3fb4b8a1546ddd4ae)
++++ Remote/MomentInvariants/MomentInvariants/vtkMomentsHelper.h	(date 1766787892521)
+@@ -78,6 +78,7 @@
+ #include "vtkType.h"         // for vtkIdType
+ #include <string>            // for std::string
+ #include <vector>            // for std::vector
++#include <iostream>
+ 
+ class vtkCell;
+ class vtkDataSet;
+Index: Remote/MomentInvariants/MomentInvariants/vtkMomentsHelper.cxx
+<+>UTF-8
+===================================================================
+--- Remote/MomentInvariants/MomentInvariants/vtkMomentsHelper.cxx	(revision 3fb4824d1f5e1f95917e67a3fb4b8a1546ddd4ae)
++++ Remote/MomentInvariants/MomentInvariants/vtkMomentsHelper.cxx	(date 1766787719953)
+@@ -1216,7 +1216,7 @@
+     return weights[i2][i1][i0] * M_PI;
+   }
+   else {
+-    cerr << "vtkMomentsHelper::normalizationWeight: dimension > 3.\n";
++    std::cerr << "vtkMomentsHelper::normalizationWeight: dimension > 3.\n";
+     exit(0);
+   }
+ }
+Index: Remote/MomentInvariants/MomentInvariants/vtkSimilarityBalls.cxx
+<+>UTF-8
+===================================================================
+--- Remote/MomentInvariants/MomentInvariants/vtkSimilarityBalls.cxx	(revision 3fb4824d1f5e1f95917e67a3fb4b8a1546ddd4ae)
++++ Remote/MomentInvariants/MomentInvariants/vtkSimilarityBalls.cxx	(date 1766787859877)
+@@ -240,7 +240,7 @@
+     if (similarityBounds[2 * i] < gridBounds[2 * i] ||
+       similarityBounds[2 * i + 1] > gridBounds[2 * i + 1])
+     {
+-      cout<<i<<" "<<similarityBounds[2 * i]<<" "<<gridBounds[2 * i]<<" "<<similarityBounds[2 * i + 1]<<" "<<gridBounds[2 * i + 1]<<endl;
++      std::cout<<i<<" "<<similarityBounds[2 * i]<<" "<<gridBounds[2 * i]<<" "<<similarityBounds[2 * i + 1]<<" "<<gridBounds[2 * i + 1]<<endl;
+       vtkErrorMacro("The grid is smaller than the similarity field, but should contain it.");
+       return;
+     }
+Index: Remote/MomentInvariants/MomentInvariants/vtkComputeMoments.cxx
+<+>UTF-8
+===================================================================
+--- Remote/MomentInvariants/MomentInvariants/vtkComputeMoments.cxx	(revision 3fb4824d1f5e1f95917e67a3fb4b8a1546ddd4ae)
++++ Remote/MomentInvariants/MomentInvariants/vtkComputeMoments.cxx	(date 1766788360477)
+@@ -448,7 +448,7 @@
+ 	int n = round(radiusDiscrete);
+ 	if (fabs(fabs(n - radiusDiscrete) - 0.5) < 1e-6) 
+ 	  {
+-	    cout << "spacing[" << i << "] = " << spacing[i] << endl
++	   std::cout << "spacing[" << i << "] = " << spacing[i] << endl
+ 	         << "radius = " << this->Radii.at(radiusIndex) << endl
+ 	         << "discrete radius = " << radiusDiscrete << endl << fabs(n - radiusDiscrete) << endl;
+ 	    vtkErrorMacro("The discrete radius is close to x.5. This might produce unstable result due to the rounding issue. Please use radius that is close to the spacing multiplied with an integer.");
+Index: Remote/MomentInvariants/MomentInvariants/vtkMomentsTensor.h
+<+>UTF-8
+===================================================================
+--- Remote/MomentInvariants/MomentInvariants/vtkMomentsTensor.h	(revision 3fb4824d1f5e1f95917e67a3fb4b8a1546ddd4ae)
++++ Remote/MomentInvariants/MomentInvariants/vtkMomentsTensor.h	(date 1766788561237)
+@@ -388,7 +388,7 @@
+     }
+     else
+     {
+-      cout<<"Dimension must be 2 or 3"<<endl;
++     std::cout<<"Dimension must be 2 or 3"<<endl;
+     }
+ //    cout<<"momentIndex = "<<index<<endl;
+ 
+@@ -721,25 +721,25 @@
+    */
+   inline void print()
+   {
+-    cout << " m_rank=" << m_rank << " m_fieldRank=" << m_fieldRank
++   std::cout << " m_rank=" << m_rank << " m_fieldRank=" << m_fieldRank
+          << " m_momentRank=" << m_momentRank << " m_data.size()=" << m_data.size()
+          << " m_contractionInfo=";
+     for (int i = 0; i < static_cast<int>(m_contractionInfo.size()); ++i)
+     {
+-      cout << m_contractionInfo.at(i) << " ";
++     std::cout << m_contractionInfo.at(i) << " ";
+     }
+-    cout << " m_productInfo=";
++   std::cout << " m_productInfo=";
+     for (int i = 0; i < static_cast<int>(m_productInfo.size()); ++i)
+     {
+-      cout << m_productInfo.at(i) << " ";
++     std::cout << m_productInfo.at(i) << " ";
+     }
+-    cout << endl;
++   std::cout << endl;
+     for (int i = 0; i < static_cast<int>(this->size()); ++i)
+     {
+-      cout << i << "\t";
++     std::cout << i << "\t";
+       for (int j = 0; j < static_cast<int>(getIndices(i).size()); ++j)
+       {
+-        cout << getIndices(i).at(j) << "\t";
++       std::cout << getIndices(i).at(j) << "\t";
+       }
+       //                cout<<" sum=";
+       //                for( int j = 0; j < getDimension() ; ++j )
+@@ -761,7 +761,7 @@
+       //                cout<<" fieldIndex="<<getFieldIndex(i)<<endl;
+       //
+       //                cout<<endl;
+-      cout << m_data.at(i) << endl;
++      std::cout << m_data.at(i) << endl;
+     }
+   }
+ 
