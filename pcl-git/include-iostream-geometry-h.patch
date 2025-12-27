@@ -1,0 +1,14 @@
+---
+Index: outofcore/include/pcl/outofcore/visualization/geometry.h
+<+>UTF-8
+===================================================================
+--- outofcore/include/pcl/outofcore/visualization/geometry.h	(revision 2cb416222f8d85f15488c4e45d23e3b99ecfe195)
++++ outofcore/include/pcl/outofcore/visualization/geometry.h	(date 1766800960142)
+@@ -2,6 +2,7 @@
+ 
+ // C++
+ #include <string>
++#include <iostream>
+ 
+ // PCL
+ #include "object.h"

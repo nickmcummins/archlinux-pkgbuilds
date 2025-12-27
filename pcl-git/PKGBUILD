@@ -2,7 +2,7 @@
 
 pkgname=pcl-git
 _pkgname=pcl
-pkgver=1.15.1.r14625.53f7b99f9
+pkgver=1.15.1.r14627.2cb416222
 pkgrel=1
 pkgdesc="a standalone, large scale, open project for 2D/3D image and point cloud processing (git version)"
 arch=(i686 x86_64)
@@ -20,10 +20,11 @@ depends=(
     libxt
     openmpi
     librealsense
+    ensenso-sdk
 )
 makedepends=(cmake git python)
-source=(git+https://github.com/PointCloudLibrary/pcl 'define-use-VTK_CELL_ARRAY_V2.patch')
-sha256sums=(SKIP SKIP)
+source=(git+https://github.com/PointCloudLibrary/pcl 'define-use-VTK_CELL_ARRAY_V2.patch' 'include-iostream-geometry-h.patch')
+sha256sums=(SKIP SKIP SKIP)
 conflicts=(pcl)
 provides=(pcl)
 PKGEXT='.pkg.tar.lzo'
@@ -40,6 +41,8 @@ build() {
   cd ${srcdir}/${_pkgname}
 
   patch -Np0 -i ${srcdir}/define-use-VTK_CELL_ARRAY_V2.patch
+  patch -Np0 -i ${srcdir}/include-iostream-geometry-h.patch
+
   mkdir -p cmake-build-release && cd cmake-build-release
 
   jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
@@ -47,6 +50,7 @@ build() {
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_CONFIGURATION_TYPES=Release \
     -DBUILD_2d=ON \
     -DBUILD_apps=ON \
     -DBUILD_apps_3d_rec_framework=ON \
@@ -68,7 +72,7 @@ build() {
     -DBUILD_gpu_kinfu=OFF \
     -DBUILD_gpu_kinfu_large_scale=OFF \
     -DBUILD_gpu_people=OFF \
-    -DBUILD_gpu_surface=ON \
+    -DBUILD_gpu_surface=OFF \
     -DBUILD_gpu_tracking=ON \
     -DBUILD_simulation=ON \
     -DCUDA_ARCH_BIN="${cuda_architectures}"\
@@ -92,4 +96,6 @@ package() {
     cd ${srcdir}/${_pkgname}/cmake-build-release
     make DESTDIR="${pkgdir}" install
     install -Dm644 "$srcdir/pcl/LICENSE.txt" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+
+    rm -rf ${pkgdir}/usr/src
 }
