@@ -96,6 +96,4 @@ package() {
     cd ${srcdir}/${_pkgname}/cmake-build-release
     make DESTDIR="${pkgdir}" install
     install -Dm644 "$srcdir/pcl/LICENSE.txt" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
-
-    rm -rf ${pkgdir}/usr/src
 }
