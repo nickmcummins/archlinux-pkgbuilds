@@ -1,8 +1,10 @@
+# Maintainer: Nick M Cummins <nickmcummins dot linuxmail.org>
+
 pkgname=gta-git
 _pkgname=gta
 pkgver=1.2.1.r634.1eb8b60
 pkgrel=1
-pkgdesc="A library that reads and writes Generic Tagged Arrays (GTA) files, with interfaces in C and C++."
+pkgdesc="A library that reads and writes Generic Tagged Arrays (GTA) files, with interfaces in C and C++. (git version)"
 arch=(i686 x86_64)
 url="https://marlam.de/gta/"
 license=('GPL2')
@@ -29,8 +31,9 @@ prepare() {
 }
 
 build() {
-	cd ${srcdir}/${_pkgname}/cmake-build-release
-	make
+    cd ${srcdir}/${_pkgname}/cmake-build-release
+    jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+    make -j$jobs
 }
 
 package() {
