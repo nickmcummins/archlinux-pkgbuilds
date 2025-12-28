@@ -4,39 +4,40 @@ pkgname=fgt-git
 pkgver=r293.fea4510
 pkgrel=1
 _pkgname="fgt"
-pkgdesc="C++ library for fast Gauss transforms."
+pkgdesc="C++ library for fast Gauss transforms. (git version)"
 arch=('any')
 url="http://gadomski.github.io/fgt"
 license=('GPL2')
-depends=()
+depends=('eigen3')
 provides=("fgt=$pkgver")
 source=("git+https://github.com/gadomski/fgt")
 sha1sums=('SKIP')
 
 pkgver() {
-	cd ${srcdir}/${_pkgname}
-	# Use the tag of the last commit
-	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+    cd ${srcdir}/${_pkgname}
+    # Use the tag of the last commit
+    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 build() {
-	cd ${srcdir}/${_pkgname}
-	
-	mkdir -p build && cd build
-	
-	cmake .. \
-		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DBUILD_SHARED_LIBS=ON \
-		-DWITH_OPENMP=ON
-	make -j10
+    cd ${srcdir}/${_pkgname}
+
+    jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+
+
+    cmake .. \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DBUILD_SHARED_LIBS=ON \
+      -DWITH_OPENMP=ON
+    make -j$jobs
 }
 
 
 
 package() {
-	cd ${srcdir}/${_pkgname}/build
-	
-	make DESTDIR="${pkgdir}/" install
-	install -Dm644 "$srcdir/${_pkgname}/LICENSE.txt" "${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE"
+    cd ${srcdir}/${_pkgname}/cmake-build-release
+
+    make DESTDIR="${pkgdir}/" install
+    install -Dm644 "$srcdir/${_pkgname}/LICENSE.txt" "${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE"
 }
