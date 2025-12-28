@@ -2,14 +2,15 @@
 
 _name=PDAL
 pkgname=pdal-git
-pkgver=2.9.0.r10261.808d5c273
+pkgver=2.10.0.r10281.a5a7eeb00
 pkgrel=1
 pkgdesc="A C++ library for translating and manipulating point cloud data. (git version)"
 arch=('x86_64')
 url="http://www.pdal.io"
 license=('BSD')
-depends=('gdal' 'geos' 'libgeotiff' 'kealib')
-makedepends=('cmake' 'python' 'python-numpy' 'git' 'sqlite' 'postgresql-libs' 'laszip' 'cpd')
+depends=('gdal' 'geos' 'libgeotiff'
+         'tiledb')
+makedepends=('cmake' 'python' 'python-numpy' 'git' 'sqlite' 'postgresql-libs' 'laszip' 'cpd' 'openscenegraph')
 optdepends=('python-numpy: for the Python plugin'
             'libxml2: for using the database drivers'
             'sqlite: for the sqlite plugin'
@@ -21,8 +22,6 @@ optdepends=('python-numpy: for the Python plugin'
             'mrsid-sdk: for the MrSID plugin'
             'cpd: for the Coherent Point Drift plugin'
             'hdf5: for HDF support'
-            'openscenegraph: for the OpenSceneGraph plugin'
-            'tiledb: for the TileDB plugin'
             'nitro: for the NITF plugin')
 provides=('pdal')
 conflicts=('pdal')
