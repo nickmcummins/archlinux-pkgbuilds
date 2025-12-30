@@ -2,7 +2,7 @@
 
 pkgname=osgearth-git
 _gitname=osgearth
-pkgver=3.7.3.r15888.2230ccf96
+pkgver=3.7.3.r15932.441c7c026
 pkgrel=1
 pkgdesc="A terrain rendering toolkit for OpenSceneGraph (git version)"
 arch=('i686' 'x86_64')
