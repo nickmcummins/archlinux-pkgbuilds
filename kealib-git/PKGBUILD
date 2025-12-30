@@ -1,7 +1,7 @@
 # Contributor: Nick M Cummins <nickmcummins at linuxmail dot org>
 pkgname=kealib-git
 _pkgname=kealib
-pkgver=1.6.1..r454.48786ce
+pkgver=1.6.2.r460.b9cf5d4
 pkgrel=1
 pkgdesc="An HDF5 Based Raster File Format and its GDAL plugin (Git version)"
 arch=('i686' 'x86_64')
@@ -18,12 +18,15 @@ pkgver() {
 	cd ${srcdir}/${_pkgname}
 	# Use the tag of the last commit
 	TAG_VERSION=$(git describe --long --tags | sed -r 's/^v//;s/([^-]*-g)/r\1/;s/-/./g' | cut -c 8-13 --)
-	printf "%s.r%s.%s" "$TAG_VERSION" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+	printf "%sr%s.%s" "$TAG_VERSION" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
 }
 
 
 build() {
   cd ${srcdir}/${_pkgname}
+  
+  jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+  
   mkdir -p cmake-build-release && cd cmake-build-release
   
   cmake .. \
@@ -33,7 +36,7 @@ build() {
     -DHDF5_INCLUDE_DIR=/usr/include \
     -DGDAL_INCLUDE_DIR=/usr/include \
     -DLIBKEA_WITH_GDAL=FALSE
-  make
+  make -j$jobs
 }
 
 
