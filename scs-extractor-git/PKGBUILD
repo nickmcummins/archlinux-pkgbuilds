@@ -1,0 +1,34 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail.org>
+
+pkgname=scs-extractor-git
+_pkgname=SCSExtractor
+pkgdesc="Cross-platform .scs extractor for Euro Truck Simulator 2/American Truck Simulator (git version)"
+pkgver=2025.12.11.r272.1c48d01
+pkgrel=1
+arch=('x86_64' 'aarch64')
+url=https://github.com/sk-zk/Extractor
+license=('GPL2')
+depends=('dotnet-runtime-8.0')
+makedepends=('git' 'dotnet-sdk>=8.0' 'python')
+source=("${_pkgname}::git+https://github.com/sk-zk/Extractor")
+sha256sums=('SKIP')
+
+pkgver() {
+  cd ${srcdir}/SCSExtractor
+  csproj_version=$(python ${srcdir}/../../read_csproj_version.py ${srcdir}/SCSExtractor/Extractor/Extractor.csproj)
+  printf "%s.r%s.%s" "$csproj_version" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+  cd ${srcdir}/SCSExtractor
+  dotnet restore ./Extractor.sln
+  dotnet publish ./Extractor/Extractor.csproj -c Release --nologo --force --output ./out
+}
+
+package(){
+  mkdir -p ${pkgdir}/usr/bin
+
+  install -Dm644 ${srcdir}/${_pkgname}/LICENSE ${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE
+
+  cp -a ${srcdir}/SCSExtractor/out/extractor  ${pkgdir}/usr/bin/scs-extractor
+}
