@@ -2,7 +2,7 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.6.20251226.r96841.9e59fc0d9f
+pkgver=9.6.20260121.r97122.e6ffea415e
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization (git version)'
 arch=('i686' 'x86_64')
@@ -27,7 +27,7 @@ build() {
   cd ${srcdir}/vtk
   git submodule update --init --recursive
   
-  patch -Np0 -i ${srcdir}/prefix-std-include-iostream-h.patch
+  #patch -Np0 -i ${srcdir}/prefix-std-include-iostream-h.patch
 
   jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
 
@@ -329,9 +329,9 @@ build() {
     -DVTK_USE_MPI=ON \
     -DVTK_USE_TK=OFF \
     -DVTK_USE_X=ON \
-    -DPython3_EXECUTABLE=/usr/sbin/python3.13 \
-    -DPython3_INCLUDE_DIR=/usr/include/python3.13 \
-    -DPython3_LIBRARY=/usr/lib/libpython3.13.so \
+    -DPython3_EXECUTABLE=/usr/sbin/python3.14 \
+    -DPython3_INCLUDE_DIR=/usr/include/python3.14 \
+    -DPython3_LIBRARY=/usr/lib/libpython3.14.so \
       ..
   
   make -j$jobs
