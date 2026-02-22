@@ -1,7 +1,9 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org> (Modified from AUR package)
+
 pkgname=lastools-git
 _pkgname=LAStools
-pkgver=2.0.3.r1583.fb6d1f34
-_pkgver=2.0.3
+pkgver=2.0.4.r1743.d594dca0
+_pkgver=2.0.4
 pkgrel=1
 pkgdesc="Efficient tools for LiDAR processing. Contains LASlib, a C++ programming API for reading / writing LIDAR data stored in standard LAS format - git checkout"
 arch=('i686' 'x86_64')
@@ -20,7 +22,9 @@ pkgver() {
 build() {
   cd ${srcdir}/${_pkgname}
   patch -Np0 -i ${srcdir}/cmake-add-src-subdirectory-with_BUILD_SHARED_LIBS.patch
-    
+ 
+  jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+  
   mkdir -p cmake-build-release && cd cmake-build-release
 
   cmake .. \
@@ -29,11 +33,10 @@ build() {
     -DCMAKE_CXX_FLAGS=-Wno-error=format-security \
     -DCMAKE_BUILD_TYPE=Release
 
-  make
+  make -j$jobs
 }
 
 package() {
-    cd $srcdir/$_pkgname/build
     cd ${srcdir}/${_pkgname}/cmake-build-release
 
     make DESTDIR="${pkgdir}" install
