@@ -2,7 +2,7 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.6.20260121.r97122.e6ffea415e
+pkgver=9.6.20260225.r97899.7219d31d55
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization (git version)'
 arch=('i686' 'x86_64')
@@ -10,7 +10,8 @@ url='http://www.vtk.org'
 license=('BSD')
 depends=('cuda' 'cgns' 'double-conversion' 'embree' 'gdal' 'glew' 'hdf5' 'jsoncpp' 'libarchive' 'libharu' 'libxt' 'openslide' 
     'openturns' 'openvkl' 'openvr' 'ospray>=2.1.0' 'mariadb' 'pdal' 'pegtl' 'postgresql' 'proj' 'python' 'python-mpi4py' 'cli11' 'qt6-base' 'qt6-quick3d' 'openvdb'
-	'exprtk' 'openxr' 'seacas' 'verdict' 'token' 'fast_float' 'adios2' 'scnlib')
+	'exprtk' 'openxr' 'seacas' 'verdict' 'token' 'fast_float' 'adios2' 'scnlib'
+	'ifcopenshell' 'cgal')
 makedepends=('git' 'cmake' 'doxygen' 'boost' 'java-environment' 'utf8cpp')
 provides=("vtk")
 conflicts=("vtk")
