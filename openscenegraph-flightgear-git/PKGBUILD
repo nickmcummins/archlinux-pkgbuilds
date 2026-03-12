@@ -2,7 +2,7 @@
 
 pkgname=openscenegraph-flightgear-git
 _pkgname=openscenegraph
-pkgver=3.6.5.r16239.da91476e9
+pkgver=3.6.5.r16242.3885687f7
 pkgrel=1
 pkgdesc="An open source, high performance real-time graphics toolkit - fork for the FlightGear project (git version)"
 arch=('x86_64')
