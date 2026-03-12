@@ -6,7 +6,7 @@
 
 pkgname=celestia-git
 _pkgname=celestia
-pkgver=1.7.0.r7347.79ca8fcad
+pkgver=1.7.0.r7351.9e6974fd3
 pkgrel=1
 pkgdesc="Real-time space simulation (git checkout)"
 arch=(x86_64)
