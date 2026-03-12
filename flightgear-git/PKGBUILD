@@ -6,7 +6,7 @@
 
 pkgname=flightgear-git
 _pkgname=flightgear
-pkgver=2024.2.0.r16600.32a34b5e8
+pkgver=2024.2.0.r16673.575b5fa4a
 pkgrel=1
 pkgdesc='An open-source, multi-platform flight simulator (git version)'
 arch=('x86_64')
