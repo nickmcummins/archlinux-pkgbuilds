@@ -1,0 +1,51 @@
+# Maintainer: nickmcummins at linuxmail dot org
+# Original Maintainer: cnf3rd <sub.in.tokyo@gmail.com>
+
+pkgname=onnx-git
+_pkgname=onnx
+pkgver=1.22.0.r3615.65a127a79
+pkgrel=1
+pkgdesc='C++ library for the open standard for machine learning interoperability (git version)'
+arch=('x86_64')
+url="https://onnx.ai"
+license=('MIT')
+depends=('glibc' 'protobuf')
+makedepends=('cmake' 'git' 'python')
+provides=('onnx')
+conflicts=('onnx' 'onnx-py' 'python-onnx')
+source=("git+https://github.com/onnx/onnx.git")
+b2sums=("SKIP")
+
+pkgver() {
+  cd ${srcdir}/${_pkgname}
+  VERSION=$(cat VERSION_NUMBER)
+  printf "${VERSION}.r$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
+
+build() {
+  cd ${srcdir}/${_pkgname}
+  jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+
+  mkdir -p cmake-build-release && cd cmake-build-release    
+  
+  export CPPFLAGS CFLAGS CXXFLAGS LDFLAGS MAKEFLAGS
+  cmake ..\
+    -DCMAKE_CXX_STANDARD=17 \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DONNX_BUILD_TESTS=OFF \
+    -DONNX_USE_PROTOBUF_SHARED_LIBS=ON \
+    -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+    -Wno-dev
+  make -j$jobs
+}
+
+
+package() {
+  cd ${srcdir}/${_pkgname}/cmake-build-release
+
+  install -Dm644 ../LICENSE "${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE"
+  make DESTDIR="$pkgdir/" install
+  find "$pkgdir" -type d -name test -prune -exec rm -r {} \;
+  find "$pkgdir" -type d -empty -delete
+}
