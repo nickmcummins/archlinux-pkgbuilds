@@ -1,0 +1,62 @@
+# Maintainer: nickmcummins at linuxmail dot org
+# Original Maintainer: Christoph Haag <christoph.haag@collabora.com>
+
+_pkgname=onnxruntime
+pkgname=onnxruntime-git
+pkgver=1.25.0.r14259.44ce4f5f13f
+pkgrel=1
+pkgdesc="cross-platform inference and training machine-learning accelerator. (git version)"
+arch=('x86_64')
+url="https://onnxruntime.ai/"
+license=('MIT')
+depends=('gcc-libs' 'python' 'protobuf')
+makedepends=('git' 'cmake' 'clang')
+checkdepends=()
+optdepends=()
+provides=('onnxruntime')
+conflicts=('onnxruntime')
+replaces=()
+options=()
+source=("git+https://github.com/microsoft/onnxruntime.git#branch=main")
+md5sums=('SKIP')
+
+prepare() {
+  cd ${srcdir}/${_pkgname}
+  git submodule update --init --recursive
+  (pacman -Qq nsync && sed -i 's/nsync::nsync_cpp/nsync_cpp/g' cmake/{**,.}/*.cmake cmake/CMakeLists.txt) || true
+}
+
+pkgver() {
+  cd ${srcdir}/${_pkgname}
+  VERSION=$(cat ./VERSION_NUMBER)
+  printf "${VERSION}.r$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
+
+build() {
+  cd ${srcdir}/${_pkgname}
+  jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+
+  mkdir -p cmake-build-release && cd cmake-build-release
+  
+  export CC=clang
+  export CXX=clang++
+
+  cmake ${srcdir}/${_pkgname}/cmake \
+        -B ${srcdir}/${_pkgname}/cmake-build-release \
+		-DCMAKE_INSTALL_PREFIX=/usr/ \
+		-DCMAKE_PREFIX_PATH=/usr/ \
+		-DCMAKE_BUILD_TYPE=Release \
+		-Donnxruntime_BUILD_SHARED_LIB=ON \
+		-Donnxruntime_DISABLE_CONTRIB_OPS=ON \
+		-DONNX_USE_PROTOBUF_SHARED_LIBS=OFF \
+		-DPYTHON_INCLUDE_DIR=$(python -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())") \
+		-DPYTHON_LIBRARY=$(python -c "import distutils.sysconfig as sysconfig; print(sysconfig.get_config_var('LIBDIR'))") \
+		-DPYTHON_EXECUTABLE:FILEPATH=$(which python) \
+		-DCMAKE_IGNORE_PATH=/usr/lib/cmake/flatbuffers/\;/lib/cmake/flatbuffers/
+  make -j$jobs
+}
+
+package() {
+  cd ${srcdir}/${_pkgname}/cmake-build-release
+  make DESTDIR="$pkgdir/" install
+}
