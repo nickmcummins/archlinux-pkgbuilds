@@ -2,7 +2,7 @@
 
 pkgname=pcl-git
 _pkgname=pcl
-pkgver=1.15.1.r14634.4db3dc4f6
+pkgver=1.15.1.r14662.63f25cee6
 pkgrel=1
 pkgdesc="a standalone, large scale, open project for 2D/3D image and point cloud processing (git version)"
 arch=(i686 x86_64)
@@ -23,8 +23,8 @@ depends=(
     ensenso-sdk
 )
 makedepends=(cmake git python)
-source=(git+https://github.com/PointCloudLibrary/pcl 'define-use-VTK_CELL_ARRAY_V2.patch' 'include-iostream-geometry-h.patch')
-sha256sums=(SKIP SKIP SKIP)
+source=(git+https://github.com/PointCloudLibrary/pcl)
+sha256sums=('SKIP')
 conflicts=(pcl)
 provides=(pcl)
 PKGEXT='.pkg.tar.lzo'
@@ -39,9 +39,6 @@ pkgver() {
 
 build() {
   cd ${srcdir}/${_pkgname}
-
-  patch -Np0 -i ${srcdir}/define-use-VTK_CELL_ARRAY_V2.patch
-  patch -Np0 -i ${srcdir}/include-iostream-geometry-h.patch
 
   mkdir -p cmake-build-release && cd cmake-build-release
 
