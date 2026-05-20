@@ -2,7 +2,7 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.6.20260501.r98759.5a57620b3d
+pkgver=9.6.20260519.r98967.005553b0bf
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization (git version)'
 arch=('i686' 'x86_64')
@@ -122,7 +122,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_GUISupportQtSQL=YES \
     -DVTK_MODULE_ENABLE_VTK_GUISupportQtQuick=NO \
     -DVTK_MODULE_ENABLE_VTK_GeovisCore=YES \
-    -DVTK_MODULE_ENABLE_VTK_GeovisGDAL=YES \
+    -DVTK_MODULE_ENABLE_VTK_GeovisGDAL=NO \
     -DVTK_MODULE_ENABLE_VTK_IOADIOS2=NO \
     -DVTK_MODULE_ENABLE_VTK_IOAMR=NO \
     -DVTK_MODULE_ENABLE_VTK_IOAlembic=NO \
@@ -137,7 +137,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_IOExport=YES \
     -DVTK_MODULE_ENABLE_VTK_IOExportPDF=NO \
     -DVTK_MODULE_ENABLE_VTK_IOFFMPEG=YES \
-    -DVTK_MODULE_ENABLE_VTK_IOGDAL=YES \
+    -DVTK_MODULE_ENABLE_VTK_IOGDAL=NO \
     -DVTK_MODULE_ENABLE_VTK_IOGeoJSON=YES \
     -DVTK_MODULE_ENABLE_VTK_IOGeometry=YES \
     -DVTK_MODULE_ENABLE_VTK_IOH5part=YES \
