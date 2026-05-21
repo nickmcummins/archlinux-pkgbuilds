@@ -16,6 +16,7 @@ jobs:
       - name: Update CA certificates
         run: | 
             sudo apt-get update && sudo apt-get install -y ca-certificates
+            mkdir -p /etc/ca-certificates/trust-source/anchors
             sudo wget http://crt.sectigo.com/SectigoPublicServerAuthenticationCADVR36.crt -o /etc/ca-certificates/trust-source/anchors/
             sudo update-ca-trust extract
             sudo update-ca-certificates
