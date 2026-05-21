@@ -1,0 +1,15 @@
+---
+Index: cuda/common/include/pcl/cuda/point_cloud.h
+<+>UTF-8
+===================================================================
+--- cuda/common/include/pcl/cuda/point_cloud.h	(revision 3ec5387c7f0313f54f8722c144a066d9e13c997b)
++++ cuda/common/include/pcl/cuda/point_cloud.h	(date 1779330343749)
+@@ -41,6 +41,8 @@
+ #include <pcl/cuda/thrust.h>
+ #include <pcl/memory.h>
+ 
++#include <thrust/tuple.h>
++
+ namespace pcl
+ {
+   namespace cuda
