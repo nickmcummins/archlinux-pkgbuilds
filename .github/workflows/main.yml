@@ -17,7 +17,7 @@ jobs:
         run: | 
             sudo apt-get update && sudo apt-get install -y ca-certificates
             sudo mkdir -p /etc/ca-certificates/trust-source/anchors
-            sudo wget http://crt.sectigo.com/SectigoPublicServerAuthenticationCADVR36.crt -o /etc/ca-certificates/trust-source/anchors/
+            sudo wget http://crt.sectigo.com/SectigoPublicServerAuthenticationCADVR36.crt -o /etc/ca-certificates/trust-source/anchors/SectigoPublicServerAuthenticationCADVR36.crt 
             sudo update-ca-trust extract
             sudo update-ca-certificates
             git config --global http.sslVerify false
