@@ -1,18 +1,19 @@
 # Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+
 pkgname=3dfier-git
 _pkgname=3dfier
-pkgver=1.4.0.r1490.238782d
+pkgver=1.4.0.r1491.b77ab96
 pkgrel=1
-pkgdesc="Takes 2D GIS datasets (e.g. topographical datasets) and '3dfies' them by lifting every polygon to 3D."
+pkgdesc="Takes 2D GIS datasets (e.g. topographical datasets) and '3dfies' them by lifting every polygon to 3D. (git version)"
 url="http://tudelft3d.github.io/3dfier"
 license=('GPL')
 arch=('i686' 'x86_64')
 depends=('lastools')
 makedepends=('cmake')
 optdepends=( )
-source=("git+https://github.com/tudelft3d/3dfier.git")
+source=("git+https://github.com/tudelft3d/3dfier.git" 'CMakeLists.txt.patch')
 provides=('3dfier')
-md5sums=('SKIP')
+md5sums=('SKIP' 'SKIP')
 
 pkgver() {
 	cd ${srcdir}/${_pkgname}
@@ -25,19 +26,21 @@ pkgver() {
 
 build() {
   cd $srcdir/$_pkgname
+ 
+  patch -Np0 -i ${srcdir}/CMakeLists.txt.patch
+  
+  jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+  
   mkdir -p cmake-build-release && cd cmake-build-release
-
-
   cmake .. \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr
-  make
+  make -j$jobs
 }
 
 
 package() {
 	cd ${srcdir}/${_pkgname}/cmake-build-release
 	make DESTDIR="${pkgdir}/" install
-
 }
 

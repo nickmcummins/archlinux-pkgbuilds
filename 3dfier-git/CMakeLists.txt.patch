@@ -1,0 +1,25 @@
+---
+Index: CMakeLists.txt
+<+>UTF-8
+===================================================================
+--- CMakeLists.txt	(revision b77ab96f4ab4e6fe1816310aa0591b00b6190ee4)
++++ CMakeLists.txt	(date 1780012599721)
+@@ -13,7 +13,7 @@
+ endif()
+ 
+ # Boost
+-find_package( Boost REQUIRED locale chrono system filesystem program_options )
++find_package( Boost REQUIRED locale chrono filesystem program_options )
+ 
+ # GDAL
+ find_package( GDAL REQUIRED )
+@@ -27,9 +27,6 @@
+ # CGAL
+ find_package( CGAL REQUIRED QUIET COMPONENTS )
+ 
+-# include helper file
+-include( ${CGAL_USE_FILE} )
+-
+ if(MSVC)
+   add_definitions(-DNOMINMAX)
+   add_definitions("/EHsc")
