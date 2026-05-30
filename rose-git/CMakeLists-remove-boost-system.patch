@@ -1,0 +1,37 @@
+---
+Index: src/CMakeLists.txt
+<+>UTF-8
+===================================================================
+--- src/CMakeLists.txt	(revision 7bf80a2f885a71d82d1bac30b71b3dcc3532ded9)
++++ src/CMakeLists.txt	(date 1780112172421)
+@@ -907,7 +907,6 @@
+     Boost::program_options
+     Boost::random
+     Boost::regex
+-    Boost::system
+     Boost::wave
+     Boost::thread
+     Boost::serialization
+Index: CMakeLists.txt
+<+>UTF-8
+===================================================================
+--- CMakeLists.txt	(revision 7bf80a2f885a71d82d1bac30b71b3dcc3532ded9)
++++ CMakeLists.txt	(date 1780112097541)
+@@ -295,7 +295,7 @@
+ # REQUIRED clause after the first one has succeeded.  That way the first clause checks for requires components, and the
+ # second can check again including optional components.  If the version of cmake is high enough you can use an
+ # OPTIONAL_COMPONENTS clause instead, but that wasn't introduced until 3.11."
+-find_package(Boost REQUIRED COMPONENTS chrono date_time filesystem iostreams program_options random regex system wave thread serialization)
++find_package(Boost REQUIRED COMPONENTS chrono date_time filesystem iostreams program_options random regex wave thread serialization)
+ if(WIN32) 
+   set(BOOST_LIBRARYDIR ${Boost_LIBRARY_DIRS})
+   set(BOOST_INCLUDEDIR ${Boost_INCLUDE_DIRS}/)
+@@ -1880,7 +1880,7 @@
+ endif()
+ 
+ # Add individual Boost libraries
+-foreach(comp chrono date_time filesystem iostreams program_options random regex system thread wave serialization)
++foreach(comp chrono date_time filesystem iostreams program_options random regex thread wave serialization)
+   set(ROSE_PC_LIBS "${ROSE_PC_LIBS} -lboost_${comp}")
+ endforeach()
+ 

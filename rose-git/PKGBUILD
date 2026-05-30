@@ -1,0 +1,46 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+
+pkgname=rose-git
+_pkgname=rose
+pkgver=2.1.0.r23933.7bf80a2f88
+pkgrel=1
+pkgdesc='An open-source compiler framework engineered by LLNL supporting program analysis and transformation at both the source and binary levels. ROSE can act as a compiler frontend for C, C++ (including applications which use UPC, OpenMP, or Cuda), Fortran, Java, Ada, and supports ELF and PE binary formats for a variety of instruction sets. (git version)'
+arch=('x86_64')
+url='https://github.com/llnl/rose'
+license=('BSD3')
+depends=()
+makedepends=('cmake')
+conflicts=('rose')
+provides=('rose')
+source=("${_pkgname}::git+https://github.com/llnl/rose.git" 'CMakeLists-remove-boost-system.patch' 'include-termios-h.patch')
+sha256sums=('SKIP' 'SKIP' 'SKIP')
+
+pkgver() {
+	cd ${srcdir}/${_pkgname}
+    printf "%s.r%s.%s" "$(cat ROSE_VERSION)" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+    cd ${srcdir}/${_pkgname}
+
+    patch -Np0 -i ${srcdir}/CMakeLists-remove-boost-system.patch
+    patch -Np0 -i ${srcdir}/include-termios-h.patch
+    
+    mkdir -p cmake-build-release && cd cmake-build-release
+
+    jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+
+    cmake .. \
+     -DCMAKE_INSTALL_PREFIX=/usr \
+     -DCMAKE_BUILD_TYPE=Release \
+     -DBUILD_SHARED_LIBS=ON \
+     -DENABLE_C=OFF \
+     -DENABLE_BINARY_ANALYSIS=ON
+    make -j$jobs
+}
+
+package() {
+    cd ${srcdir}/${_pkgname}/cmake-build-release
+    make DESTDIR="${pkgdir}" install
+}
+
