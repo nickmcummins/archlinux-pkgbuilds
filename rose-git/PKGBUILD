@@ -2,18 +2,18 @@
 
 pkgname=rose-git
 _pkgname=rose
-pkgver=2.1.0.r23933.7bf80a2f88
+pkgver=2.2.0.r23943.e312618682
 pkgrel=1
 pkgdesc='An open-source compiler framework engineered by LLNL supporting program analysis and transformation at both the source and binary levels. ROSE can act as a compiler frontend for C, C++ (including applications which use UPC, OpenMP, or Cuda), Fortran, Java, Ada, and supports ELF and PE binary formats for a variety of instruction sets. (git version)'
 arch=('x86_64')
 url='https://github.com/llnl/rose'
 license=('BSD3')
-depends=()
+depends=('boost-legacy')
 makedepends=('cmake')
 conflicts=('rose')
 provides=('rose')
-source=("${_pkgname}::git+https://github.com/llnl/rose.git" 'CMakeLists-remove-boost-system.patch' 'include-termios-h.patch')
-sha256sums=('SKIP' 'SKIP' 'SKIP')
+source=("${_pkgname}::git+https://github.com/llnl/rose.git" 'include-termios-h.patch')
+sha256sums=('SKIP' 'SKIP')
 
 pkgver() {
 	cd ${srcdir}/${_pkgname}
@@ -23,17 +23,32 @@ pkgver() {
 build() {
     cd ${srcdir}/${_pkgname}
 
-    patch -Np0 -i ${srcdir}/CMakeLists-remove-boost-system.patch
     patch -Np0 -i ${srcdir}/include-termios-h.patch
     
     mkdir -p cmake-build-release && cd cmake-build-release
 
     jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
 
+    export CPATH=/opt/boost-legacy/include
+    export LD_LIBRARY_PATH=/opt/boost-legacy/lib
+    
     cmake .. \
      -DCMAKE_INSTALL_PREFIX=/usr \
      -DCMAKE_BUILD_TYPE=Release \
      -DBUILD_SHARED_LIBS=ON \
+     -DBoost_DIR=/opt/boost-legacy/lib/cmake/Boost-1.83.0 \
+     -Dboost_atomic_DIR=/opt/boost-legacy/lib/cmake/boost_atomic-1.83.0 \
+     -Dboost_chrono_DIR=/opt/boost-legacy/lib/cmake/boost_chrono-1.83.0 \
+     -Dboost_date_time_DIR=/opt/boost-legacy/lib/cmake/boost_date_time-1.83.0 \
+     -Dboost_filesystem_DIR=/opt/boost-legacy/lib/cmake/boost_filesystem-1.83.0 \
+     -Dboost_headers_DIR=/opt/boost-legacy/lib/cmake/boost_headers-1.83.0 \
+     -Dboost_iostreams_DIR=/opt/boost-legacy/lib/cmake/boost_iostreams-1.83.0 \
+     -Dboost_program_options_DIR=/opt/boost-legacy/lib/cmake/boost_program_options-1.83.0 \
+     -Dboost_random_DIR=/opt/boost-legacy/lib/cmake/boost_random-1.83.0 \
+     -Dboost_regex_DIR=/opt/boost-legacy/lib/cmake/boost_regex-1.83.0 \
+     -Dboost_serialization_DIR=/opt/boost-legacy/lib/cmake/boost_serialization-1.83.0 \
+     -Dboost_thread_DIR=/opt/boost-legacy/lib/cmake/boost_thread-1.83.0 \
+     -Dboost_wave_DIR=/opt/boost-legacy/lib/cmake/boost_wave-1.83.0 \
      -DENABLE_C=OFF \
      -DENABLE_BINARY_ANALYSIS=ON
     make -j$jobs
