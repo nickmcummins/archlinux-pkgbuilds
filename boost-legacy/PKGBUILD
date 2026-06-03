@@ -1,15 +1,16 @@
-# Maintainer: Evangelos Foutras <foutrelis@archlinux.org>
-# Contributor: Levente Polyak <anthraxx[at]archlinux[dot]org>
-# Contributor: Bartłomiej Piotrowski <bpiotrowski@archlinux.org>
-# Contributor: Marius Knaust <marius.knaust@gmail.com>
-# Contributor: Ionut Biru <ibiru@archlinux.org>
-# Contributor: Stéphane Gaudreault <stephane@archlinux.org>
-# Contributor: kevin <kevin@archlinux.org>
-# Contributor: Giovanni Scafora <giovanni@archlinux.org>
-# Contributor: Kritoke <kritoke@gamebox.net>
-# Contributor: Luca Roccia <little_rock@users.sourceforge.net>
+# Original Maintainer: Evangelos Foutras <foutrelis@archlinux.org>
+# Original Contributor: Levente Polyak <anthraxx[at]archlinux[dot]org>
+# Original Contributor: Bartłomiej Piotrowski <bpiotrowski@archlinux.org>
+# Original Contributor: Marius Knaust <marius.knaust@gmail.com>
+# Original Contributor:# Original Contributor: Ionut Biru <ibiru@archlinux.org>
+# Original Contributor: Stéphane Gaudreault <stephane@archlinux.org>
+# Original Contributor: kevin <kevin@archlinux.org>
+# Original Contributor: Giovanni Scafora <giovanni@archlinux.org>
+# Original Contributor: Kritoke <kritoke@gamebox.net>
+# Original Contributor: Luca Roccia <little_rock@users.sourceforge.net>
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
 
-pkgname=('boost' 'boost-libs')
+pkgname=('boost-legacy' 'boost-libs-legacy')
 pkgver=1.83.0
 pkgrel=9
 _srcname=boost_${pkgver//./_}
@@ -18,7 +19,7 @@ arch=('x86_64')
 url="https://www.boost.org/"
 license=('BSL-1.0')
 makedepends=('icu' 'python' 'python-numpy' 'bzip2' 'zlib' 'openmpi' 'zstd')
-source=(https://boostorg.jfrog.io/artifactory/main/release/$pkgver/source/$_srcname.tar.bz2
+source=(https://archives.boost.io/release/1.83.0/source/${_srcname}.tar.bz2
         boost-1.81.0-phoenix-multiple-definitions.patch
         $pkgname-support-fn.contains-f-where-f-is-a-function.patch::https://github.com/boostorg/function/commit/7ca2310b15e3.patch
         $pkgname-numpy-2.0.patch::https://github.com/boostorg/python/commit/0474de0f6cc9.patch
@@ -86,27 +87,22 @@ build() {
     --prefix="$srcdir"/fakeinstall
 }
 
-package_boost() {
+package_boost-legacy() {
   local python_version=$(
     python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
 
   pkgdesc+=' (development headers)'
-  depends=("boost-libs=$pkgver")
+  depends=("boost-libs-legacy=$pkgver")
   optdepends=('python: for python bindings')
   options=('staticlibs')
 
-  install -d "$pkgdir"/usr/lib
-  cp -a fakeinstall/lib/*.{a,so} "$pkgdir"/usr/lib/
-  cp -a fakeinstall/lib/cmake "$pkgdir"/usr/lib/
-  cp -a fakeinstall/{bin,include,share} "$pkgdir"/usr/
-
-  # https://github.com/boostorg/python/issues/203#issuecomment-391477685
-  for _lib in python numpy; do
-    ln -srL "$pkgdir"/usr/lib/libboost_${_lib}{${python_version/.},${python_version%.*}}.so
-  done
+  install -d "$pkgdir"/opt/boost-legacy/lib
+  cp -a fakeinstall/lib/*.{a,so} "$pkgdir"/opt/boost-legacy/lib/
+  cp -a fakeinstall/lib/cmake "$pkgdir"/opt/boost-legacy/lib/
+  cp -a fakeinstall/{bin,include,share} "$pkgdir"/opt/boost-legacy/
 }
 
-package_boost-libs() {
+package_boost-libs-legacy() {
   local python_version=$(
     python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
 
@@ -129,15 +125,8 @@ package_boost-libs() {
     libboost_timer.so libboost_type_erasure.so libboost_unit_test_framework.so
     libboost_url.so libboost_wave.so libboost_wserialization.so)
 
-  install -dm755 "$pkgdir"/usr/lib
-  cp -a fakeinstall/lib/*.so.* "$pkgdir"/usr/lib/
-
-  # https://github.com/boostorg/mpi/issues/112
-  local site_packages=$(python -c 'import site; print(site.getsitepackages()[0])')
-  install -d "$pkgdir"$site_packages/boost
-  touch "$pkgdir"$site_packages/boost/__init__.py
-  python -m compileall -o 0 -o 1 -o 2 "$pkgdir"$site_packages/boost
-  cp fakeinstall/lib/boost-python*/mpi.so "$pkgdir"$site_packages/boost/mpi.so
+  install -dm755 "$pkgdir"/opt/boost-legacy/lib
+  cp -a fakeinstall/lib/*.so.* "$pkgdir"/opt/boost-legacy/lib/
 }
 
 # vim:set ts=2 sw=2 et:
