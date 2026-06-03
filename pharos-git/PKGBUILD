@@ -12,8 +12,8 @@ depends=('z3' 'rose' 'swi-prolog' 'boost-legacy')
 makedepends=('cmake')
 conflicts=('pharos')
 provides=('pharos')
-source=("${_pkgname}::git+https://github.com/cmu-sei/pharos.git" 'cmake-remove-boost-system.patch')
-sha256sums=('SKIP' 'SKIP')
+source=("${_pkgname}::git+https://github.com/cmu-sei/pharos.git")
+sha256sums=('SKIP')
 
 pkgver() {
 	cd ${srcdir}/${_pkgname}
