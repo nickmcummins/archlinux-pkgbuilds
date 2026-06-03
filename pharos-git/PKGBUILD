@@ -1,0 +1,54 @@
+# Maintainer: Nick M Cummins <nickmcummins at linuxmail dot org>
+
+pkgname=pharos-git
+_pkgname=pharos
+pkgver=r262.b0129ae
+pkgrel=1
+pkgdesc='An Automated static analysis tools for binary programs (git version)'
+arch=('x86_64')
+url='https://github.com/cmu-sei/pharos'
+license=('BSD')
+depends=('z3' 'rose' 'swi-prolog' 'boost-legacy')
+makedepends=('cmake')
+conflicts=('pharos')
+provides=('pharos')
+source=("${_pkgname}::git+https://github.com/cmu-sei/pharos.git")
+sha256sums=('SKIP')
+
+pkgver() {
+	cd ${srcdir}/${_pkgname}
+    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+    cd ${srcdir}/${_pkgname}
+
+    mkdir -p cmake-build-release && cd cmake-build-release
+
+    jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+
+    cmake .. \
+     -DCMAKE_INSTALL_PREFIX=/usr \
+     -DCMAKE_BUILD_TYPE=Release \
+     -DBoost_DIR=/opt/boost-legacy/lib/cmake/Boost-1.83.0 \
+     -Dboost_atomic_DIR=/opt/boost-legacy/lib/cmake/boost_atomic-1.83.0 \
+     -Dboost_container_DIR=/opt/boost-legacy/lib/cmake/boost_container-1.83.0 \
+     -Dboost_chrono_DIR=/opt/boost-legacy/lib/cmake/boost_chrono-1.83.0 \
+     -Dboost_date_time_DIR=/opt/boost-legacy/lib/cmake/boost_date_time-1.83.0 \
+     -Dboost_exception_DIR=/opt/boost-legacy/lib/cmake/boost_exception-1.83.0 \
+     -Dboost_filesystem_DIR=/opt/boost-legacy/lib/cmake/boost_filesystem-1.83.0 \
+     -Dboost_headers_DIR=/opt/boost-legacy/lib/cmake/boost_headers-1.83.0 \
+     -Dboost_iostreams_DIR=/opt/boost-legacy/lib/cmake/boost_iostreams-1.83.0 \
+     -Dboost_program_options_DIR=/opt/boost-legacy/lib/cmake/boost_program_options-1.83.0 \
+     -Dboost_random_DIR=/opt/boost-legacy/lib/cmake/boost_random-1.83.0 \
+     -Dboost_regex_DIR=/opt/boost-legacy/lib/cmake/boost_regex-1.83.0 \
+     -Dboost_serialization_DIR=/opt/boost-legacy/lib/cmake/boost_serialization-1.83.0 \
+     -Dboost_thread_DIR=/opt/boost-legacy/lib/cmake/boost_thread-1.83.0 \
+     -Dboost_wave_DIR=/opt/boost-legacy/lib/cmake/boost_wave-1.83.0
+    make -j$jobs
+}
+
+package() {
+    cd ${srcdir}/${_pkgname}/cmake-build-release
+    make DESTDIR="${pkgdir}" install
+}
