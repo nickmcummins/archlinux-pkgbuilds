@@ -37,7 +37,6 @@ build() {
      -DCMAKE_BUILD_TYPE=Release \
      -DBUILD_SHARED_LIBS=ON \
      -DBoost_DIR=/opt/boost-legacy/lib/cmake/Boost-1.83.0 \
-     -Dboost_atomic_DIR=/opt/boost-legacy/lib/cmake/boost_atomic-1.83.0 \
      -Dboost_chrono_DIR=/opt/boost-legacy/lib/cmake/boost_chrono-1.83.0 \
      -Dboost_date_time_DIR=/opt/boost-legacy/lib/cmake/boost_date_time-1.83.0 \
      -Dboost_filesystem_DIR=/opt/boost-legacy/lib/cmake/boost_filesystem-1.83.0 \
