@@ -2,7 +2,7 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.6.20260528.r99103.27b3522610
+pkgver=9.6.20260605.r99191.75f2c8d7a2
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization (git version)'
 arch=('i686' 'x86_64')
