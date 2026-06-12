@@ -1,0 +1,16 @@
+---
+Index: CMakeLists.txt
+<+>UTF-8
+===================================================================
+--- CMakeLists.txt	(revision 58328eb791e6cf9c1fc87498fc55e6c6c87681de)
++++ CMakeLists.txt	(date 1781304756693)
+@@ -325,6 +325,9 @@
+ FILE(GLOB ossim_fonts ${${PROJECT_NAME}_SOURCE_DIR}/share/ossim/fonts/*.ttf)
+ INSTALL(FILES ${ossim_fonts} DESTINATION share/ossim/fonts COMPONENT ossim)
+ 
++FILE(GLOB ossim_cmake_modules ${${PROJECT_NAME}_SOURCE_DIR}/cmake/CMakeModules/*.cmake* )
++INSTALL(FILES ${ossim_cmake_modules} DESTINATION lib/cmake/ossim COMPONENT ossim)
++
+ ###################### OUTPUT GENERAL VARIABLE SETTINGS #######################
+ 
+ MESSAGE( STATUS "OSSIM_REVISION                  = ${OSSIM_REVISION}" )
