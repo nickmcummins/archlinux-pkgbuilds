@@ -2,7 +2,7 @@
 
 pkgname=ossim-git
 _pkgname=ossim
-pkgver=2.12.0.r2385.2ab196ba
+pkgver=2.12.0.r2699.58328eb7
 pkgrel=1
 pkgdesc="OSSIM is a powerful suite of geospatial libraries and applications used to process imagery, maps, terrain, and vector data (git checkout)"
 url="http://www.ossim.org"
@@ -13,8 +13,8 @@ makedepends=('cmake')
 optdepends=( 'java-environment-common' 'openmpi' 'gpstk-bin' )
 provides=('ossim')
 conflicts=('ossim')
-source=('git+https://github.com/ossimlabs/ossim.git')
-md5sums=('SKIP')
+source=('git+https://github.com/ossimlabs/ossim.git' 'fix-include-ossim-header-paths.patch')
+md5sums=('SKIP' 'SKIP')
 
 pkgver() {
     cd ${srcdir}/${_pkgname}
@@ -24,6 +24,8 @@ pkgver() {
 
 build() {
     cd $srcdir/$_pkgname
+    patch -Np0 -i ${srcdir}/fix-include-ossim-header-paths.patch
+    
     mkdir -p cmake-build-release && cd cmake-build-release
 
     jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)

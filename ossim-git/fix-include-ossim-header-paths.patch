@@ -1,0 +1,61 @@
+---
+Index: src/support_data/ossimNitfGenericTag.cpp
+<+>UTF-8
+===================================================================
+--- src/support_data/ossimNitfGenericTag.cpp	(revision 58328eb791e6cf9c1fc87498fc55e6c6c87681de)
++++ src/support_data/ossimNitfGenericTag.cpp	(date 1781229045764)
+@@ -13,8 +13,8 @@
+ #include <ossim/support_data/ossimNitfCommon.h>
+ #include <ossim/base/ossimKeywordlist.h>
+ #include <ossim/base/ossimNotify.h>
+-#include <base/ossimException.h>
+-#include <base/ossimTrace.h>
++#include <ossim/base/ossimException.h>
++#include <ossim/base/ossimTrace.h>
+ 
+ #include <istream>
+ #include <iostream>
+Index: test/src/support_data/ossim-nitf-generic-tag-test.cpp
+<+>UTF-8
+===================================================================
+--- test/src/support_data/ossim-nitf-generic-tag-test.cpp	(revision 58328eb791e6cf9c1fc87498fc55e6c6c87681de)
++++ test/src/support_data/ossim-nitf-generic-tag-test.cpp	(date 1781229194707)
+@@ -27,8 +27,8 @@
+ #include <iostream>
+ #include <sstream>
+ 
+-#include "support_data/ossimNitfCephbDes.h"
+-#include "support_data/ossimNitfXmlTag.h"
++#include "ossim/support_data/ossimNitfCephbDes.h"
++#include "ossim/support_data/ossimNitfXmlTag.h"
+ 
+ using namespace std;
+ 
+Index: src/support_data/ossimNitfXmlTag.cpp
+<+>UTF-8
+===================================================================
+--- src/support_data/ossimNitfXmlTag.cpp	(revision 58328eb791e6cf9c1fc87498fc55e6c6c87681de)
++++ src/support_data/ossimNitfXmlTag.cpp	(date 1781229128688)
+@@ -14,7 +14,7 @@
+ #include <ossim/support_data/ossimNitfXmlTag.h>
+ #include <iomanip>
+ #include <sstream>
+-#include <base/ossimPreferences.h>
++#include <ossim/base/ossimPreferences.h>
+ 
+ ossimNitfXmlTag::ossimNitfXmlTag(ossimString tagName)
+    : ossimNitfRegisteredTag(tagName, 0)
+Index: src/support_data/ossimNitfRegisteredDesFactory.cpp
+<+>UTF-8
+===================================================================
+--- src/support_data/ossimNitfRegisteredDesFactory.cpp	(revision 58328eb791e6cf9c1fc87498fc55e6c6c87681de)
++++ src/support_data/ossimNitfRegisteredDesFactory.cpp	(date 1781229098443)
+@@ -17,7 +17,7 @@
+ #include <ossim/support_data/ossimNitfCscsdbDes.h>
+ #include <ossim/support_data/ossimNitfCssfabDes.h>
+ 
+-#include "support_data/ossimNitfCsephbDes.h"
++#include "ossim/support_data/ossimNitfCsephbDes.h"
+ 
+ RTTI_DEF1(ossimNitfRegisteredDesFactory, "ossimNitfRegisteredDesFactory", ossimNitfDesFactory);
+ 
