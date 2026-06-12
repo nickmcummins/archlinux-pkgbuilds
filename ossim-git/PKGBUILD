@@ -13,8 +13,11 @@ makedepends=('cmake')
 optdepends=( 'java-environment-common' 'openmpi' 'gpstk-bin' )
 provides=('ossim')
 conflicts=('ossim')
-source=('git+https://github.com/ossimlabs/ossim.git' 'fix-include-ossim-header-paths.patch')
-md5sums=('SKIP' 'SKIP')
+source=("${_pkgname}::git+https://github.com/ossimlabs/ossim.git" 
+    'git+https://github.com/ossimlabs/ossim-video.git' 
+    'git+https://github.com/ossimlabs/ossim-wms.git' 
+    'fix-include-ossim-header-paths.patch')
+md5sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
 
 pkgver() {
     cd ${srcdir}/${_pkgname}
@@ -26,6 +29,7 @@ build() {
     cd $srcdir/$_pkgname
     patch -Np0 -i ${srcdir}/fix-include-ossim-header-paths.patch
     
+    cd cmake
     mkdir -p cmake-build-release && cd cmake-build-release
 
     jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
@@ -39,9 +43,14 @@ build() {
         -DCMAKE_SHARED_LINKER_FLAGS='' \
         -DCMAKE_EXE_LINKER_FLAGS='' \
         -DCMAKE_MODULE_LINKER_FLAGS='' \
-        -DBUILD_OSSIM_PLANET=ON \
+        -DBUILD_OSSIM_PLANET=OFF \
         -DBUILD_OSSIM_VIDEO=ON \
         -DBUILD_OSSIM_MPI_SUPPORT=ON \
+        -DBUILD_OSSIM_PACKAGES=ON \
+        -DBUILD_OSSIM_PLANET=OFF \
+        -DBUILD_OSSIM_TESTS=OFF \
+        -DOSSIM_BUILD_ADDITIONAL_OSSIM_DIRECTORIES="${srcdir}/ossim-video;${srcdir}/ossim-wms" \
+        -DOSSIM_INSTALL_PREFIX=${pkgdir}/usr \
         -DUSE_OSSIM_JSONCPP=OFF
     make -j$jobs
 }
