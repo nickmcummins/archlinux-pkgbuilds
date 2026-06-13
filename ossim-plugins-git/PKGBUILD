@@ -35,7 +35,10 @@ build() {
         -DCMAKE_MODULE_PATH=/usr/lib/cmake/ossim \
         -DBUILD_DEM_PLUGIN=ON \
         -DBUILD_GDAL_PLUGIN=ON \
+        -DBUILD_GEOPDF_PLUGIN=OFF \
         -DBUILD_KML_PLUGIN=ON \
+        -DBUILD_PNG_PLUGIN=ON \
+        -DBUILD_POTRACE_PLUGIN=ON \
         -DBUILD_SHAPELIB_PLUGIN=ON \
         -DBUILD_SQLITE_PLUGIN=ON \
         -DUSE_OSSIM_JSONCPP=OFF

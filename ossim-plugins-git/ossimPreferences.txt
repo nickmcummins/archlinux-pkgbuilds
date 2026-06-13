@@ -1,4 +1,6 @@
 plugin.file1: /usr/lib/ossim/plugins/libossim_dem_plugin.so
 plugin.file2: /usr/lib/ossim/plugins/libossim_kml_plugin.so
 plugin.file3: /usr/lib/ossim/plugins/libossim_gdal_plugin.so
-plugin.file4: /usr/lib/ossim/plugins/libossim_sqlite_plugin.so
+plugin.file4: /usr/lib/ossim/plugins/libossim_png_plugin.so
+plugin.file5: /usr/lib/ossim/plugins/libossim_potrace_plugin.so
+plugin.file6: /usr/lib/ossim/plugins/libossim_sqlite_plugin.so
