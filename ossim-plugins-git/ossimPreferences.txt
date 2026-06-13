@@ -1,2 +1,3 @@
 plugin.file1: /usr/lib/ossim/plugins/libossim_dem_plugin.so
 plugin.file2: /usr/lib/ossim/plugins/libossim_kml_plugin.so
+plugin.file3: /usr/lib/ossim/plugins/libossim_gdal_plugin.so

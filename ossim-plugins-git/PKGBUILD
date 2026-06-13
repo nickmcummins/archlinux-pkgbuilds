@@ -9,7 +9,7 @@ url="http://www.ossim.org"
 license=('LGPL')
 arch=('i686' 'x86_64')
 depends=('ossim')
-makedepends=('cmake')
+makedepends=('cmake' 'gdal' 'shapelib')
 optdepends=()
 provides=('ossim-plugins')
 conflicts=('ossim-plugins')
@@ -34,6 +34,7 @@ build() {
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DCMAKE_MODULE_PATH=/usr/lib/cmake/ossim \
         -DBUILD_DEM_PLUGIN=ON \
+        -DBUILD_GDAL_PLUGIN=ON \
         -DBUILD_KML_PLUGIN=ON \
         -DUSE_OSSIM_JSONCPP=OFF
     make -j$jobs
