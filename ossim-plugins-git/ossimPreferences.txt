@@ -1,0 +1,1 @@
+plugin.file1: /usr/lib/ossim/plugins/libossim_dem_plugin.so
