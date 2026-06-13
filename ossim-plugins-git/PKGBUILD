@@ -9,7 +9,7 @@ url="http://www.ossim.org"
 license=('LGPL')
 arch=('i686' 'x86_64')
 depends=('ossim')
-makedepends=('cmake' 'gdal' 'shapelib')
+makedepends=('cmake' 'gdal' 'shapelib' 'sqlite')
 optdepends=()
 provides=('ossim-plugins')
 conflicts=('ossim-plugins')
@@ -36,6 +36,8 @@ build() {
         -DBUILD_DEM_PLUGIN=ON \
         -DBUILD_GDAL_PLUGIN=ON \
         -DBUILD_KML_PLUGIN=ON \
+        -DBUILD_SHAPELIB_PLUGIN=ON \
+        -DBUILD_SQLITE_PLUGIN=ON \
         -DUSE_OSSIM_JSONCPP=OFF
     make -j$jobs
 }
