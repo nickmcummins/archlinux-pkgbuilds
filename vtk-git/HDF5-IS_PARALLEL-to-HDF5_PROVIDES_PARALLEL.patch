@@ -1,0 +1,20 @@
+---
+Index: ThirdParty/hdf5/CMakeLists.txt
+<+>UTF-8
+===================================================================
+--- ThirdParty/hdf5/CMakeLists.txt	(revision d94f46c6fcbfd651381ad8eb66c37b077f024969)
++++ ThirdParty/hdf5/CMakeLists.txt	(date 1781715535008)
+@@ -33,11 +33,11 @@
+     COMPONENTS    C HL
+     TARGETS       hdf5::hdf5
+                   hdf5::hdf5_hl
+-    USE_VARIABLES HDF5_IS_PARALLEL
++    USE_VARIABLES HDF5_PROVIDES_PARALLEL
+     STANDARD_INCLUDE_DIRS)
+ 
+ set(vtkhdf5_is_parallel 0)
+-if (VTK_MODULE_USE_EXTERNAL_vtkhdf5 AND HDF5_IS_PARALLEL)
++if (VTK_MODULE_USE_EXTERNAL_vtkhdf5 AND HDF5_PROVIDES_PARALLEL)
+   if (NOT TARGET VTK::mpi)
+     message(FATAL_ERROR
+       "An external MPI-aware HDF5 requires that VTK be built with MPI support "

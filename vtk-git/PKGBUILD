@@ -2,7 +2,7 @@
 
 pkgname=vtk-git
 _pkgname=vtk
-pkgver=9.6.20260605.r99191.75f2c8d7a2
+pkgver=9.6.20260617.r99386.d94f46c6fc
 pkgrel=1
 pkgdesc='A software system for 3D computer graphics, image processing, and visualization (git version)'
 arch=('i686' 'x86_64')
@@ -15,8 +15,8 @@ depends=('cuda' 'cgns' 'double-conversion' 'embree' 'gdal' 'glew' 'hdf5' 'jsoncp
 makedepends=('git' 'cmake' 'doxygen' 'boost' 'java-environment' 'utf8cpp')
 provides=("vtk")
 conflicts=("vtk")
-source=('git+https://gitlab.kitware.com/vtk/vtk.git')
-sha256sums=('SKIP')
+source=('git+https://gitlab.kitware.com/vtk/vtk.git' 'HDF5-IS_PARALLEL-to-HDF5_PROVIDES_PARALLEL.patch')
+sha256sums=('SKIP' 'SKIP')
 
 pkgver() {
   cd ${srcdir}/vtk
@@ -28,6 +28,10 @@ build() {
   cd ${srcdir}/vtk
   git submodule update --init --recursive
 
+  for patch in *.patch; do
+      patch -Np0 -i ${srcdir}/${patch}
+  done
+  
   jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
 
   mkdir -p cmake-build-release && cd cmake-build-release
@@ -78,6 +82,7 @@ build() {
     -DVTK_MODULE_ENABLE_VTK_CommonPython=YES \
     -DVTK_MODULE_ENABLE_VTK_CommonSystem=YES \
     -DVTK_MODULE_ENABLE_VTK_CommonTransforms=YES \
+    -DVTK_MODULE_ENABLE_VTK_conduit=NO \
     -DVTK_MODULE_ENABLE_VTK_DICOMParser=YES \
     -DVTK_MODULE_ENABLE_VTK_vtkDICOM=YES \
     -DVTK_MODULE_ENABLE_VTK_DomainsChemistry=YES \
