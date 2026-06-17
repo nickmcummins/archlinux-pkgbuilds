@@ -2,7 +2,7 @@
 
 pkgname=pcl-git
 _pkgname=pcl
-pkgver=1.15.1.r14676.3ec5387c7
+pkgver=1.15.1.r14683.4c3b36e04
 pkgrel=1
 pkgdesc="a standalone, large scale, open project for 2D/3D image and point cloud processing (git version)"
 arch=(i686 x86_64)
