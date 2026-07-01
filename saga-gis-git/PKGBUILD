@@ -1,21 +1,19 @@
 pkgname=saga-gis-git
 _pkgname=saga-gis
-pkgver=9.11.0.r6863.e5c3b959c
+pkgver=9.13.0.r7280.bab080eb2
 pkgrel=1
 pkgdesc="A Geographic Information System (GIS) software with immense capabilities for geodata processing and analysis. (git version)"
 url="http://www.saga-gis.org"
 license=("GPL3")
 arch=('i686' 'x86_64')
-depends=('wxgtk'
-         'proj' 'lua-hpdf'
-         'gdal'
-         'libtiff'
+depends=('libtiff'
          'unixodbc'
          'jasper'
          'swig'
          'opencv2'
          'kealib'
-         'pdal')
+         'pdal'
+         'wxwidgets-gtk3' 'wxwidgets-common' 'hicolor-icon-theme' 'proj' 'gdal' 'curl' 'libtiff' 'unixodbc' 'opencv' 'pdal' 'arrow')
 optdepends=('opencv'
             'vigra'
             'liblas'
