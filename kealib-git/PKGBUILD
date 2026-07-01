@@ -1,14 +1,14 @@
 # Contributor: Nick M Cummins <nickmcummins at linuxmail dot org>
 pkgname=kealib-git
 _pkgname=kealib
-pkgver=1.6.2.r460.b9cf5d4
+pkgver=2.0.0.r466.f82a53a
 pkgrel=1
 pkgdesc="An HDF5 Based Raster File Format and its GDAL plugin (Git version)"
 arch=('i686' 'x86_64')
 url='http://kealib.org'
 license=('MIT')
 makedepends=('cmake' 'git')
-depends=('hdf5' 'gdal')
+depends=('hdf5' 'gdal' 'highfive')
 provides=('kealib')
 conflicts=('kealib')
 source=("git+https://github.com/ubarsc/kealib.git")
