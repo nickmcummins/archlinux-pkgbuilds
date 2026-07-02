@@ -1,0 +1,61 @@
+# Maintainer:
+# Original Contributor: Fabrice aneche <akh at nobugware dot com>
+# Maintainer: Nick M Cummins <nickmcummins@linuxmail.org>
+
+pkgname="$_pkgname-git"
+_pkgname="s2geometry"
+pkgver=0.14.0.r43.g3f5bd2d
+pkgrel=1
+pkgdesc="A library for manipulating geometric shapes"
+url="https://github.com/google/s2geometry"
+license=('Apache-2.0')
+arch=("x86_64" "aarch64")
+
+depends=(
+  'abseil-cpp'
+  'openssl'
+)
+makedepends=(
+  'cmake'
+  'git'
+  'ninja'
+  'python'
+)
+
+provides=(
+  "$_pkgname=${pkgver%.g*}"
+  'libs2.so'
+)
+conflicts=("$_pkgname")
+
+_pkgsrc="$_pkgname"
+source=("$_pkgsrc"::"git+$url.git" 'absl-headers.patch')
+sha256sums=('SKIP' 'SKIP')
+
+pkgver() {
+  cd ${srcdir}/${_pkgname}
+  git describe --long --tags --abbrev=7 --exclude='*[a-zA-Z][a-zA-Z]*' | sed -E 's/^[^0-9]*//;s/([^-]*-g)/r\1/;s/-/./g'
+}
+
+build() {
+  cd ${srcdir}/${_pkgname}
+
+  patch -Np0 -i ${srcdir}/absl-headers.patch
+
+  jobs=$(if ${ARCHLINUX_MAKEPKG_MAKE_JOBS+"false"}; then echo 1; else echo $ARCHLINUX_MAKEPKG_MAKE_JOBS; fi)
+
+  mkdir -p cmake-build-release && cd cmake-build-release
+
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTS=OFF \
+    -Wno-dev
+  make -j$jobs
+}
+
+package() {
+  cd ${srcdir}/${_pkgname}/cmake-build-release
+  make DESTDIR="$pkgdir" install
+}
